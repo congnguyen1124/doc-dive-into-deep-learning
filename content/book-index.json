@@ -1,0 +1,35 @@
+{
+  "book": {
+    "title": "Dive into Deep Learning",
+    "authors": "Aston Zhang, Zachary C. Lipton, Mu Li, and Alexander J. Smola",
+    "source": "../didl.pdf",
+    "source_pages": 1151,
+    "edition_date": "2023-08-19",
+    "note_language": "vi"
+  },
+  "documents": [
+    {"id":"chapter-01","type":"chapter","number":1,"order":1,"title":"Introduction","filename":"01 - Introduction.md","book_pages":"1-29","pdf_pages":"41-69"},
+    {"id":"chapter-02","type":"chapter","number":2,"order":2,"title":"Preliminaries","filename":"02 - Preliminaries.md","book_pages":"30-81","pdf_pages":"70-121"},
+    {"id":"chapter-03","type":"chapter","number":3,"order":3,"title":"Linear Neural Networks for Regression","filename":"03 - Linear Neural Networks for Regression.md","book_pages":"82-124","pdf_pages":"122-164"},
+    {"id":"chapter-04","type":"chapter","number":4,"order":4,"title":"Linear Neural Networks for Classification","filename":"04 - Linear Neural Networks for Classification.md","book_pages":"125-166","pdf_pages":"165-206"},
+    {"id":"chapter-05","type":"chapter","number":5,"order":5,"title":"Multilayer Perceptrons","filename":"05 - Multilayer Perceptrons.md","book_pages":"167-206","pdf_pages":"207-246"},
+    {"id":"chapter-06","type":"chapter","number":6,"order":6,"title":"Builders’ Guide","filename":"06 - Builders’ Guide.md","book_pages":"207-232","pdf_pages":"247-272"},
+    {"id":"chapter-07","type":"chapter","number":7,"order":7,"title":"Convolutional Neural Networks","filename":"07 - Convolutional Neural Networks.md","book_pages":"233-267","pdf_pages":"273-307"},
+    {"id":"chapter-08","type":"chapter","number":8,"order":8,"title":"Modern Convolutional Neural Networks","filename":"08 - Modern Convolutional Neural Networks.md","book_pages":"268-324","pdf_pages":"308-364"},
+    {"id":"chapter-09","type":"chapter","number":9,"order":9,"title":"Recurrent Neural Networks","filename":"09 - Recurrent Neural Networks.md","book_pages":"325-368","pdf_pages":"365-408"},
+    {"id":"chapter-10","type":"chapter","number":10,"order":10,"title":"Modern Recurrent Neural Networks","filename":"10 - Modern Recurrent Neural Networks.md","book_pages":"369-408","pdf_pages":"409-448"},
+    {"id":"chapter-11","type":"chapter","number":11,"order":11,"title":"Attention Mechanisms and Transformers","filename":"11 - Attention Mechanisms and Transformers.md","book_pages":"409-467","pdf_pages":"449-507"},
+    {"id":"chapter-12","type":"chapter","number":12,"order":12,"title":"Optimization Algorithms","filename":"12 - Optimization Algorithms.md","book_pages":"468-546","pdf_pages":"508-586"},
+    {"id":"chapter-13","type":"chapter","number":13,"order":13,"title":"Computational Performance","filename":"13 - Computational Performance.md","book_pages":"547-591","pdf_pages":"587-631"},
+    {"id":"chapter-14","type":"chapter","number":14,"order":14,"title":"Computer Vision","filename":"14 - Computer Vision.md","book_pages":"592-689","pdf_pages":"632-729"},
+    {"id":"chapter-15","type":"chapter","number":15,"order":15,"title":"Natural Language Processing: Pretraining","filename":"15 - Natural Language Processing: Pretraining.md","book_pages":"690-743","pdf_pages":"730-783"},
+    {"id":"chapter-16","type":"chapter","number":16,"order":16,"title":"Natural Language Processing: Applications","filename":"16 - Natural Language Processing: Applications.md","book_pages":"744-780","pdf_pages":"784-820"},
+    {"id":"chapter-17","type":"chapter","number":17,"order":17,"title":"Reinforcement Learning","filename":"17 - Reinforcement Learning.md","book_pages":"781-796","pdf_pages":"821-836"},
+    {"id":"chapter-18","type":"chapter","number":18,"order":18,"title":"Gaussian Processes","filename":"18 - Gaussian Processes.md","book_pages":"797-827","pdf_pages":"837-867"},
+    {"id":"chapter-19","type":"chapter","number":19,"order":19,"title":"Hyperparameter Optimization","filename":"19 - Hyperparameter Optimization.md","book_pages":"828-879","pdf_pages":"868-919"},
+    {"id":"chapter-20","type":"chapter","number":20,"order":20,"title":"Generative Adversarial Networks","filename":"20 - Generative Adversarial Networks.md","book_pages":"880-892","pdf_pages":"920-932"},
+    {"id":"chapter-21","type":"chapter","number":21,"order":21,"title":"Recommender Systems","filename":"21 - Recommender Systems.md","book_pages":"893-896","pdf_pages":"933-936"},
+    {"id":"appendix-a","type":"appendix","number":"A","order":101,"title":"Mathematics for Deep Learning","filename":"Appendix A - Mathematics for Deep Learning.md","book_pages":"897-1034","pdf_pages":"937-1074"},
+    {"id":"appendix-b","type":"appendix","number":"B","order":102,"title":"Tools for Deep Learning","filename":"Appendix B - Tools for Deep Learning.md","book_pages":"1035-1088","pdf_pages":"1075-1128"}
+  ]
+}
