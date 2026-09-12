@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 590" role="img" aria-labelledby="title desc">
+  <title id="title">Bộ dụng cụ nền tảng cho deep learning</title>
+  <desc id="desc">Dữ liệu thực được tiền xử lý thành tensor. Đại số tuyến tính tạo phép biến đổi, calculus và autograd cung cấp gradient, probability giúp diễn giải không chắc chắn.</desc>
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#3b6970"/></marker></defs>
+  <rect width="1080" height="590" rx="28" fill="#faf7ea"/>
+  <text x="540" y="58" text-anchor="middle" font-family="Georgia,serif" font-size="29" font-weight="700" fill="#173f44">Từ dữ liệu thô tới một bước học</text>
+  <g font-family="Arial,sans-serif">
+    <rect x="62" y="148" width="190" height="126" rx="18" fill="#f5dfd6" stroke="#c45b43" stroke-width="3"/>
+    <text x="157" y="190" text-anchor="middle" font-size="21" font-weight="700" fill="#843c2b">DỮ LIỆU THÔ</text><text x="157" y="225" text-anchor="middle" font-size="16" fill="#72554d">CSV · ảnh · text</text>
+    <rect x="315" y="148" width="190" height="126" rx="18" fill="#fff0c8" stroke="#b88922" stroke-width="3"/>
+    <text x="410" y="190" text-anchor="middle" font-size="21" font-weight="700" fill="#75510d">PREPROCESS</text><text x="410" y="225" text-anchor="middle" font-size="16" fill="#6b5d38">missing · encoding</text>
+    <rect x="568" y="148" width="190" height="126" rx="18" fill="#dcebe4" stroke="#4f786a" stroke-width="3"/>
+    <text x="663" y="190" text-anchor="middle" font-size="21" font-weight="700" fill="#275146">TENSOR</text><text x="663" y="225" text-anchor="middle" font-size="16" fill="#47635b">shape · axis · dtype</text>
+    <rect x="821" y="148" width="197" height="126" rx="18" fill="#dcebef" stroke="#47727a" stroke-width="3"/>
+    <text x="919" y="190" text-anchor="middle" font-size="19" font-weight="700" fill="#244d55">LINEAR ALGEBRA</text><text x="919" y="225" text-anchor="middle" font-size="16" fill="#476269">dot · matrix · norm</text>
+    <g fill="none" stroke="#3b6970" stroke-width="4" marker-end="url(#a)"><path d="M252 211h53"/><path d="M505 211h53"/><path d="M758 211h53"/></g>
+    <rect x="212" y="354" width="290" height="118" rx="18" fill="#e7e4f3" stroke="#6a6193" stroke-width="3"/>
+    <text x="357" y="397" text-anchor="middle" font-size="21" font-weight="700" fill="#4d4770">CALCULUS + AUTOGRAD</text><text x="357" y="432" text-anchor="middle" font-size="16" fill="#625e75">gradient qua chain rule</text>
+    <rect x="578" y="354" width="290" height="118" rx="18" fill="#e4edf4" stroke="#526f91" stroke-width="3"/>
+    <text x="723" y="397" text-anchor="middle" font-size="21" font-weight="700" fill="#405b78">PROBABILITY</text><text x="723" y="432" text-anchor="middle" font-size="16" fill="#586a7d">noise · uncertainty · Bayes</text>
+    <path d="M918 284C918 329 480 321 410 344" fill="none" stroke="#3b6970" stroke-width="4" marker-end="url(#a)"/>
+    <path d="M918 284C918 325 782 325 738 344" fill="none" stroke="#3b6970" stroke-width="4" marker-end="url(#a)"/>
+    <text x="540" y="530" text-anchor="middle" font-size="18" font-weight="700" fill="#173f44">Luôn hỏi: shape nào? axis nào? gradient nói gì? độ chắc chắn đến đâu?</text>
+    <text x="64" y="558" font-size="15" font-weight="700" fill="#c05138">SƠ ĐỒ BỔ SUNG</text>
+  </g>
+</svg>

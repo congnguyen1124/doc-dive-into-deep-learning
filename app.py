@@ -38,6 +38,7 @@ GLOSSARY_PATH = CONTENT_ROOT / "glossary.json"
 TERM_PATTERN = re.compile(r"\{\{term:([a-z0-9-]+)(?:\|([^}]+))?\}\}")
 IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\(([^\s)]+)(?:\s+['\"][^'\"]*['\"])?\)")
 IMAGE_SRC_PATTERN = re.compile(r'(<img\b[^>]*\bsrc=")([^"]+)(")', re.IGNORECASE)
+PAGEBREAK_PATTERN = re.compile(r"<!--\s*pagebreak\s*-->", re.IGNORECASE)
 
 
 class NotebookError(ValueError):
@@ -75,7 +76,7 @@ class GlossaryInlineProcessor(InlineProcessor):
         element.set("data-term", key)
         element.set("tabindex", "0")
         element.set("role", "button")
-        element.set("aria-label", f"Xem giải thích cho {label}")
+        element.set("aria-label", f"Open term note for {label}")
         element.text = label
         return element, match.start(0), match.end(0)
 
@@ -183,7 +184,10 @@ def render_document(document: Document) -> str:
 
 def chapter_payload(document: Document) -> dict[str, Any]:
     payload = document.summary()
-    payload["html"] = render_document(document)
+    rendered = render_document(document)
+    pages = [page.strip() for page in PAGEBREAK_PATTERN.split(rendered) if page.strip()]
+    payload["html"] = rendered
+    payload["pages"] = pages or [rendered]
     return payload
 
 
@@ -328,7 +332,7 @@ class NotebookRequestHandler(BaseHTTPRequestHandler):
                     (doc for doc in discover_documents() if doc.id == wanted_id), None
                 )
                 if document is None:
-                    self._send_json({"error": "Không tìm thấy chương"}, HTTPStatus.NOT_FOUND)
+                    self._send_json({"error": "Chapter not found"}, HTTPStatus.NOT_FOUND)
                 else:
                     self._send_json(chapter_payload(document))
                 return

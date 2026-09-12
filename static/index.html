@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Vở học Dive into Deep Learning bằng tiếng Việt cho người mới bắt đầu.">
+    <meta name="description" content="A two-page study notebook for Vietnamese Dive into Deep Learning notes.">
     <title>D2L Study Notebook</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script>
@@ -22,26 +22,26 @@
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar" id="sidebar" aria-label="Mục lục">
+      <aside class="sidebar" id="sidebar" aria-label="Table of contents">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">∂</div>
           <div>
             <p class="eyebrow">Study notebook</p>
             <p class="brand-name">Dive into<br>Deep Learning</p>
           </div>
-          <button class="icon-button sidebar-close" id="sidebarClose" aria-label="Đóng mục lục">×</button>
+          <button class="icon-button sidebar-close" id="sidebarClose" aria-label="Close table of contents">×</button>
         </div>
 
         <label class="search-box">
           <span aria-hidden="true">⌕</span>
-          <span class="sr-only">Tìm chương</span>
-          <input id="chapterSearch" type="search" placeholder="Tìm một chương…" autocomplete="off">
+          <span class="sr-only">Search chapters</span>
+          <input id="chapterSearch" type="search" placeholder="Search a chapter…" autocomplete="off">
           <kbd>/</kbd>
         </label>
 
         <div class="completion-card">
           <div class="completion-copy">
-            <span>Tiến độ của bạn</span>
+            <span>Your progress</span>
             <strong id="completionText">0 / 23</strong>
           </div>
           <div class="progress-track" aria-hidden="true">
@@ -49,71 +49,85 @@
           </div>
         </div>
 
-        <nav class="chapter-nav" id="chapterNav" aria-label="Danh sách chương"></nav>
+        <nav class="chapter-nav" id="chapterNav" aria-label="Chapter list"></nav>
 
-        <p class="sidebar-note">
+        <blockquote class="study-motto">
           <span aria-hidden="true">✦</span>
-          Học chậm, hiểu sâu. Một chương vững còn hơn mười chương lướt qua.
-        </p>
+          <strong>Học chậm cho thấm,<br>hiểu sâu nhớ lâu.</strong>
+        </blockquote>
       </aside>
 
       <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
 
       <main class="main-area" id="mainArea">
         <header class="topbar">
-          <button class="icon-button menu-button" id="menuButton" aria-label="Mở mục lục">☰</button>
+          <button class="icon-button menu-button" id="menuButton" aria-label="Open table of contents">☰</button>
           <div class="crumb">
-            <span id="documentKind">Chương</span>
+            <span id="documentKind">Chapter</span>
             <span aria-hidden="true">/</span>
-            <strong id="crumbTitle">Đang tải…</strong>
+            <strong id="crumbTitle">Loading…</strong>
           </div>
           <div class="top-actions">
-            <span class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd> lật trang</span>
+            <span class="drag-hint"><span aria-hidden="true">↔</span> Drag a page to turn</span>
+            <span class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd></span>
+            <button class="theme-button" id="themeButton" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+              <span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span>
+              <span id="themeLabel">Dark</span>
+            </button>
             <button class="complete-button" id="completeButton" type="button" aria-pressed="false">
               <span class="complete-check" aria-hidden="true">✓</span>
-              <span id="completeLabel">Đánh dấu đã học</span>
+              <span id="completeLabel">Mark as learned</span>
             </button>
           </div>
         </header>
 
         <section class="reader" aria-live="polite">
-          <button class="page-arrow previous" id="previousButton" aria-label="Chương trước">←</button>
+          <button class="page-arrow previous" id="previousButton" aria-label="Previous spread">←</button>
 
-          <div class="book-frame">
-            <div class="book-edge" aria-hidden="true"></div>
-            <article class="paper-page" id="paperPage">
-              <header class="page-header">
-                <div>
-                  <p class="chapter-kicker" id="chapterKicker">CHƯƠNG 01</p>
-                  <p class="page-range" id="pageRange">Trang sách 1–29 · PDF 41–69</p>
-                </div>
-                <span class="status-badge placeholder" id="statusBadge">Chưa biên soạn</span>
-              </header>
+          <div class="book-stage">
+            <div class="notebook-spread" id="notebookSpread">
+              <article class="note-sheet left-sheet" id="leftSheet" aria-label="Left note page">
+                <header class="page-header">
+                  <div><p class="chapter-kicker" id="leftKicker">CHAPTER 01</p><p class="page-range" id="leftRange">Book 1–29 · PDF 41–69</p></div>
+                  <span class="status-badge placeholder" id="statusBadge">Not started</span>
+                </header>
+                <div class="chapter-page" id="leftPage"><div class="loading-block wide"></div><div class="loading-block"></div></div>
+                <footer class="page-footer"><span>D2L · Vietnamese study notes</span><span id="leftFolio">01</span></footer>
+              </article>
 
-              <div class="chapter-page" id="chapterPage">
-                <div class="loading-block wide"></div>
-                <div class="loading-block"></div>
-                <div class="loading-block short"></div>
+              <div class="book-gutter" aria-hidden="true"></div>
+
+              <article class="note-sheet right-sheet" id="rightSheet" aria-label="Right note page">
+                <header class="page-header">
+                  <div><p class="chapter-kicker" id="rightKicker">CHAPTER 01</p><p class="page-range" id="rightRange">Drag this page left</p></div>
+                  <span class="page-side-label">NOTES</span>
+                </header>
+                <div class="chapter-page" id="rightPage"><div class="loading-block"></div><div class="loading-block short"></div></div>
+                <footer class="page-footer"><span>Drag or swipe to turn</span><span id="rightFolio">02</span></footer>
+              </article>
+
+              <article class="turn-underlay turn-underlay-left" id="turnUnderlayLeft" aria-hidden="true"></article>
+              <article class="turn-underlay turn-underlay-right" id="turnUnderlayRight" aria-hidden="true"></article>
+              <div class="flip-leaf" id="flipLeaf" aria-hidden="true">
+                <article class="flip-face flip-front" id="flipFront"></article>
+                <article class="flip-face flip-back" id="flipBack"></article>
+                <span class="flip-edge" aria-hidden="true"></span>
               </div>
-
-              <footer class="page-footer">
-                <span>D2L · Vietnamese study notebook</span>
-                <span id="folio">01</span>
-              </footer>
-            </article>
+            </div>
+            <p class="spread-help" id="spreadHelp">Drag the right page left for the next spread, or the left page right to go back.</p>
           </div>
 
-          <button class="page-arrow next" id="nextButton" aria-label="Chương tiếp theo">→</button>
+          <button class="page-arrow next" id="nextButton" aria-label="Next spread">→</button>
         </section>
 
         <footer class="reader-footer">
           <button class="footer-nav previous" id="footerPrevious" type="button">
             <span aria-hidden="true">←</span>
-            <span><small>Trước</small><strong id="previousTitle">—</strong></span>
+            <span><small>Previous</small><strong id="previousTitle">—</strong></span>
           </button>
-          <p id="positionLabel">1 / 23</p>
+          <p id="positionLabel">Pages 1–2 of 2</p>
           <button class="footer-nav next" id="footerNext" type="button">
-            <span><small>Tiếp theo</small><strong id="nextTitle">—</strong></span>
+            <span><small>Next</small><strong id="nextTitle">—</strong></span>
             <span aria-hidden="true">→</span>
           </button>
         </footer>
@@ -121,7 +135,7 @@
     </div>
 
     <aside class="term-tooltip" id="termTooltip" role="tooltip" hidden>
-      <p class="term-label">THUẬT NGỮ</p>
+      <p class="term-label">TERM NOTE</p>
       <strong id="tooltipTerm"></strong>
       <span id="tooltipVi"></span>
       <p id="tooltipExplanation"></p>
@@ -129,7 +143,7 @@
     </aside>
 
     <dialog class="image-dialog" id="imageDialog">
-      <button class="image-close" id="imageClose" aria-label="Đóng ảnh">×</button>
+      <button class="image-close" id="imageClose" aria-label="Close image">×</button>
       <img id="dialogImage" alt="">
       <p id="dialogCaption"></p>
     </dialog>

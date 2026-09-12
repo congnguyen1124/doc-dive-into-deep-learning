@@ -40,6 +40,74 @@ class NotebookContentTests(unittest.TestCase):
         self.assertIn('tabindex="0"', rendered)
         self.assertIn(">Tensor</span>", rendered)
 
+    def test_authored_chapters_are_split_into_note_pages(self) -> None:
+        for document in app.discover_documents()[:3]:
+            payload = app.chapter_payload(document)
+            self.assertGreaterEqual(len(payload["pages"]), 2)
+            self.assertNotIn("<!-- pagebreak -->", "".join(payload["pages"]))
+            self.assertIn(payload["status"], {"draft", "reviewed"})
+
+    def test_first_three_chapters_keep_pdf_section_order(self) -> None:
+        expected = {
+            "chapter-01": [
+                "1.1 A Motivating Example", "1.2 Key Components", "1.2.1 Data",
+                "1.2.2 Models", "1.2.3 Objective Functions",
+                "1.2.4 Optimization Algorithms", "1.3 Kinds of Machine Learning Problems",
+                "1.3.1 Supervised Learning", "1.3.2 Unsupervised and Self-Supervised Learning",
+                "1.3.3 Interacting with an Environment", "1.3.4 Reinforcement Learning",
+                "1.4 Roots", "1.5 The Road to Deep Learning", "1.6 Success Stories",
+                "1.7 The Essence of Deep Learning", "1.8 Summary", "1.9 Exercises",
+            ],
+            "chapter-02": [
+                "2.1 Data Manipulation", "2.1.1 Getting Started", "2.1.2 Indexing and Slicing",
+                "2.1.3 Operations", "2.1.4 Broadcasting", "2.1.5 Saving Memory",
+                "2.1.6 Conversion to Other Python Objects", "2.1.7 Summary", "2.1.8 Exercises",
+                "2.2 Data Preprocessing", "2.2.1 Reading the Dataset", "2.2.2 Data Preparation",
+                "2.2.3 Conversion to the Tensor Format", "2.2.4 Discussion", "2.2.5 Exercises",
+                "2.3 Linear Algebra", "2.3.1 Scalars", "2.3.2 Vectors", "2.3.3 Matrices",
+                "2.3.4 Tensors", "2.3.5 Basic Properties of Tensor Arithmetic", "2.3.6 Reduction",
+                "2.3.7 Non-Reduction Sum", "2.3.8 Dot Products", "2.3.9 Matrix–Vector Products",
+                "2.3.10 Matrix–Matrix Multiplication", "2.3.11 Norms", "2.3.12 Discussion",
+                "2.3.13 Exercises", "2.4 Calculus", "2.4.1 Derivatives and Differentiation",
+                "2.4.2 Visualization Utilities", "2.4.3 Partial Derivatives and Gradients",
+                "2.4.4 Chain Rule", "2.4.5 Discussion", "2.4.6 Exercises",
+                "2.5 Automatic Differentiation", "2.5.1 A Simple Function",
+                "2.5.2 Backward for Non-Scalar Variables", "2.5.3 Detaching Computation",
+                "2.5.4 Gradients and Python Control Flow", "2.5.5 Discussion", "2.5.6 Exercises",
+                "2.6 Probability and Statistics", "2.6.1 A Simple Example: Tossing Coins",
+                "2.6.2 A More Formal Treatment", "2.6.3 Random Variables",
+                "2.6.4 Multiple Random Variables", "2.6.5 An Example", "2.6.6 Expectations",
+                "2.6.7 Discussion", "2.6.8 Exercises", "2.7 Documentation",
+                "2.7.1 Functions and Classes in a Module", "2.7.2 Specific Functions and Classes",
+            ],
+            "chapter-03": [
+                "3.1 Linear Regression", "3.1.1 Basics", "3.1.2 Vectorization for Speed",
+                "3.1.3 The Normal Distribution and Squared Loss",
+                "3.1.4 Linear Regression as a Neural Network", "3.1.5 Summary", "3.1.6 Exercises",
+                "3.2 Object-Oriented Design for Implementation", "3.2.1 Utilities", "3.2.2 Models",
+                "3.2.3 Data", "3.2.4 Training", "3.2.5 Summary", "3.2.6 Exercises",
+                "3.3 Synthetic Regression Data", "3.3.1 Generating the Dataset",
+                "3.3.2 Reading the Dataset", "3.3.3 Concise Implementation of the Data Loader",
+                "3.3.4 Summary", "3.3.5 Exercises",
+                "3.4 Linear Regression Implementation from Scratch", "3.4.1 Defining the Model",
+                "3.4.2 Defining the Loss Function", "3.4.3 Defining the Optimization Algorithm",
+                "3.4.4 Training", "3.4.5 Summary", "3.4.6 Exercises",
+                "3.5 Concise Implementation of Linear Regression", "3.5.1 Defining the Model",
+                "3.5.2 Defining the Loss Function", "3.5.3 Defining the Optimization Algorithm",
+                "3.5.4 Training", "3.5.5 Summary", "3.5.6 Exercises", "3.6 Generalization",
+                "3.6.1 Training Error and Generalization Error", "3.6.2 Underfitting or Overfitting?",
+                "3.6.3 Model Selection", "3.6.4 Summary", "3.6.5 Exercises", "3.7 Weight Decay",
+                "3.7.1 Norms and Weight Decay", "3.7.2 High-Dimensional Linear Regression",
+                "3.7.3 Implementation from Scratch", "3.7.4 Concise Implementation",
+                "3.7.5 Summary", "3.7.6 Exercises",
+            ],
+        }
+        documents = {doc.id: doc for doc in app.discover_documents()}
+        for document_id, headings in expected.items():
+            body = documents[document_id].body
+            positions = [body.index(f"{heading}") for heading in headings]
+            self.assertEqual(positions, sorted(positions), document_id)
+
     def test_safe_file_rejects_parent_traversal(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir) / "safe"
@@ -47,6 +115,19 @@ class NotebookContentTests(unittest.TestCase):
             outside = Path(temp_dir) / "outside.txt"
             outside.write_text("secret", encoding="utf-8")
             self.assertIsNone(app.safe_file(root, "../outside.txt"))
+
+    def test_reader_has_real_page_layers_theme_and_no_sheet_scroll(self) -> None:
+        index_html = (PROJECT_ROOT / "static" / "index.html").read_text(encoding="utf-8")
+        script = (PROJECT_ROOT / "static" / "app.js").read_text(encoding="utf-8")
+        styles = (PROJECT_ROOT / "static" / "styles.css").read_text(encoding="utf-8")
+        self.assertIn('id="flipFront"', index_html)
+        self.assertIn('id="flipBack"', index_html)
+        self.assertIn('id="turnUnderlayRight"', index_html)
+        self.assertIn('id="themeButton"', index_html)
+        self.assertIn("paginateAuthoredPages", script)
+        self.assertIn('localStorage.setItem("d2l-theme"', script)
+        self.assertIn(':root[data-theme="dark"]', styles)
+        self.assertRegex(styles, r"\.chapter-page\s*\{[^}]*overflow:hidden")
 
 
 class FigureExtractionTests(unittest.TestCase):

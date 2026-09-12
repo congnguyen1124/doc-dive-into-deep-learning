@@ -1,22 +1,21 @@
 "use strict";
 
 const state = {
-  documents: [],
-  currentIndex: -1,
-  glossary: {},
-  changingPage: false,
+  documents: [], currentIndex: -1, current: null, sourcePages: [], pages: [], pageIndex: 0,
+  glossary: {}, changingPage: false, drag: null, documentCache: new Map(),
+  layoutCache: new Map(), resizeTimer: 0,
 };
 
 const elements = {};
-const statusLabels = {
-  placeholder: "Chưa biên soạn",
-  draft: "Đang biên soạn",
-  reviewed: "Đã kiểm tra",
-};
+const mobileQuery = window.matchMedia("(max-width: 900px)");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const statusLabels = { placeholder: "Not started", draft: "In progress", reviewed: "Reviewed" };
 
-function byId(id) {
-  return document.getElementById(id);
-}
+function byId(id) { return document.getElementById(id); }
+function visiblePageCount() { return mobileQuery.matches ? 1 : 2; }
+function pageStep() { return visiblePageCount(); }
+function nextFrame() { return new Promise((resolve) => window.requestAnimationFrame(resolve)); }
+function sleep(milliseconds) { return new Promise((resolve) => window.setTimeout(resolve, milliseconds)); }
 
 function escapeHtml(value) {
   const node = document.createElement("span");
@@ -24,26 +23,26 @@ function escapeHtml(value) {
   return node.innerHTML;
 }
 
+function lastPageStartFor(pages) {
+  const count = Math.max(1, pages.length);
+  return Math.floor((count - 1) / pageStep()) * pageStep();
+}
+
+function lastPageStart() { return lastPageStartFor(state.pages); }
+
 async function fetchJson(url) {
   const response = await fetch(url, { headers: { Accept: "application/json" } });
   const payload = await response.json();
-  if (!response.ok) {
-    throw new Error(payload.error || `HTTP ${response.status}`);
-  }
+  if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
   return payload;
 }
 
 function completedIds() {
-  try {
-    return new Set(JSON.parse(localStorage.getItem("d2l-completed") || "[]"));
-  } catch (_error) {
-    return new Set();
-  }
+  try { return new Set(JSON.parse(localStorage.getItem("d2l-completed") || "[]")); }
+  catch (_error) { return new Set(); }
 }
 
-function saveCompleted(ids) {
-  localStorage.setItem("d2l-completed", JSON.stringify([...ids]));
-}
+function saveCompleted(ids) { localStorage.setItem("d2l-completed", JSON.stringify([...ids])); }
 
 function updateProgress() {
   const completed = completedIds();
@@ -54,30 +53,25 @@ function updateProgress() {
   document.querySelectorAll(".chapter-link").forEach((link) => {
     link.classList.toggle("done", completed.has(link.dataset.id));
   });
-  const current = state.documents[state.currentIndex];
-  const isDone = Boolean(current && completed.has(current.id));
+  const item = state.documents[state.currentIndex];
+  const isDone = Boolean(item && completed.has(item.id));
   elements.completeButton.setAttribute("aria-pressed", String(isDone));
-  elements.completeLabel.textContent = isDone ? "Đã học xong" : "Đánh dấu đã học";
+  elements.completeLabel.textContent = isDone ? "Learned" : "Mark as learned";
 }
 
-function groupLabel(type) {
-  return type === "chapter" ? "Các chương" : "Phụ lục";
-}
+function groupLabel(type) { return type === "chapter" ? "Chapters" : "Appendices"; }
 
 function renderNavigation(filter = "") {
-  const query = filter.trim().toLocaleLowerCase("vi");
-  const matches = state.documents.filter((item) => {
-    const haystack = `${item.number} ${item.title}`.toLocaleLowerCase("vi");
-    return haystack.includes(query);
-  });
+  const query = filter.trim().toLocaleLowerCase("en");
+  const matches = state.documents.filter((item) =>
+    `${item.number} ${item.title}`.toLocaleLowerCase("en").includes(query)
+  );
   const completed = completedIds();
   elements.chapterNav.innerHTML = "";
-
   if (!matches.length) {
-    elements.chapterNav.innerHTML = '<p class="chapter-empty">Không tìm thấy chương phù hợp.</p>';
+    elements.chapterNav.innerHTML = '<p class="chapter-empty">No matching chapter.</p>';
     return;
   }
-
   let previousType = null;
   matches.forEach((item) => {
     if (item.type !== previousType) {
@@ -87,7 +81,6 @@ function renderNavigation(filter = "") {
       elements.chapterNav.append(heading);
       previousType = item.type;
     }
-
     const link = document.createElement("button");
     link.type = "button";
     link.className = "chapter-link";
@@ -99,58 +92,93 @@ function renderNavigation(filter = "") {
     link.innerHTML = `
       <span class="chapter-number">${escapeHtml(number)}</span>
       <span class="chapter-title">${escapeHtml(item.title)}</span>
-      <span class="nav-state" aria-hidden="true"></span>
-    `;
-    link.addEventListener("click", () => {
-      loadDocument(item.id);
-      closeSidebar();
-    });
+      <span class="nav-state" aria-hidden="true"></span>`;
+    link.addEventListener("click", () => { loadDocument(item.id); closeSidebar(); });
     elements.chapterNav.append(link);
   });
 }
 
-function sleep(milliseconds) {
-  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
-}
-
 function setLoading() {
-  elements.chapterPage.innerHTML = `
-    <div class="loading-block wide"></div>
-    <div class="loading-block"></div>
-    <div class="loading-block short"></div>
-  `;
+  const blocks = '<div class="loading-block wide"></div><div class="loading-block"></div><div class="loading-block short"></div>';
+  elements.leftPage.innerHTML = blocks;
+  elements.rightPage.innerHTML = blocks;
 }
 
-function statusLabel(status) {
-  return statusLabels[status] || status;
+function documentLabel(item) { return item.type === "chapter" ? "Chapter" : "Appendix"; }
+function documentNumber(item) { return item.type === "chapter" ? String(item.number).padStart(2, "0") : item.number; }
+function blankPageHtml() { return '<div class="blank-note" aria-label="Blank note page"><span>End of chapter</span><i></i></div>'; }
+
+function resolveTheme() {
+  const saved = localStorage.getItem("d2l-theme");
+  if (saved === "light" || saved === "dark") return saved;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function updateDocumentChrome(item) {
-  const label = item.type === "chapter" ? "Chương" : "Phụ lục";
-  const number = item.type === "chapter" ? String(item.number).padStart(2, "0") : item.number;
+function applyTheme(theme, persist = true) {
+  document.documentElement.dataset.theme = theme;
+  const nextTheme = theme === "dark" ? "light" : "dark";
+  elements.themeIcon.textContent = theme === "dark" ? "☀" : "☾";
+  elements.themeLabel.textContent = nextTheme === "dark" ? "Dark" : "Light";
+  elements.themeButton.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+  elements.themeButton.title = `Switch to ${nextTheme} theme`;
+  if (persist) localStorage.setItem("d2l-theme", theme);
+}
+
+function toggleTheme() { applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"); }
+
+function updateDocumentChrome() {
+  const item = state.current;
+  if (!item) return;
+  const label = documentLabel(item);
+  const number = documentNumber(item);
+  const leftNumber = state.pageIndex + 1;
+  const rightNumber = state.pageIndex + 2;
   elements.documentKind.textContent = label;
   elements.crumbTitle.textContent = item.title;
-  elements.chapterKicker.textContent = `${label.toLocaleUpperCase("vi")} ${number}`;
-  elements.pageRange.textContent = `Trang sách ${item.book_pages} · PDF ${item.pdf_pages}`;
-  elements.statusBadge.textContent = statusLabel(item.status);
+  elements.leftKicker.textContent = `${label.toUpperCase()} ${number} · NOTE ${String(leftNumber).padStart(2, "0")}`;
+  elements.rightKicker.textContent = `${label.toUpperCase()} ${number} · NOTE ${String(rightNumber).padStart(2, "0")}`;
+  elements.leftRange.textContent = `Book ${item.book_pages} · PDF ${item.pdf_pages}`;
+  elements.rightRange.textContent = rightNumber <= state.pages.length ? "Vietnamese study page" : "Blank note page";
+  elements.spreadHelp.textContent = mobileQuery.matches
+    ? "Swipe or drag left for the next page; drag right to go back."
+    : "Drag the right page left for the next spread, or the left page right to go back.";
+  elements.statusBadge.textContent = statusLabels[item.status] || item.status;
   elements.statusBadge.className = `status-badge ${item.status}`;
-  elements.folio.textContent = number;
-  elements.positionLabel.textContent = `${state.currentIndex + 1} / ${state.documents.length}`;
+  elements.leftFolio.textContent = String(leftNumber).padStart(2, "0");
+  elements.rightFolio.textContent = String(rightNumber).padStart(2, "0");
   document.title = `${item.title} · D2L Notebook`;
+  const visibleEnd = Math.min(state.pageIndex + visiblePageCount(), state.pages.length);
+  elements.positionLabel.textContent = visibleEnd === leftNumber
+    ? `Page ${leftNumber} of ${state.pages.length}`
+    : `Pages ${leftNumber}–${visibleEnd} of ${state.pages.length}`;
+  updateNavigationControls();
+}
 
-  const previous = state.documents[state.currentIndex - 1];
-  const next = state.documents[state.currentIndex + 1];
+function navigationTarget(offset) {
+  const targetPage = state.pageIndex + offset * pageStep();
+  if (targetPage >= 0 && targetPage < state.pages.length) return { type: "page", pageIndex: targetPage };
+  const targetDocument = state.documents[state.currentIndex + offset];
+  return targetDocument ? { type: "document", document: targetDocument } : null;
+}
+
+function updateNavigationControls() {
+  const previous = navigationTarget(-1);
+  const next = navigationTarget(1);
   elements.previousButton.disabled = !previous;
   elements.footerPrevious.disabled = !previous;
   elements.nextButton.disabled = !next;
   elements.footerNext.disabled = !next;
-  elements.previousTitle.textContent = previous?.title || "—";
-  elements.nextTitle.textContent = next?.title || "—";
+  elements.previousTitle.textContent = previous?.type === "page"
+    ? `Notes ${Math.max(1, state.pageIndex - pageStep() + 1)}–${state.pageIndex}`
+    : previous?.document.title || "—";
+  elements.nextTitle.textContent = next?.type === "page"
+    ? `Notes ${next.pageIndex + 1}–${Math.min(next.pageIndex + pageStep(), state.pages.length)}`
+    : next?.document.title || "—";
 }
 
-function enhanceImages() {
-  elements.chapterPage.querySelectorAll("img").forEach((image) => {
-    const title = image.getAttribute("title") || image.getAttribute("alt") || "Hình minh họa";
+function decorateImages(container, interactive = true) {
+  container.querySelectorAll("img").forEach((image) => {
+    const title = image.getAttribute("title") || image.getAttribute("alt") || "Study figure";
     if (image.parentElement?.tagName === "P") {
       const paragraph = image.parentElement;
       const figure = document.createElement("figure");
@@ -160,6 +188,8 @@ function enhanceImages() {
       caption.textContent = title;
       figure.append(caption);
     }
+    image.draggable = false;
+    if (!interactive) return;
     image.addEventListener("click", () => {
       elements.dialogImage.src = image.currentSrc || image.src;
       elements.dialogImage.alt = image.alt;
@@ -169,207 +199,553 @@ function enhanceImages() {
   });
 }
 
-async function typesetMath() {
-  if (window.MathJax?.typesetPromise) {
-    try {
-      await window.MathJax.typesetPromise([elements.chapterPage]);
-    } catch (error) {
-      console.warn("MathJax could not typeset this chapter", error);
+async function typesetContainers(containers) {
+  if (!window.MathJax?.typesetPromise) return;
+  try { await window.MathJax.typesetPromise(containers); }
+  catch (error) { console.warn("MathJax could not typeset notebook content", error); }
+}
+
+async function waitForImages(container) {
+  const pending = [...container.querySelectorAll("img")].filter((image) => !image.complete);
+  await Promise.all(pending.map((image) => new Promise((resolve) => {
+    image.addEventListener("load", resolve, { once: true });
+    image.addEventListener("error", resolve, { once: true });
+  })));
+}
+
+function probeOverflows(probe) { return probe.scrollHeight > probe.clientHeight + 1; }
+
+function splitListForPage(node, probe) {
+  const items = [...node.children];
+  if (items.length < 2) return [node];
+  const chunks = [];
+  let chunk = node.cloneNode(false);
+  let ordinal = Number(node.getAttribute("start") || 1);
+  items.forEach((item, itemIndex) => {
+    chunk.append(item.cloneNode(true));
+    probe.replaceChildren(chunk);
+    if (probeOverflows(probe) && chunk.children.length > 1) {
+      chunk.lastElementChild.remove();
+      chunks.push(chunk.cloneNode(true));
+      ordinal += chunk.children.length;
+      chunk = node.cloneNode(false);
+      if (node.tagName === "OL") chunk.setAttribute("start", String(ordinal));
+      chunk.append(item.cloneNode(true));
+    }
+    if (itemIndex === items.length - 1 && chunk.children.length) chunks.push(chunk.cloneNode(true));
+  });
+  probe.replaceChildren();
+  return chunks;
+}
+
+function splitPreForPage(node, probe) {
+  const code = node.querySelector("code");
+  const lines = (code?.textContent || node.textContent || "").split("\n");
+  if (lines.length < 3) return [node];
+  const chunks = [];
+  let currentLines = [];
+  lines.forEach((line, lineIndex) => {
+    currentLines.push(line);
+    const candidate = node.cloneNode(true);
+    (candidate.querySelector("code") || candidate).textContent = currentLines.join("\n");
+    probe.replaceChildren(candidate);
+    if (probeOverflows(probe) && currentLines.length > 1) {
+      currentLines.pop();
+      const fitted = node.cloneNode(true);
+      (fitted.querySelector("code") || fitted).textContent = currentLines.join("\n");
+      chunks.push(fitted);
+      currentLines = [line];
+    }
+    if (lineIndex === lines.length - 1 && currentLines.length) {
+      const fitted = node.cloneNode(true);
+      (fitted.querySelector("code") || fitted).textContent = currentLines.join("\n");
+      chunks.push(fitted);
+    }
+  });
+  probe.replaceChildren();
+  return chunks;
+}
+
+function splitTableForPage(node, probe) {
+  const rows = [...node.querySelectorAll("tbody > tr")];
+  if (rows.length < 2) return [node];
+  const chunks = [];
+  let chunk = node.cloneNode(true);
+  chunk.querySelectorAll("tbody").forEach((body) => body.replaceChildren());
+  rows.forEach((row, rowIndex) => {
+    const body = chunk.querySelector("tbody") || chunk.appendChild(document.createElement("tbody"));
+    body.append(row.cloneNode(true));
+    probe.replaceChildren(chunk);
+    if (probeOverflows(probe) && body.children.length > 1) {
+      body.lastElementChild.remove();
+      chunks.push(chunk.cloneNode(true));
+      chunk = node.cloneNode(true);
+      chunk.querySelectorAll("tbody").forEach((tableBody) => tableBody.replaceChildren());
+      (chunk.querySelector("tbody") || chunk.appendChild(document.createElement("tbody"))).append(row.cloneNode(true));
+    }
+    if (rowIndex === rows.length - 1) chunks.push(chunk.cloneNode(true));
+  });
+  probe.replaceChildren();
+  return chunks;
+}
+
+function splitOversizedNode(node, probe) {
+  if (node.matches?.("ul, ol")) return splitListForPage(node, probe);
+  if (node.matches?.("pre")) return splitPreForPage(node, probe);
+  if (node.matches?.("table")) return splitTableForPage(node, probe);
+  node.classList?.add("fit-block");
+  return [node];
+}
+
+function pushProbePage(probe, pages) {
+  const html = probe.innerHTML.trim();
+  if (html) pages.push(html);
+  probe.replaceChildren();
+}
+
+function addNodeToPages(node, probe, pages) {
+  probe.append(node);
+  if (!probeOverflows(probe)) return;
+  if (probe.childNodes.length > 1) {
+    node.remove();
+    const previous = probe.lastElementChild;
+    if (previous?.matches("h1, h2, h3, h4")) {
+      previous.remove();
+      pushProbePage(probe, pages);
+      probe.append(previous, node);
+      if (!probeOverflows(probe)) return;
+      node.remove();
+      pushProbePage(probe, pages);
+      probe.append(node);
+    } else {
+      pushProbePage(probe, pages);
+      probe.append(node);
     }
   }
+  if (!probeOverflows(probe)) return;
+  node.remove();
+  splitOversizedNode(node, probe).forEach((chunk) => {
+    probe.append(chunk);
+    if (probeOverflows(probe) && probe.childNodes.length > 1) {
+      chunk.remove();
+      pushProbePage(probe, pages);
+      probe.append(chunk);
+    }
+    if (probeOverflows(probe)) console.warn("A notebook block is taller than one paper page", chunk);
+    pushProbePage(probe, pages);
+  });
+}
+
+function layoutSignature() {
+  const box = elements.leftPage.getBoundingClientRect();
+  return `${mobileQuery.matches ? "single" : "spread"}:${Math.round(box.width)}x${Math.round(box.height)}`;
+}
+
+async function paginateAuthoredPages(sourcePages) {
+  const box = elements.leftPage.getBoundingClientRect();
+  if (!box.width || !box.height) return sourcePages;
+  const probe = document.createElement("div");
+  probe.className = "chapter-page pagination-probe";
+  probe.style.width = `${box.width}px`;
+  probe.style.height = `${box.height}px`;
+  document.body.append(probe);
+  const pages = [];
+  try {
+    for (const sourceHtml of sourcePages) {
+      probe.innerHTML = sourceHtml;
+      decorateImages(probe, false);
+      await typesetContainers([probe]);
+      await waitForImages(probe);
+      const nodes = [...probe.childNodes].map((node) => node.cloneNode(true));
+      probe.replaceChildren();
+      nodes.forEach((node) => addNodeToPages(node, probe, pages));
+      pushProbePage(probe, pages);
+    }
+  } finally { probe.remove(); }
+  return pages.length ? pages : [blankPageHtml()];
+}
+
+function sourcePagesFor(payload) {
+  return Array.isArray(payload.pages) && payload.pages.length ? payload.pages : [payload.html];
+}
+
+async function layoutPayload(payload) {
+  const key = `${payload.id}:${layoutSignature()}`;
+  if (!state.layoutCache.has(key)) state.layoutCache.set(key, paginateAuthoredPages(sourcePagesFor(payload)));
+  try { return await state.layoutCache.get(key); }
+  catch (error) { state.layoutCache.delete(key); throw error; }
+}
+
+async function fetchDocument(id) {
+  if (!state.documentCache.has(id)) {
+    state.documentCache.set(id, fetchJson(`/api/chapter/${encodeURIComponent(id)}`));
+  }
+  try { return await state.documentCache.get(id); }
+  catch (error) { state.documentCache.delete(id); throw error; }
+}
+
+async function renderSpread() {
+  hideTooltip();
+  elements.leftPage.innerHTML = state.pages[state.pageIndex] || blankPageHtml();
+  elements.rightPage.innerHTML = state.pages[state.pageIndex + 1] || blankPageHtml();
+  decorateImages(elements.leftPage);
+  decorateImages(elements.rightPage);
+  updateDocumentChrome();
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+async function commitTarget(targetState) {
+  state.currentIndex = targetState.documentIndex;
+  state.current = targetState.payload;
+  state.sourcePages = sourcePagesFor(targetState.payload);
+  state.pages = targetState.pages;
+  state.pageIndex = targetState.pageIndex;
+  await renderSpread();
+  renderNavigation(elements.chapterSearch.value);
+  updateProgress();
+  prefetchNeighbors();
+}
+
+function currentTargetState(pageIndex = state.pageIndex) {
+  return { documentIndex: state.currentIndex, payload: state.current, pages: state.pages, pageIndex };
+}
+
+async function materializeTarget(target, direction) {
+  if (target.type === "page") return currentTargetState(target.pageIndex);
+  const payload = await fetchDocument(target.document.id);
+  state.documentCache.set(`${target.document.id}:resolved`, payload);
+  const pages = await layoutPayload(payload);
+  state.layoutCache.set(`${target.document.id}:${layoutSignature()}:resolved`, pages);
+  return {
+    documentIndex: state.documents.findIndex((item) => item.id === target.document.id),
+    payload, pages, pageIndex: direction < 0 ? lastPageStartFor(pages) : 0,
+  };
+}
+
+function cachedTarget(target, direction) {
+  if (target.type === "page") return currentTargetState(target.pageIndex);
+  const cacheKey = `${target.document.id}:${layoutSignature()}`;
+  const payload = state.documentCache.get(`${target.document.id}:resolved`);
+  const pages = state.layoutCache.get(`${cacheKey}:resolved`);
+  if (!payload || !pages) return null;
+  return {
+    documentIndex: state.documents.findIndex((item) => item.id === target.document.id),
+    payload, pages, pageIndex: direction < 0 ? lastPageStartFor(pages) : 0,
+  };
+}
+
+async function prefetchNeighbors() {
+  for (const index of [state.currentIndex - 1, state.currentIndex + 1]) {
+    const item = state.documents[index];
+    if (!item) continue;
+    try {
+      const payload = await fetchDocument(item.id);
+      state.documentCache.set(`${item.id}:resolved`, payload);
+      const pages = await layoutPayload(payload);
+      state.layoutCache.set(`${item.id}:${layoutSignature()}:resolved`, pages);
+    } catch (_error) { /* Optional prefetch; navigation reports real errors. */ }
+  }
+}
+
+function sheetHtml(item, pages, pageIndex, side) {
+  const label = documentLabel(item);
+  const number = documentNumber(item);
+  const noteNumber = pageIndex + 1;
+  const content = pages[pageIndex] || blankPageHtml();
+  const range = side === "left" ? `Book ${item.book_pages} · PDF ${item.pdf_pages}`
+    : noteNumber <= pages.length ? "Vietnamese study page" : "Blank note page";
+  const badge = side === "left"
+    ? `<span class="status-badge ${escapeHtml(item.status)}">${escapeHtml(statusLabels[item.status] || item.status)}</span>`
+    : '<span class="page-side-label">NOTES</span>';
+  const footer = side === "left" ? "D2L · Vietnamese study notes" : "Drag or swipe to turn";
+  return `<header class="page-header"><div><p class="chapter-kicker">${escapeHtml(label.toUpperCase())} ${escapeHtml(number)} · NOTE ${String(noteNumber).padStart(2, "0")}</p><p class="page-range">${escapeHtml(range)}</p></div>${badge}</header><div class="chapter-page">${content}</div><footer class="page-footer"><span>${footer}</span><span>${String(noteNumber).padStart(2, "0")}</span></footer>`;
+}
+
+function makeOverlayInert(container) {
+  container.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
+  container.querySelectorAll("a, button, input, summary, [tabindex]").forEach((node) => node.setAttribute("tabindex", "-1"));
+  decorateImages(container, false);
+}
+
+function resetFlip() {
+  elements.notebookSpread.classList.remove("is-dragging", "is-settling");
+  elements.notebookSpread.style.setProperty("--flip-progress", "0");
+  elements.flipLeaf.className = "flip-leaf";
+  elements.turnUnderlayLeft.classList.remove("active");
+  elements.turnUnderlayRight.classList.remove("active");
+  elements.flipFront.replaceChildren();
+  elements.flipBack.replaceChildren();
+  elements.turnUnderlayLeft.replaceChildren();
+  elements.turnUnderlayRight.replaceChildren();
+}
+
+function prepareFlip(direction, targetState, progress = 0) {
+  resetFlip();
+  const isMobile = mobileQuery.matches;
+  const currentSide = direction > 0 ? "right" : "left";
+  const targetSide = direction > 0 ? "left" : "right";
+  const currentPage = isMobile ? state.pageIndex : state.pageIndex + (direction > 0 ? 1 : 0);
+  const targetPage = isMobile ? targetState.pageIndex : targetState.pageIndex + (direction < 0 ? 1 : 0);
+  const underlay = direction > 0 ? elements.turnUnderlayRight : elements.turnUnderlayLeft;
+  const underPage = isMobile ? targetState.pageIndex : targetState.pageIndex + (direction > 0 ? 1 : 0);
+  const underSide = direction > 0 ? "right" : "left";
+  elements.flipFront.innerHTML = sheetHtml(state.current, state.pages, currentPage, currentSide);
+  elements.flipBack.innerHTML = sheetHtml(targetState.payload, targetState.pages, targetPage, targetSide);
+  underlay.innerHTML = sheetHtml(targetState.payload, targetState.pages, underPage, underSide);
+  [elements.flipFront, elements.flipBack, underlay].forEach(makeOverlayInert);
+  underlay.classList.add("active");
+  elements.flipLeaf.classList.add("active", direction > 0 ? "forward" : "backward");
+  elements.notebookSpread.style.setProperty("--flip-progress", progress.toFixed(3));
+}
+
+async function settlePreparedFlip(direction, targetState, progress = 0, updateHistory = true) {
+  state.changingPage = true;
+  hideTooltip();
+  elements.notebookSpread.classList.remove("is-dragging");
+  elements.notebookSpread.classList.add("is-settling");
+  await nextFrame();
+  elements.notebookSpread.style.setProperty("--flip-progress", "1");
+  await sleep(reducedMotionQuery.matches ? 1 : Math.max(90, Math.round(560 * (1 - progress))));
+  const changedDocument = targetState.documentIndex !== state.currentIndex;
+  await commitTarget(targetState);
+  resetFlip();
+  state.changingPage = false;
+  if (changedDocument && updateHistory) {
+    history.pushState({ id: targetState.payload.id }, "", `#${targetState.payload.id}`);
+  }
+}
+
+async function cancelPreparedFlip(progress) {
+  elements.notebookSpread.classList.remove("is-dragging");
+  elements.notebookSpread.classList.add("is-settling");
+  await nextFrame();
+  elements.notebookSpread.style.setProperty("--flip-progress", "0");
+  await sleep(reducedMotionQuery.matches ? 1 : Math.max(100, Math.round(260 * progress)));
+  resetFlip();
 }
 
 async function loadDocument(id, options = {}) {
   const wantedIndex = state.documents.findIndex((item) => item.id === id);
   if (wantedIndex < 0 || state.changingPage) return;
-  if (wantedIndex === state.currentIndex && !options.force) return;
-
-  const previousIndex = state.currentIndex;
-  const direction = previousIndex < 0 || wantedIndex > previousIndex ? "next" : "previous";
+  if (wantedIndex === state.currentIndex && !options.force) {
+    state.pageIndex = options.openLast ? lastPageStart() : 0;
+    await renderSpread();
+    return;
+  }
+  const direction = state.currentIndex < 0 || wantedIndex > state.currentIndex ? 1 : -1;
   state.changingPage = true;
   hideTooltip();
-
   try {
-    if (previousIndex >= 0) {
-      elements.paperPage.classList.add(`turn-out-${direction}`);
-      await sleep(220);
-      elements.paperPage.className = "paper-page";
+    if (state.currentIndex < 0) setLoading();
+    const payload = await fetchDocument(id);
+    state.documentCache.set(`${id}:resolved`, payload);
+    const pages = await layoutPayload(payload);
+    state.layoutCache.set(`${id}:${layoutSignature()}:resolved`, pages);
+    const targetState = {
+      documentIndex: wantedIndex, payload, pages,
+      pageIndex: options.openLast ? lastPageStartFor(pages) : 0,
+    };
+    if (state.currentIndex < 0) {
+      await commitTarget(targetState);
+      state.changingPage = false;
+    } else {
+      state.changingPage = false;
+      prepareFlip(direction, targetState);
+      await settlePreparedFlip(direction, targetState, 0, false);
     }
-    setLoading();
-    const payload = await fetchJson(`/api/chapter/${encodeURIComponent(id)}`);
-    state.currentIndex = wantedIndex;
-    elements.chapterPage.innerHTML = payload.html;
-    updateDocumentChrome(payload);
-    enhanceImages();
-    renderNavigation(elements.chapterSearch.value);
-    updateProgress();
-    window.scrollTo({ top: 0, behavior: "instant" });
-    elements.paperPage.classList.add(`turn-in-${direction}`);
-    await typesetMath();
-    window.setTimeout(() => {
-      elements.paperPage.className = "paper-page";
-    }, 330);
-
     if (!options.fromHistory) {
       const nextHash = `#${id}`;
       if (options.initial) history.replaceState({ id }, "", nextHash);
       else history.pushState({ id }, "", nextHash);
     }
   } catch (error) {
-    showError(`Không thể mở chương: ${error.message}`);
-  } finally {
-    state.changingPage = false;
-  }
+    resetFlip();
+    showError(`Could not open this chapter: ${error.message}`);
+  } finally { state.changingPage = false; }
 }
 
-function adjacentDocument(offset) {
-  const target = state.documents[state.currentIndex + offset];
-  if (target) loadDocument(target.id);
+async function navigate(offset) {
+  if (state.changingPage) return;
+  const target = navigationTarget(offset);
+  if (!target) return;
+  state.changingPage = true;
+  try {
+    const targetState = await materializeTarget(target, offset);
+    state.changingPage = false;
+    prepareFlip(offset, targetState);
+    await settlePreparedFlip(offset, targetState, 0, true);
+  } catch (error) {
+    resetFlip();
+    state.changingPage = false;
+    showError(`Could not turn this page: ${error.message}`);
+  }
 }
 
 function toggleComplete() {
   const current = state.documents[state.currentIndex];
   if (!current) return;
   const completed = completedIds();
-  if (completed.has(current.id)) completed.delete(current.id);
-  else completed.add(current.id);
+  if (completed.has(current.id)) completed.delete(current.id); else completed.add(current.id);
   saveCompleted(completed);
   updateProgress();
 }
 
 function showTooltip(target) {
-  const key = target.dataset.term;
-  const entry = state.glossary[key];
+  const entry = state.glossary[target.dataset.term];
   elements.tooltipTerm.textContent = entry?.term || target.textContent;
-  elements.tooltipVi.textContent = entry?.vi ? `· ${entry.vi}` : "· Chưa có chú thích";
-  elements.tooltipExplanation.textContent =
-    entry?.explanation || "Thuật ngữ này sẽ được giải thích khi chương được biên soạn.";
+  elements.tooltipVi.textContent = entry?.vi ? `· ${entry.vi}` : "· Note pending";
+  elements.tooltipExplanation.textContent = entry?.explanation || "This term does not have a note yet.";
   elements.tooltipExample.textContent = entry?.example ? `Ví dụ: ${entry.example}` : "";
   elements.tooltipExample.hidden = !entry?.example;
   elements.termTooltip.hidden = false;
-
   const targetBox = target.getBoundingClientRect();
   const tooltipBox = elements.termTooltip.getBoundingClientRect();
   let left = targetBox.left;
   let top = targetBox.top - tooltipBox.height - 12;
-  if (left + tooltipBox.width > window.innerWidth - 10) {
-    left = window.innerWidth - tooltipBox.width - 10;
-  }
+  if (left + tooltipBox.width > window.innerWidth - 10) left = window.innerWidth - tooltipBox.width - 10;
   if (top < 10) top = targetBox.bottom + 12;
   elements.termTooltip.style.left = `${Math.max(10, left)}px`;
   elements.termTooltip.style.top = `${top}px`;
 }
 
-function hideTooltip() {
-  elements.termTooltip.hidden = true;
-}
-
-function openSidebar() {
-  elements.sidebar.classList.add("open");
-  elements.sidebarScrim.hidden = false;
-}
-
-function closeSidebar() {
-  elements.sidebar.classList.remove("open");
-  elements.sidebarScrim.hidden = true;
-}
-
+function hideTooltip() { elements.termTooltip.hidden = true; }
+function openSidebar() { elements.sidebar.classList.add("open"); elements.sidebarScrim.hidden = false; }
+function closeSidebar() { elements.sidebar.classList.remove("open"); elements.sidebarScrim.hidden = true; }
 function showError(message) {
   elements.errorToast.textContent = message;
   elements.errorToast.hidden = false;
-  window.setTimeout(() => {
-    elements.errorToast.hidden = true;
-  }, 5000);
+  window.setTimeout(() => { elements.errorToast.hidden = true; }, 5000);
+}
+
+function beginDrag(event) {
+  if (state.changingPage || event.button !== 0) return;
+  if (event.target.closest("a, button, input, summary, .glossary-term, img, pre")) return;
+  state.drag = { pointerId: event.pointerId, startX: event.clientX, direction: 0, progress: 0, targetState: null };
+  elements.notebookSpread.setPointerCapture(event.pointerId);
+  elements.notebookSpread.classList.add("is-dragging");
+}
+
+function moveDrag(event) {
+  if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+  const delta = event.clientX - state.drag.startX;
+  if (Math.abs(delta) < 3) return;
+  const direction = delta < 0 ? 1 : -1;
+  const target = navigationTarget(direction);
+  if (!target) return;
+  let targetState = state.drag.targetState;
+  if (direction !== state.drag.direction) {
+    targetState = cachedTarget(target, direction);
+    if (!targetState) { materializeTarget(target, direction).catch(() => {}); return; }
+    prepareFlip(direction, targetState, 0);
+    elements.notebookSpread.classList.add("is-dragging");
+  }
+  const pageWidth = Math.max(260, elements.notebookSpread.clientWidth / visiblePageCount());
+  const progress = Math.min(1, Math.abs(delta) / pageWidth);
+  state.drag.direction = direction;
+  state.drag.progress = progress;
+  state.drag.targetState = targetState;
+  elements.notebookSpread.style.setProperty("--flip-progress", progress.toFixed(3));
+  if (progress > .03) event.preventDefault();
+}
+
+function finishDrag(event) {
+  if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+  const { direction, progress, targetState } = state.drag;
+  state.drag = null;
+  if (direction && targetState && progress >= .18) {
+    settlePreparedFlip(direction, targetState, progress, true).catch((error) => {
+      resetFlip(); state.changingPage = false; showError(`Could not turn this page: ${error.message}`);
+    });
+  } else if (targetState) cancelPreparedFlip(progress); else resetFlip();
+}
+
+async function relayoutCurrentDocument() {
+  if (!state.current || state.changingPage || state.drag) return;
+  state.changingPage = true;
+  const oldCount = Math.max(1, state.pages.length);
+  const oldProgress = state.pageIndex / oldCount;
+  try {
+    const pages = await layoutPayload(state.current);
+    state.pages = pages;
+    state.pageIndex = Math.min(lastPageStartFor(pages), Math.floor((oldProgress * pages.length) / pageStep()) * pageStep());
+    await renderSpread();
+    prefetchNeighbors();
+  } catch (error) { showError(`Could not reflow these pages: ${error.message}`); }
+  finally { state.changingPage = false; }
+}
+
+function scheduleRelayout() {
+  window.clearTimeout(state.resizeTimer);
+  state.resizeTimer = window.setTimeout(relayoutCurrentDocument, 180);
 }
 
 function cacheElements() {
-  [
-    "chapterNav", "chapterSearch", "completionText", "completionBar", "completeButton",
-    "completeLabel", "documentKind", "crumbTitle", "chapterKicker", "pageRange",
-    "statusBadge", "folio", "positionLabel", "previousButton", "nextButton",
-    "footerPrevious", "footerNext", "previousTitle", "nextTitle", "paperPage",
-    "chapterPage", "termTooltip", "tooltipTerm", "tooltipVi", "tooltipExplanation",
-    "tooltipExample", "sidebar", "sidebarScrim", "menuButton", "sidebarClose",
-    "imageDialog", "imageClose", "dialogImage", "dialogCaption", "errorToast",
-  ].forEach((id) => {
-    elements[id] = byId(id);
-  });
+  ["chapterNav", "chapterSearch", "completionText", "completionBar", "completeButton", "completeLabel",
+    "documentKind", "crumbTitle", "leftKicker", "rightKicker", "leftRange", "rightRange", "statusBadge",
+    "leftFolio", "rightFolio", "positionLabel", "previousButton", "nextButton", "footerPrevious", "footerNext",
+    "previousTitle", "nextTitle", "notebookSpread", "leftPage", "rightPage", "termTooltip", "tooltipTerm",
+    "tooltipVi", "tooltipExplanation", "tooltipExample", "sidebar", "sidebarScrim", "menuButton", "sidebarClose",
+    "imageDialog", "imageClose", "dialogImage", "dialogCaption", "errorToast", "spreadHelp", "themeButton",
+    "themeIcon", "themeLabel", "turnUnderlayLeft", "turnUnderlayRight", "flipLeaf", "flipFront", "flipBack",
+  ].forEach((id) => { elements[id] = byId(id); });
+}
+
+function registerTermEvents(container) {
+  container.addEventListener("pointerover", (event) => { const term = event.target.closest(".glossary-term"); if (term) showTooltip(term); });
+  container.addEventListener("pointerout", (event) => { if (event.target.closest(".glossary-term")) hideTooltip(); });
+  container.addEventListener("focusin", (event) => { const term = event.target.closest(".glossary-term"); if (term) showTooltip(term); });
+  container.addEventListener("focusout", hideTooltip);
 }
 
 function registerEvents() {
   elements.chapterSearch.addEventListener("input", (event) => renderNavigation(event.target.value));
+  elements.themeButton.addEventListener("click", toggleTheme);
   elements.completeButton.addEventListener("click", toggleComplete);
-  elements.previousButton.addEventListener("click", () => adjacentDocument(-1));
-  elements.footerPrevious.addEventListener("click", () => adjacentDocument(-1));
-  elements.nextButton.addEventListener("click", () => adjacentDocument(1));
-  elements.footerNext.addEventListener("click", () => adjacentDocument(1));
+  elements.previousButton.addEventListener("click", () => navigate(-1));
+  elements.footerPrevious.addEventListener("click", () => navigate(-1));
+  elements.nextButton.addEventListener("click", () => navigate(1));
+  elements.footerNext.addEventListener("click", () => navigate(1));
   elements.menuButton.addEventListener("click", openSidebar);
   elements.sidebarClose.addEventListener("click", closeSidebar);
   elements.sidebarScrim.addEventListener("click", closeSidebar);
   elements.imageClose.addEventListener("click", () => elements.imageDialog.close());
-  elements.imageDialog.addEventListener("click", (event) => {
-    if (event.target === elements.imageDialog) elements.imageDialog.close();
-  });
-
-  elements.chapterPage.addEventListener("pointerover", (event) => {
-    const term = event.target.closest(".glossary-term");
-    if (term) showTooltip(term);
-  });
-  elements.chapterPage.addEventListener("pointerout", (event) => {
-    if (event.target.closest(".glossary-term")) hideTooltip();
-  });
-  elements.chapterPage.addEventListener("focusin", (event) => {
-    const term = event.target.closest(".glossary-term");
-    if (term) showTooltip(term);
-  });
-  elements.chapterPage.addEventListener("focusout", hideTooltip);
+  elements.imageDialog.addEventListener("click", (event) => { if (event.target === elements.imageDialog) elements.imageDialog.close(); });
+  registerTermEvents(elements.leftPage);
+  registerTermEvents(elements.rightPage);
   window.addEventListener("scroll", hideTooltip, { passive: true });
-
+  elements.notebookSpread.addEventListener("pointerdown", beginDrag);
+  elements.notebookSpread.addEventListener("pointermove", moveDrag);
+  elements.notebookSpread.addEventListener("pointerup", finishDrag);
+  elements.notebookSpread.addEventListener("pointercancel", finishDrag);
   document.addEventListener("keydown", (event) => {
     const typing = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName);
-    if (event.key === "/" && !typing) {
-      event.preventDefault();
-      elements.chapterSearch.focus();
-      openSidebar();
-    } else if (event.key === "ArrowLeft" && !typing) {
-      adjacentDocument(-1);
-    } else if (event.key === "ArrowRight" && !typing) {
-      adjacentDocument(1);
-    } else if (event.key === "Escape") {
-      closeSidebar();
-      hideTooltip();
-    }
+    if (event.key === "/" && !typing) { event.preventDefault(); elements.chapterSearch.focus(); openSidebar(); }
+    else if (event.key === "ArrowLeft" && !typing) navigate(-1);
+    else if (event.key === "ArrowRight" && !typing) navigate(1);
+    else if (event.key === "Escape") { closeSidebar(); hideTooltip(); }
   });
-
   window.addEventListener("popstate", () => {
     const id = location.hash.slice(1);
-    if (state.documents.some((item) => item.id === id)) {
-      loadDocument(id, { fromHistory: true });
-    }
+    if (state.documents.some((item) => item.id === id)) loadDocument(id, { fromHistory: true });
   });
+  mobileQuery.addEventListener("change", scheduleRelayout);
+  window.addEventListener("resize", scheduleRelayout, { passive: true });
 }
 
 async function initialize() {
   cacheElements();
+  applyTheme(resolveTheme(), false);
   registerEvents();
   try {
-    const [notebook, glossary] = await Promise.all([
-      fetchJson("/api/notebook"),
-      fetchJson("/api/glossary"),
-    ]);
+    const [notebook, glossary] = await Promise.all([fetchJson("/api/notebook"), fetchJson("/api/glossary")]);
     state.documents = notebook.documents;
     state.glossary = glossary.terms || {};
     renderNavigation();
     updateProgress();
-    const hashId = location.hash.slice(1);
-    const initialId = state.documents.some((item) => item.id === hashId)
-      ? hashId
-      : state.documents[0]?.id;
-    if (initialId) await loadDocument(initialId, { initial: true });
-  } catch (error) {
-    showError(`Không thể khởi tạo notebook: ${error.message}`);
-    elements.chapterPage.innerHTML = `<h1>Không thể mở notebook</h1><p>${escapeHtml(error.message)}</p>`;
-  }
+    const requested = location.hash.slice(1);
+    const firstId = state.documents.some((item) => item.id === requested) ? requested : state.documents[0]?.id;
+    if (firstId) await loadDocument(firstId, { initial: true });
+  } catch (error) { showError(`Could not load the notebook: ${error.message}`); }
 }
 
-document.addEventListener("DOMContentLoaded", initialize);
+initialize();

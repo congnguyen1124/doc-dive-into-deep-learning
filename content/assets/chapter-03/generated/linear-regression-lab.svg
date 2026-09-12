@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 610" role="img" aria-labelledby="title desc">
+  <title id="title">Phòng thí nghiệm linear regression</title>
+  <desc id="desc">Một batch X y đi qua linear model tạo y dự đoán, squared loss, backward, optimizer cập nhật w b. Validation nằm ngoài vòng cập nhật để đo generalization.</desc>
+  <defs><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#355f66"/></marker><filter id="s"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity=".13"/></filter></defs>
+  <rect width="1080" height="610" rx="28" fill="#faf7e9"/>
+  <text x="540" y="58" text-anchor="middle" font-family="Georgia,serif" font-size="29" font-weight="700" fill="#173f44">Linear regression là một deep-learning lab thu nhỏ</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle" filter="url(#s)">
+    <g><rect x="60" y="150" width="180" height="112" rx="17" fill="#dcebe4" stroke="#4c7668" stroke-width="3"/><text x="150" y="193" font-size="21" font-weight="700" fill="#285147">MINI-BATCH</text><text x="150" y="227" font-size="17" fill="#47635b">X, y</text></g>
+    <g><rect x="300" y="150" width="180" height="112" rx="17" fill="#dcebef" stroke="#46727a" stroke-width="3"/><text x="390" y="193" font-size="21" font-weight="700" fill="#244d55">MODEL</text><text x="390" y="227" font-size="17" fill="#476269">ŷ = Xw + b</text></g>
+    <g><rect x="540" y="150" width="180" height="112" rx="17" fill="#fff0c8" stroke="#b88922" stroke-width="3"/><text x="630" y="193" font-size="21" font-weight="700" fill="#75510d">LOSS</text><text x="630" y="227" font-size="17" fill="#6b5d38">½(ŷ − y)²</text></g>
+    <g><rect x="780" y="150" width="235" height="112" rx="17" fill="#f5dfd6" stroke="#c45b43" stroke-width="3"/><text x="897" y="193" font-size="21" font-weight="700" fill="#843c2b">BACKWARD</text><text x="897" y="227" font-size="17" fill="#72554d">∇wL, ∇bL</text></g>
+  </g>
+  <g fill="none" stroke="#355f66" stroke-width="4" marker-end="url(#a)"><path d="M240 206h50"/><path d="M480 206h50"/><path d="M720 206h50"/><path d="M897 274C897 412 514 444 408 282"/></g>
+  <rect x="300" y="344" width="300" height="102" rx="51" fill="#173f44"/>
+  <text x="450" y="386" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#fff">OPTIMIZER STEP</text><text x="450" y="418" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#d8e8e7">w, b ← parameters mới</text>
+  <rect x="700" y="344" width="315" height="102" rx="17" fill="#e6e2f2" stroke="#6c6396" stroke-width="3" stroke-dasharray="9 7"/>
+  <text x="857" y="386" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#514a75">VALIDATION</text><text x="857" y="418" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#625d77">đo generalization · không update</text>
+  <path d="M600 395h90" fill="none" stroke="#6c6396" stroke-width="4" stroke-dasharray="8 7" marker-end="url(#a)"/>
+  <text x="540" y="516" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#173f44">Train loss bảo model có học · Validation loss hỏi model có học đúng điều cần không</text>
+  <text x="64" y="568" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#c05138">SƠ ĐỒ BỔ SUNG</text>
+</svg>

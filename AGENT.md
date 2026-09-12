@@ -95,6 +95,13 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 - `app.py` discovers Markdown from YAML metadata; do not hardcode chapter content into the UI.
 - Keep content assets relative to their Markdown file so the server can rewrite them safely.
 - Preserve keyboard navigation, mobile layout, reduced-motion support, completion tracking, image captions, image zoom, and glossary hover/focus behavior when changing the UI.
+- Keep all application chrome in English (navigation, buttons, search, status, errors, and accessibility labels). Chapter Markdown and learning explanations remain in Vietnamese. A deliberately featured Vietnamese study motto is the sole chrome exception.
+- Present authored Markdown as an open, two-page note-paper spread on desktop. Use `<!-- pagebreak -->` between intentional study sections; the client may subdivide a section into additional physical note pages to fit the current viewport. On narrow screens, show one note page at a time without losing content.
+- A physical note page must never have its own vertical scrollbar. Measure and paginate rendered blocks into following pages; do not clip or hide authored material. Horizontal scrolling is allowed only where it is necessary for code or equations.
+- Support page turning by pointer drag/swipe as well as buttons and the Left/Right arrow keys. During a turn, stage the bottom page and both faces of the moving leaf so the learner can see the upcoming content before releasing the pointer. Honor `prefers-reduced-motion`, and never make dragging the only navigation method.
+- Keep body copy visually aligned through typography rather than ruled lines: note paper has no horizontal rules, while text uses a compact, consistent baseline, restrained heading sizes, modest paragraph spacing, predictable vertical rhythm, and tables/code blocks that do not push text outside the sheet.
+- Provide an English-labeled Light/Dark theme control. Use softly off-white paper in Light mode and a dark paper with clearly contrasting text in Dark mode; persist the learner's explicit choice and otherwise respect the operating-system preference.
+- Feature the rhyming motto “Học chậm cho thấm, hiểu sâu nhớ lâu.” prominently in the sidebar rather than as small footer copy.
 - The reader must still start with `python app.py` after dependencies are installed.
 
 ## Chapter authoring workflow

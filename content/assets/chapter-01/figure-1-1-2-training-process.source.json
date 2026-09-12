@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 44,
+  "book_page": 4,
+  "figure_id": "Figure 1.1.2",
+  "caption": "A typical training process",
+  "dpi": 180,
+  "crop_percent": {
+    "x": 12.0,
+    "y": 19.0,
+    "width": 70.0,
+    "height": 15.0
+  },
+  "rendered_page_pixels": [
+    1489,
+    2105
+  ],
+  "output_pixels": [
+    1042,
+    316
+  ],
+  "created_at": "2026-09-12T16:55:44.691726+00:00"
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">Vòng học của một mô hình machine learning</title>
+  <desc id="desc">Dữ liệu đi vào mô hình để tạo dự đoán. Loss so sánh dự đoán với nhãn, optimizer dùng gradient để cập nhật parameters rồi lặp lại.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#365e63"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#15373a" flood-opacity=".14"/></filter>
+  </defs>
+  <rect width="1080" height="520" rx="26" fill="#fbf7e9"/>
+  <text x="540" y="54" text-anchor="middle" font-family="Georgia,serif" font-size="28" font-weight="700" fill="#163b40">Một vòng học, lặp lại nhiều lần</text>
+  <g filter="url(#shadow)" font-family="Arial,sans-serif" text-anchor="middle">
+    <g><rect x="65" y="165" width="190" height="116" rx="18" fill="#dcebe4" stroke="#4d7769" stroke-width="3"/><text x="160" y="210" font-size="22" font-weight="700" fill="#244f46">DATA</text><text x="160" y="244" font-size="17" fill="#47635e">examples + labels</text></g>
+    <g><rect x="325" y="165" width="190" height="116" rx="18" fill="#e1edf0" stroke="#416f78" stroke-width="3"/><text x="420" y="210" font-size="22" font-weight="700" fill="#244c54">MODEL</text><text x="420" y="244" font-size="17" fill="#476168">parameters θ</text></g>
+    <g><rect x="585" y="165" width="190" height="116" rx="18" fill="#fff1cf" stroke="#bd8f2d" stroke-width="3"/><text x="680" y="210" font-size="22" font-weight="700" fill="#77520c">PREDICTION</text><text x="680" y="244" font-size="17" fill="#705f36">ŷ</text></g>
+    <g><rect x="845" y="165" width="170" height="116" rx="18" fill="#f7ded6" stroke="#c65b42" stroke-width="3"/><text x="930" y="210" font-size="22" font-weight="700" fill="#8e3e2b">LOSS</text><text x="930" y="244" font-size="17" fill="#795147">so với nhãn y</text></g>
+  </g>
+  <g fill="none" stroke="#365e63" stroke-width="4" marker-end="url(#arrow)"><path d="M255 223H315"/><path d="M515 223H575"/><path d="M775 223H835"/><path d="M930 292C930 420 530 448 438 305"/></g>
+  <rect x="375" y="348" width="330" height="94" rx="47" fill="#173f44"/>
+  <text x="540" y="386" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#fff">OPTIMIZER</text>
+  <text x="540" y="416" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#d7e8e8">θ ← θ − learning rate × gradient</text>
+  <text x="70" y="482" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#c05138">SƠ ĐỒ BỔ SUNG</text>
+</svg>

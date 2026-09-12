@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 108,
+  "book_page": 68,
+  "figure_id": "Section 2.6.1 plot",
+  "caption": "Estimated coin probabilities converge with more samples",
+  "dpi": 180,
+  "crop_percent": {
+    "x": 28.0,
+    "y": 37.0,
+    "width": 48.0,
+    "height": 34.0
+  },
+  "rendered_page_pixels": [
+    1489,
+    2105
+  ],
+  "output_pixels": [
+    715,
+    716
+  ],
+  "created_at": "2026-09-12T16:55:46.617011+00:00"
+}

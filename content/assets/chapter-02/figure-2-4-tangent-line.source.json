@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 97,
+  "book_page": 57,
+  "figure_id": "Section 2.4.2 plot",
+  "caption": "A function and its tangent line at x = 1",
+  "dpi": 180,
+  "crop_percent": {
+    "x": 31.0,
+    "y": 60.0,
+    "width": 40.0,
+    "height": 22.0
+  },
+  "rendered_page_pixels": [
+    1489,
+    2105
+  ],
+  "output_pixels": [
+    595,
+    463
+  ],
+  "created_at": "2026-09-12T16:55:46.229245+00:00"
+}
