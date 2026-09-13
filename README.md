@@ -19,8 +19,12 @@ Reader có:
 - giao diện ứng dụng bằng tiếng Anh, còn bài học trong Markdown bằng tiếng Việt;
 - hai trang giấy note đặt cạnh nhau trên desktop và một trang trên mobile; nội dung tự dàn sang tờ kế tiếp, không cuộn dọc bên trong giấy;
 - hiệu ứng lật có mặt trước, mặt sau và trang nằm dưới để nhìn thấy bài tiếp theo ngay khi kéo; vẫn dùng được nút hoặc phím `←`/`→`;
-- nút Light/Dark theme, tự nhớ lựa chọn trên trình duyệt;
-- giao diện cổ thư Trung Hoa với giấy tuyên, mực tàu, son triện và gáy chỉ khâu;
+- **Style library**: sáu giao diện cổ trang Trung Hoa chọn được ngay trên thanh trên cùng — Secret Manual (武 bí kíp gỗ mun),
+  Xuan Ink Wash (宣 giấy tuyên thuỷ mặc), Bamboo Slips (簡 thẻ tre), Blue and White (青 gốm thanh hoa),
+  Dunhuang Fresco (煌 bích hoạ Đôn Hoàng) và Imperial Edict (敕 thánh chỉ); lựa chọn được ghi nhớ trên trình duyệt;
+- mỗi giao diện có nhịp lật trang riêng (dựng giấy, cuộn thẻ tre, men gốm, lụa, gấm) với bóng nếp gấp,
+  vệt sáng quét ngang mặt giấy và bóng đổ xuống tờ bên dưới;
+- nút Light/Dark theme dùng chung cho mọi giao diện, tự nhớ lựa chọn trên trình duyệt;
 - đánh dấu trang đang đọc và quay lại dấu gần nhất, kể cả sau khi mở lại trình duyệt;
 - syntax highlighting Python chạy offline bằng Pygments, kèm quy ước tên/shape/comment dễ học;
 - ghi nhớ chương đã học ngay trên trình duyệt;

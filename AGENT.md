@@ -103,6 +103,15 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 - Keep body copy visually aligned through typography rather than ruled lines: note paper has no horizontal rules, while text uses a compact, consistent baseline, restrained heading sizes, modest paragraph spacing, predictable vertical rhythm, and tables/code blocks that do not push text outside the sheet.
 - Provide an English-labeled Light/Dark theme control. Use softly off-white paper in Light mode and a dark paper with clearly contrasting text in Dark mode; persist the learner's explicit choice and otherwise respect the operating-system preference.
 - Provide persistent page marks. A learner can mark the current physical page, see that it is marked, and jump back to the latest mark. Store a stable text anchor as well as the page index so reflow across viewport sizes does not silently lose the reading position.
+- Ship the reader as a **style library**: several complete ancient-Chinese skins selectable from an English-labeled
+  picker in the top bar, persisted per learner. A skin is declared once in `SKINS` in `static/app.js` and defined
+  purely as custom properties under `:root[data-skin="<id>"]` and `:root[data-skin="<id>"][data-theme="dark"]`
+  in `static/styles.css`. Every skin must define the complete token contract in BOTH modes — never hardcode a
+  surface colour in a rule, add a token instead — and `layoutSignature()` must keep the skin in its cache key so
+  pages are re-measured when type metrics change.
+- A skin may retune the page turn through `data-turn` (duration, easing, lift, bend, sheen width, cast reach), but
+  every variant keeps the same staged DOM and must read as real paper: the hinge side darkens, a specular band
+  sweeps the leaf, and the lifted leaf casts a shadow on the sheet it uncovers. Never make a turn instant or flat.
 - Use an ancient Chinese manuscript visual language throughout the reader: xuan-paper/parchment tones, ink-dark text, cinnabar seals, restrained gold and jade accents, stitched-binding details, squared archival controls, and subtle wood or ink-wash surroundings. Dark mode should feel like a night-ink manuscript rather than a generic blue-black application.
 - Keep this theme atmospheric but readable. Chinese characters may appear as decorative seals or archival marks, while operational UI labels remain in English and Vietnamese learning content remains untouched. Do not sacrifice contrast, keyboard access, responsive layout, page density, or the no-scroll physical-page rule for ornament.
 - Feature the rhyming motto “Học chậm cho thấm, hiểu sâu nhớ lâu.” prominently in the sidebar rather than as small footer copy.

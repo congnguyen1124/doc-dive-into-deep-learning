@@ -108,6 +108,163 @@ function documentLabel(item) { return item.type === "chapter" ? "Scroll" : "Appe
 function documentNumber(item) { return item.type === "chapter" ? String(item.number).padStart(2, "0") : item.number; }
 function blankPageHtml() { return '<div class="blank-note" aria-label="Blank manuscript leaf"><span>End of this scroll</span><i></i><b aria-hidden="true">終</b></div>'; }
 
+/* The style library. Each entry is a self-contained visual world: its tokens live in
+   styles.css under :root[data-skin="<id>"], and `turn` selects the page-turn character. */
+const SKINS = [
+  {
+    id: "manuscript", name: "Secret Manual", seal: "武", turn: "leaf",
+    tagline: "Dark wood, cinnabar seals, gold rules.",
+    swatch: { paper: "#f3e6bd", ink: "#2d2117", accent: "#a53a2d", gold: "#ae8745", sealBg: "#8f2d24", sealInk: "#f3ddb0" },
+  },
+  {
+    id: "xuan", name: "Xuan Ink Wash", seal: "宣", turn: "soft",
+    tagline: "Raw rice paper, one seal, nothing else.",
+    swatch: { paper: "#f6f3ec", ink: "#1d1c1a", accent: "#9c3226", gold: "#b0a68e", sealBg: "#9c3226", sealInk: "#f6f3ec" },
+  },
+  {
+    id: "bamboo", name: "Bamboo Slips", seal: "簡", turn: "roll",
+    tagline: "Corded slats of sun-dried bamboo.",
+    swatch: { paper: "#e8d9ab", ink: "#241d12", accent: "#8a3b22", gold: "#5e7a4e", sealBg: "#8a3b22", sealInk: "#e8d9ab" },
+  },
+  {
+    id: "porcelain", name: "Blue and White", seal: "青", turn: "glaze",
+    tagline: "Cobalt under a cool crackled glaze.",
+    swatch: { paper: "#f2f4f3", ink: "#16202e", accent: "#1f4e8c", gold: "#8fa3b8", sealBg: "#9c3226", sealInk: "#f2f4f3" },
+  },
+  {
+    id: "dunhuang", name: "Dunhuang Fresco", seal: "煌", turn: "silk",
+    tagline: "Mineral pigment on a cave wall.",
+    swatch: { paper: "#eddcc0", ink: "#2a1d13", accent: "#a8421f", gold: "#c08a3e", sealBg: "#a8421f", sealInk: "#eddcc0" },
+  },
+  {
+    id: "vermilion", name: "Imperial Edict", seal: "敕", turn: "edict",
+    tagline: "Gold silk panel on vermilion brocade.",
+    swatch: { paper: "#f6e7c1", ink: "#2b1a10", accent: "#9e2318", gold: "#c9a04a", sealBg: "#9e2318", sealInk: "#f6e7c1" },
+  },
+];
+
+const DEFAULT_SKIN = SKINS[0].id;
+
+function skinById(id) { return SKINS.find((skin) => skin.id === id) || SKINS[0]; }
+
+function resolveSkin() {
+  const saved = localStorage.getItem("d2l-skin");
+  return SKINS.some((skin) => skin.id === saved) ? saved : DEFAULT_SKIN;
+}
+
+function activeSkin() { return skinById(document.documentElement.dataset.skin || DEFAULT_SKIN); }
+
+function paintSwatch(node, skin) {
+  node.style.setProperty("--sw-paper", skin.swatch.paper);
+  node.style.setProperty("--sw-ink", skin.swatch.ink);
+  node.style.setProperty("--sw-accent", skin.swatch.accent);
+  node.style.setProperty("--sw-gold", skin.swatch.gold);
+  node.style.setProperty("--sw-seal-bg", skin.swatch.sealBg);
+  node.style.setProperty("--sw-seal-ink", skin.swatch.sealInk);
+}
+
+function renderSkinMenu() {
+  const currentId = activeSkin().id;
+  elements.skinMenu.innerHTML = '<p class="skin-menu-title">Style library</p>';
+  const list = document.createElement("div");
+  list.className = "skin-list";
+  list.setAttribute("role", "listbox");
+  list.setAttribute("aria-label", "Reader styles");
+  elements.skinMenu.append(list);
+  SKINS.forEach((skin) => {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.className = "skin-option";
+    option.dataset.id = skin.id;
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", String(skin.id === currentId));
+    option.innerHTML = `
+      <span class="skin-option-swatch" aria-hidden="true"><span>${escapeHtml(skin.seal)}</span></span>
+      <span class="skin-option-copy"><strong>${escapeHtml(skin.name)}</strong><small>${escapeHtml(skin.tagline)}</small></span>
+      <span class="skin-option-check" aria-hidden="true">✦</span>`;
+    paintSwatch(option, skin);
+    option.addEventListener("click", () => { selectSkin(skin.id); });
+    list.append(option);
+  });
+  const foot = document.createElement("p");
+  foot.className = "skin-menu-foot";
+  foot.textContent = "Every style carries its own light and night paper — the Night ink control still applies.";
+  elements.skinMenu.append(foot);
+}
+
+function applySkin(id, persist = true) {
+  const skin = skinById(id);
+  document.documentElement.dataset.skin = skin.id;
+  elements.notebookSpread.dataset.turn = skin.turn;
+  elements.skinLabel.textContent = skin.name;
+  elements.skinButton.setAttribute("aria-label", `Reader style: ${skin.name}. Choose another style.`);
+  elements.skinButton.title = `Reader style: ${skin.name}`;
+  paintSwatch(elements.skinSwatch, skin);
+  renderSkinMenu();
+  if (persist) localStorage.setItem("d2l-skin", skin.id);
+}
+
+function selectSkin(id) {
+  const changed = activeSkin().id !== id;
+  applySkin(id);
+  closeSkinMenu();
+  if (!changed) return;
+  /* Type metrics differ per skin, so the paginated leaves have to be measured again.
+     Drop the leaves measured for the skin we just left instead of keeping every skin's copy. */
+  for (const key of [...state.layoutCache.keys()]) {
+    if (!key.includes(`:${skinById(id).id}:`)) state.layoutCache.delete(key);
+  }
+  scheduleRelayout();
+}
+
+function skinOptions() { return [...elements.skinMenu.querySelectorAll(".skin-option")]; }
+
+function openSkinMenu() {
+  elements.skinMenu.hidden = false;
+  elements.skinPicker.classList.add("open");
+  elements.skinButton.setAttribute("aria-expanded", "true");
+  const options = skinOptions();
+  (options.find((option) => option.getAttribute("aria-selected") === "true") || options[0])?.focus();
+}
+
+function closeSkinMenu({ restoreFocus = false } = {}) {
+  if (elements.skinMenu.hidden) return;
+  elements.skinMenu.hidden = true;
+  elements.skinPicker.classList.remove("open");
+  elements.skinButton.setAttribute("aria-expanded", "false");
+  if (restoreFocus) elements.skinButton.focus();
+}
+
+function moveSkinFocus(offset) {
+  const options = skinOptions();
+  if (!options.length) return;
+  const current = options.indexOf(document.activeElement);
+  const next = offset === "first" ? 0
+    : offset === "last" ? options.length - 1
+    : (current + offset + options.length) % options.length;
+  options[next].focus();
+}
+
+function registerSkinEvents() {
+  elements.skinButton.addEventListener("click", () => {
+    if (elements.skinMenu.hidden) openSkinMenu(); else closeSkinMenu({ restoreFocus: true });
+  });
+  elements.skinButton.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); openSkinMenu(); }
+  });
+  elements.skinMenu.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") { event.preventDefault(); moveSkinFocus(1); }
+    else if (event.key === "ArrowUp") { event.preventDefault(); moveSkinFocus(-1); }
+    else if (event.key === "Home") { event.preventDefault(); moveSkinFocus("first"); }
+    else if (event.key === "End") { event.preventDefault(); moveSkinFocus("last"); }
+    else if (event.key === "Escape") { event.preventDefault(); closeSkinMenu({ restoreFocus: true }); }
+    else if (event.key === "Tab") closeSkinMenu();
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (!elements.skinPicker.contains(event.target)) closeSkinMenu();
+  });
+}
+
 function resolveTheme() {
   const saved = localStorage.getItem("d2l-theme");
   if (saved === "light" || saved === "dark") return saved;
@@ -448,7 +605,7 @@ function addNodeToPages(node, probe, pages) {
 
 function layoutSignature() {
   const box = elements.leftPage.getBoundingClientRect();
-  return `${mobileQuery.matches ? "single" : "spread"}:${Math.round(box.width)}x${Math.round(box.height)}`;
+  return `${activeSkin().id}:${mobileQuery.matches ? "single" : "spread"}:${Math.round(box.width)}x${Math.round(box.height)}`;
 }
 
 async function paginateAuthoredPages(sourcePages) {
@@ -577,8 +734,14 @@ function makeOverlayInert(container) {
   decorateImages(container, false);
 }
 
+function turnTiming(name, fallback) {
+  const raw = getComputedStyle(elements.notebookSpread).getPropertyValue(name).trim();
+  const milliseconds = raw.endsWith("ms") ? parseFloat(raw) : raw.endsWith("s") ? parseFloat(raw) * 1000 : NaN;
+  return Number.isFinite(milliseconds) ? milliseconds : fallback;
+}
+
 function resetFlip() {
-  elements.notebookSpread.classList.remove("is-dragging", "is-settling");
+  elements.notebookSpread.classList.remove("is-dragging", "is-settling", "is-cancelling");
   elements.notebookSpread.style.setProperty("--flip-progress", "0");
   elements.flipLeaf.className = "flip-leaf";
   elements.turnUnderlayLeft.classList.remove("active");
@@ -615,7 +778,7 @@ async function settlePreparedFlip(direction, targetState, progress = 0, updateHi
   elements.notebookSpread.classList.add("is-settling");
   await nextFrame();
   elements.notebookSpread.style.setProperty("--flip-progress", "1");
-  await sleep(reducedMotionQuery.matches ? 1 : Math.max(90, Math.round(560 * (1 - progress))));
+  await sleep(reducedMotionQuery.matches ? 1 : Math.max(90, Math.round(turnTiming("--turn-duration", 620) * (1 - progress))));
   const changedDocument = targetState.documentIndex !== state.currentIndex;
   await commitTarget(targetState);
   resetFlip();
@@ -627,10 +790,10 @@ async function settlePreparedFlip(direction, targetState, progress = 0, updateHi
 
 async function cancelPreparedFlip(progress) {
   elements.notebookSpread.classList.remove("is-dragging");
-  elements.notebookSpread.classList.add("is-settling");
+  elements.notebookSpread.classList.add("is-settling", "is-cancelling");
   await nextFrame();
   elements.notebookSpread.style.setProperty("--flip-progress", "0");
-  await sleep(reducedMotionQuery.matches ? 1 : Math.max(100, Math.round(260 * progress)));
+  await sleep(reducedMotionQuery.matches ? 1 : Math.max(100, Math.round(turnTiming("--turn-cancel", 300) * progress)));
   resetFlip();
 }
 
@@ -806,6 +969,7 @@ function cacheElements() {
     "imageDialog", "imageClose", "dialogImage", "dialogCaption", "errorToast", "spreadHelp", "themeButton",
     "themeIcon", "themeLabel", "bookmarkButton", "bookmarkIcon", "bookmarkLabel", "resumeButton", "resumeLabel",
     "turnUnderlayLeft", "turnUnderlayRight", "flipLeaf", "flipFront", "flipBack",
+    "skinPicker", "skinButton", "skinMenu", "skinLabel", "skinSwatch",
   ].forEach((id) => { elements[id] = byId(id); });
 }
 
@@ -819,6 +983,7 @@ function registerTermEvents(container) {
 function registerEvents() {
   elements.chapterSearch.addEventListener("input", (event) => renderNavigation(event.target.value));
   elements.themeButton.addEventListener("click", toggleTheme);
+  registerSkinEvents();
   elements.bookmarkButton.addEventListener("click", toggleBookmark);
   elements.resumeButton.addEventListener("click", goToLatestBookmark);
   elements.completeButton.addEventListener("click", toggleComplete);
@@ -843,7 +1008,7 @@ function registerEvents() {
     if (event.key === "/" && !typing) { event.preventDefault(); elements.chapterSearch.focus(); openSidebar(); }
     else if (event.key === "ArrowLeft" && !typing) navigate(-1);
     else if (event.key === "ArrowRight" && !typing) navigate(1);
-    else if (event.key === "Escape") { closeSidebar(); hideTooltip(); }
+    else if (event.key === "Escape") { closeSidebar(); hideTooltip(); closeSkinMenu(); }
   });
   window.addEventListener("popstate", () => {
     const id = location.hash.slice(1);
@@ -855,6 +1020,7 @@ function registerEvents() {
 
 async function initialize() {
   cacheElements();
+  applySkin(resolveSkin(), false);
   applyTheme(resolveTheme(), false);
   registerEvents();
   try {

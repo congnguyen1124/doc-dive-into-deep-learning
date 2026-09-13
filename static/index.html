@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An ancient Chinese manuscript-inspired reader for Vietnamese Dive into Deep Learning notes.">
     <title>D2L Secret Manual</title>
-    <link rel="stylesheet" href="/static/styles.css?v=ancient-manuscript-1">
+    <link rel="stylesheet" href="/static/styles.css?v=skin-library-1">
     <script>
       window.MathJax = {
         tex: {
@@ -18,7 +18,7 @@
       };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    <script defer src="/static/app.js?v=ancient-manuscript-1"></script>
+    <script defer src="/static/app.js?v=skin-library-1"></script>
   </head>
   <body class="ancient-manuscript">
     <div class="app-shell">
@@ -72,6 +72,17 @@
           <div class="top-actions">
             <span class="drag-hint"><span aria-hidden="true">↔</span> Draw the paper edge to turn</span>
             <span class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd></span>
+            <div class="skin-picker" id="skinPicker">
+              <button class="skin-button" id="skinButton" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="skinMenu" aria-label="Choose reader style" title="Choose reader style">
+                <span class="skin-swatch" id="skinSwatch" aria-hidden="true"></span>
+                <span class="skin-button-copy">
+                  <small>Style</small>
+                  <strong id="skinLabel">Secret Manual</strong>
+                </span>
+                <span class="skin-caret" aria-hidden="true">▾</span>
+              </button>
+              <div class="skin-menu" id="skinMenu" hidden></div>
+            </div>
             <button class="theme-button" id="themeButton" type="button" aria-label="Switch to night ink theme" title="Switch to night ink theme">
               <span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span>
               <span id="themeLabel">Night ink</span>
@@ -121,8 +132,11 @@
               <div class="flip-leaf" id="flipLeaf" aria-hidden="true">
                 <article class="flip-face flip-front" id="flipFront"></article>
                 <article class="flip-face flip-back" id="flipBack"></article>
+                <span class="flip-shade flip-shade-front" aria-hidden="true"></span>
+                <span class="flip-shade flip-shade-back" aria-hidden="true"></span>
                 <span class="flip-edge" aria-hidden="true"></span>
               </div>
+              <span class="turn-cast" aria-hidden="true"></span>
             </div>
             <p class="spread-help" id="spreadHelp">Draw the right paper leaf left for the next spread, or the left leaf right to return.</p>
           </div>
