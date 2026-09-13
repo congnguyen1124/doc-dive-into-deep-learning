@@ -1,72 +1,173 @@
-# Dive into Deep Learning — vở học tiếng Việt
+<div align="center">
 
-Đây là dự án biến `didl.pdf` thành một quyển vở học Machine Learning/Deep Learning dễ đọc cho người mới. **Chương 1–3, 14, 15 và 21 đã được biên soạn bằng tiếng Việt**; các chương/phụ lục còn lại vẫn là khung chờ cho các lần học tiếp theo.
+<h1>Dive into Deep Learning — Vietnamese Study Notebook</h1>
+<p><strong>Một quyển vở học Machine Learning và Deep Learning dành cho người mới, được biên soạn từ <em>Dive into Deep Learning</em>.</strong></p>
+<p><code>Vietnamese-first</code> · <code>Markdown chapters</code> · <code>Python reader</code> · <code>Light / Dark</code> · <code>Page-turn interaction</code></p>
+<p><strong>Học chậm cho thấm, hiểu sâu nhớ lâu.</strong></p>
 
-## Chạy notebook reader
+</div>
 
-Yêu cầu: Python 3.10 trở lên.
+![Trang mở đầu Chương 1 trên giao diện Secret Manual](docs/screenshots/chapter-01-opening.jpg)
+
+## Dự án này là gì?
+
+Tài liệu gốc `../didl.pdf` rất đầy đủ nhưng có thể khó tiếp cận khi bạn mới bắt đầu. Dự án này biến từng chương thành một file Markdown tiếng Việt có cấu trúc như vở học:
+
+- giải thích trực giác trước khi đi vào công thức;
+- giữ nguyên tên chương và mục bằng tiếng Anh để đối chiếu PDF;
+- chỉ rõ tensor shapes, biến số và lỗi thường gặp;
+- hệ thống bài tập theo hướng **gợi ý → lời giải → sanity check**;
+- giữ những thuật ngữ tiếng Anh cần thiết và giải nghĩa khi rê chuột;
+- trích hình trực tiếp từ PDF, kèm trang nguồn và hồ sơ provenance.
+
+Đây không phải bản dịch từng câu máy móc. Mục tiêu là giúp người học trả lời được: **khái niệm này là gì, vì sao cần nó, nó hoạt động ra sao và dùng nó khi nào?**
+
+## Giao diện đọc
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/chapter-01-learning-loop.jpg" alt="Chương 1 với ví dụ huấn luyện và hình trích từ PDF">
+      <p align="center"><sub>Hai trang giấy, nội dung tiếng Việt và hình có nguồn.</sub></p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/chapter-01-dark-glossary.jpg" alt="Dark mode cùng tooltip giải nghĩa Parameter">
+      <p align="center"><sub>Night Ink và glossary tooltip ngay trong trang đọc.</sub></p>
+    </td>
+  </tr>
+</table>
+
+Reader mang phong cách bí kíp cổ trang Trung Hoa nhưng phần điều khiển vẫn dùng tiếng Anh rõ ràng:
+
+| Trải nghiệm | Có gì bên trong |
+|---|---|
+| Đọc như sách | Hai trang trên desktop, một trang trên mobile, không cuộn dọc bên trong giấy |
+| Lật trang | Kéo mép giấy, vuốt, dùng nút hoặc phím `←` / `→`; thấy trước nội dung trang sau |
+| Cá nhân hóa | 6 reader styles, Light/Dark theme, ghi nhớ style và theme đã chọn |
+| Học tiếp | Đánh dấu trang đang đọc, trở lại ribbon gần nhất và đánh dấu chương đã học |
+| Nội dung kỹ thuật | MathJax, syntax highlighting Python, algorithm blocks và hình có thể phóng to |
+| Thuật ngữ | Tooltip tiếng Việt hoạt động bằng hover, click hoặc keyboard focus |
+
+## Tiến độ nội dung
+
+| Trạng thái | Chương |
+|---|---|
+| **Đã biên soạn và kiểm tra** | 1–3, 7–11, 14, 15 và 21 |
+| **Đang chờ biên soạn** | 4–6, 12–13 và 16–20 |
+| **Phụ lục đang chờ** | A — Mathematics for Deep Learning; B — Tools for Deep Learning |
+
+Mục lục, filename, số chương và phạm vi trang luôn bám theo đúng edition của PDF trong workspace.
+
+## Chạy nhanh
+
+Yêu cầu: Python 3.10 trở lên. Môi trường ảo được đặt **cùng cấp** với thư mục dự án:
+
+```text
+deep-learning/
+├── .venv/
+├── didl.pdf
+└── doc-dive-into-deep-learning/
+```
+
+Từ thư mục `deep-learning/`:
 
 ```bash
-python -m pip install -r requirements.txt
+python3 -m venv .venv
+./.venv/bin/python -m pip install -r doc-dive-into-deep-learning/requirements.txt
+cd doc-dive-into-deep-learning
+../.venv/bin/python app.py
+```
+
+Mở [http://127.0.0.1:8000](http://127.0.0.1:8000). Đổi cổng khi cần:
+
+```bash
+../.venv/bin/python app.py --port 8080
+```
+
+<details>
+<summary><strong>Kích hoạt môi trường ảo theo cách truyền thống</strong></summary>
+
+Linux/macOS:
+
+```bash
+source ../.venv/bin/activate
 python app.py
 ```
 
-Mở [http://127.0.0.1:8000](http://127.0.0.1:8000). Có thể đổi cổng bằng `python app.py --port 8080`.
+Windows PowerShell:
 
-Reader có:
+```powershell
+..\.venv\Scripts\Activate.ps1
+python app.py
+```
 
-- mục lục theo đúng thứ tự chương trong PDF;
-- giao diện ứng dụng bằng tiếng Anh, còn bài học trong Markdown bằng tiếng Việt;
-- hai trang giấy note đặt cạnh nhau trên desktop và một trang trên mobile; nội dung tự dàn sang tờ kế tiếp, không cuộn dọc bên trong giấy;
-- hiệu ứng lật có mặt trước, mặt sau và trang nằm dưới để nhìn thấy bài tiếp theo ngay khi kéo; vẫn dùng được nút hoặc phím `←`/`→`;
-- **Style library**: sáu giao diện cổ trang Trung Hoa chọn được ngay trên thanh trên cùng — Secret Manual (武 bí kíp gỗ mun),
-  Xuan Ink Wash (宣 giấy tuyên thuỷ mặc), Bamboo Slips (簡 thẻ tre), Blue and White (青 gốm thanh hoa),
-  Dunhuang Fresco (煌 bích hoạ Đôn Hoàng) và Imperial Edict (敕 thánh chỉ); lựa chọn được ghi nhớ trên trình duyệt;
-- mỗi giao diện có nhịp lật trang riêng (dựng giấy, cuộn thẻ tre, men gốm, lụa, gấm) với bóng nếp gấp,
-  vệt sáng quét ngang mặt giấy và bóng đổ xuống tờ bên dưới;
-- nút Light/Dark theme dùng chung cho mọi giao diện, tự nhớ lựa chọn trên trình duyệt;
-- đánh dấu trang đang đọc và quay lại dấu gần nhất, kể cả sau khi mở lại trình duyệt;
-- syntax highlighting Python chạy offline bằng Pygments, kèm quy ước tên/shape/comment dễ học;
-- ghi nhớ chương đã học ngay trên trình duyệt;
-- tooltip cho thuật ngữ tiếng Anh khi rê chuột hoặc dùng bàn phím focus;
-- chú thích nguồn cho ảnh, phóng to ảnh và giao diện mobile;
-- hỗ trợ công thức TeX qua MathJax (cần Internet để tải MathJax ở lần mở trang).
+</details>
 
-Các đoạn thực hành trong Chương 2–3 dùng PyTorch. Reader không cần PyTorch để mở; để chạy code học tập, cài bản PyTorch phù hợp với hệ điều hành/CUDA của bạn theo hướng dẫn chính thức của PyTorch.
+## Cấu trúc dự án
+
+```text
+doc-dive-into-deep-learning/
+├── app.py                    # HTTP server và Markdown renderer
+├── content/
+│   ├── book_index.yaml       # Mục lục chuẩn theo PDF
+│   ├── glossary.json         # Dữ liệu tooltip thuật ngữ
+│   ├── chapters/             # Mỗi chương là một file Markdown
+│   ├── appendices/           # Phụ lục
+│   └── assets/               # Hình sách và provenance sidecars
+├── docs/screenshots/         # Ảnh giao diện dùng trong README
+├── static/                   # HTML, CSS và JavaScript của reader
+├── tests/                    # Kiểm tra nội dung và giao diện
+└── tools/                    # Công cụ trích hình từ PDF
+```
 
 ## Kiểm tra dự án
 
 ```bash
-python app.py --check
-python -m unittest discover -s tests -v
+../.venv/bin/python app.py --check
+../.venv/bin/python -m unittest discover -s tests -v
+node --check static/app.js
 ```
 
-Lệnh `--check` kiểm tra metadata, tên file, phạm vi trang, thứ tự chương và các khóa glossary được dùng trong Markdown.
+`app.py --check` kiểm tra metadata, filename, phạm vi trang, thứ tự chương, ảnh nguồn và toàn bộ khóa glossary được dùng trong Markdown.
 
-## Quy ước nội dung
+## Quy ước biên soạn
 
-- Mỗi chương nằm trong `content/chapters/NN - Exact Chapter Title.md`.
-- Nội dung sẽ được viết bằng tiếng Việt, nhưng tên chương/file giữ nguyên tiếng Anh đúng như PDF.
-- Thuật ngữ đặc biệt dùng cú pháp `{{term:tensor|Tensor}}`; phần giải thích nằm trong `content/glossary.json`.
-- Dùng `<!-- pagebreak -->` để chia một file Markdown thành các cụm trang có chủ đích; reader tiếp tục tự phân trang nếu nội dung dài hơn một tờ giấy.
-- Ảnh gốc từ sách nằm trong `content/assets/chapter-NN/` và luôn có thông tin trang nguồn.
-- Sơ đồ do dự án tạo thêm nằm trong thư mục con `generated/` và phải ghi rõ là sơ đồ bổ sung.
+- Một chương nằm tại `content/chapters/NN - Exact Chapter Title.md`.
+- Tên file và tiêu đề mục giữ nguyên tiếng Anh như PDF; phần giảng giải dùng tiếng Việt.
+- Thuật ngữ tương tác viết dưới dạng `{{term:tensor|Tensor}}` và được định nghĩa trong `content/glossary.json`.
+- `<!-- pagebreak -->` chia các cụm bài học; reader tiếp tục tự dàn nội dung dài sang tờ tiếp theo.
+- Hình sách nằm trong `content/assets/chapter-NN/` và có file `.source.json` đi kèm.
+- Sơ đồ bổ sung nằm trong thư mục `generated/` và phải được ghi rõ là hình do vở học tạo.
+- Chỉ đặt `status: reviewed` sau khi đối chiếu PDF, chạy kiểm tra và QA giao diện desktop/mobile.
 
-Xem [AGENT.md](AGENT.md) để biết đầy đủ tiêu chuẩn dịch, giảng giải, bài tập, hình ảnh và kiểm tra chất lượng cho các lần biên soạn tiếp theo.
+Xem [AGENT.md](AGENT.md) để biết đầy đủ tiêu chuẩn dịch, giải thích, code, bài tập, hình ảnh và kiểm tra chất lượng.
 
-## Trích hình chính xác từ PDF
+<details>
+<summary><strong>Trích một hình chính xác từ PDF</strong></summary>
 
-Ví dụ render và crop một vùng theo phần trăm của **trang PDF vật lý**:
+Vùng crop dùng phần trăm của **trang PDF vật lý**:
 
 ```bash
-python tools/extract_pdf_figure.py \
+../.venv/bin/python tools/extract_pdf_figure.py \
   --pdf ../didl.pdf \
-  --pdf-page 275 \
-  --book-page 235 \
-  --crop 8,18,84,48 \
-  --figure-id "Figure 7.1" \
-  --caption "Correlation and convolution" \
-  --output content/assets/chapter-07/figure-7-1.png
+  --pdf-page 281 \
+  --book-page 241 \
+  --crop 34,8,34,6.8 \
+  --figure-id "Figure 7.2.1" \
+  --caption "Two-dimensional cross-correlation operation" \
+  --output content/assets/chapter-07/figure-7-2-1-cross-correlation.png
 ```
 
-Script tạo ảnh PNG và file `.source.json` bên cạnh để lưu PDF nguồn, checksum, trang, DPI và vùng crop. Cần kiểm tra trực quan ảnh sau khi trích.
+Công cụ tạo PNG và `.source.json` chứa checksum PDF, số trang, DPI và vùng crop để hình luôn truy xuất được nguồn.
+
+</details>
+
+## Ghi chú về code học tập
+
+Reader không cần PyTorch để mở. Các ví dụ thực hành có thể cần PyTorch; hãy cài phiên bản phù hợp với hệ điều hành và CUDA của bạn trước khi chạy chúng. MathJax hiện được tải từ CDN nên lần hiển thị công thức đầu tiên cần kết nối Internet.
+
+<div align="center">
+
+<p><strong>Mỗi trang hiểu thật kỹ là một bước tiến thật sự.</strong></p>
+
+</div>

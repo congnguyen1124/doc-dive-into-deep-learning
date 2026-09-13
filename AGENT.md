@@ -133,6 +133,13 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 8. Open the reader and visually check desktop and narrow layouts, equations, figures, page-turn navigation, and tooltips.
 9. Re-read the chapter against the PDF. Only then set `status: reviewed`.
 
+## Repository documentation
+
+- Keep `README.md` visually useful as a project landing page: lead with the learner benefit, show current capabilities, provide copyable setup commands, and keep the authored-chapter status accurate.
+- README screenshots must come from the current local reader, not mockups. Capture representative states from an authored opening chapter and store them under `docs/screenshots/` using an extension that matches the actual image format.
+- Recheck every local README image/link after edits. Screenshots should demonstrate real learning content, source-aware figures, and distinctive reader features such as Light/Dark mode or glossary tooltips without exposing clipped pages.
+- Document the repository's sibling `.venv` layout and keep the quick-start commands compatible with it.
+
 ## Definition of done for a translated chapter
 
 - Exact filename, title, section order, and page provenance match the PDF.

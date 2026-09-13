@@ -6,6 +6,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from PIL import Image
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -532,6 +534,22 @@ class NotebookContentTests(unittest.TestCase):
             for token in required_skin_tokens:
                 self.assertIn(token, light_match.group(1), f"{skin_id} light: {token}")
                 self.assertIn(token, dark_match.group(1), f"{skin_id} dark: {token}")
+
+    def test_readme_uses_current_chapter_one_screenshots(self) -> None:
+        readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+        screenshots = [
+            "docs/screenshots/chapter-01-opening.jpg",
+            "docs/screenshots/chapter-01-learning-loop.jpg",
+            "docs/screenshots/chapter-01-dark-glossary.jpg",
+        ]
+        for relative_path in screenshots:
+            self.assertIn(relative_path, readme)
+            image_path = PROJECT_ROOT / relative_path
+            self.assertTrue(image_path.is_file(), relative_path)
+            with Image.open(image_path) as screenshot:
+                self.assertEqual(screenshot.format, "JPEG")
+                self.assertGreaterEqual(screenshot.width, 1200)
+                self.assertGreaterEqual(screenshot.height, 700)
 
 
 class FigureExtractionTests(unittest.TestCase):
