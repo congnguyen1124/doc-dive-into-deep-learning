@@ -9,7 +9,7 @@ const state = {
 const elements = {};
 const mobileQuery = window.matchMedia("(max-width: 900px)");
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-const statusLabels = { placeholder: "Not started", draft: "In progress", reviewed: "Reviewed" };
+const statusLabels = { placeholder: "Unopened", draft: "In study", reviewed: "Mastered" };
 
 function byId(id) { return document.getElementById(id); }
 function visiblePageCount() { return mobileQuery.matches ? 1 : 2; }
@@ -56,10 +56,10 @@ function updateProgress() {
   const item = state.documents[state.currentIndex];
   const isDone = Boolean(item && completed.has(item.id));
   elements.completeButton.setAttribute("aria-pressed", String(isDone));
-  elements.completeLabel.textContent = isDone ? "Learned" : "Mark as learned";
+  elements.completeLabel.textContent = isDone ? "Study sealed" : "Seal as studied";
 }
 
-function groupLabel(type) { return type === "chapter" ? "Chapters" : "Appendices"; }
+function groupLabel(type) { return type === "chapter" ? "Scrolls" : "Appendix scrolls"; }
 
 function renderNavigation(filter = "") {
   const query = filter.trim().toLocaleLowerCase("en");
@@ -69,7 +69,7 @@ function renderNavigation(filter = "") {
   const completed = completedIds();
   elements.chapterNav.innerHTML = "";
   if (!matches.length) {
-    elements.chapterNav.innerHTML = '<p class="chapter-empty">No matching chapter.</p>';
+    elements.chapterNav.innerHTML = '<p class="chapter-empty">No matching scroll.</p>';
     return;
   }
   let previousType = null;
@@ -104,9 +104,9 @@ function setLoading() {
   elements.rightPage.innerHTML = blocks;
 }
 
-function documentLabel(item) { return item.type === "chapter" ? "Chapter" : "Appendix"; }
+function documentLabel(item) { return item.type === "chapter" ? "Scroll" : "Appendix"; }
 function documentNumber(item) { return item.type === "chapter" ? String(item.number).padStart(2, "0") : item.number; }
-function blankPageHtml() { return '<div class="blank-note" aria-label="Blank note page"><span>End of chapter</span><i></i></div>'; }
+function blankPageHtml() { return '<div class="blank-note" aria-label="Blank manuscript leaf"><span>End of this scroll</span><i></i><b aria-hidden="true">終</b></div>'; }
 
 function resolveTheme() {
   const saved = localStorage.getItem("d2l-theme");
@@ -117,14 +117,93 @@ function resolveTheme() {
 function applyTheme(theme, persist = true) {
   document.documentElement.dataset.theme = theme;
   const nextTheme = theme === "dark" ? "light" : "dark";
+  const nextThemeLabel = nextTheme === "dark" ? "Night ink" : "Day paper";
   elements.themeIcon.textContent = theme === "dark" ? "☀" : "☾";
-  elements.themeLabel.textContent = nextTheme === "dark" ? "Dark" : "Light";
-  elements.themeButton.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-  elements.themeButton.title = `Switch to ${nextTheme} theme`;
+  elements.themeLabel.textContent = nextThemeLabel;
+  elements.themeButton.setAttribute("aria-label", `Switch to ${nextThemeLabel.toLowerCase()} theme`);
+  elements.themeButton.title = `Switch to ${nextThemeLabel.toLowerCase()} theme`;
   if (persist) localStorage.setItem("d2l-theme", theme);
 }
 
 function toggleTheme() { applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"); }
+
+function loadBookmarks() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("d2l-bookmarks") || "{}");
+    return {
+      latest: typeof saved.latest === "string" ? saved.latest : null,
+      items: saved.items && typeof saved.items === "object" ? saved.items : {},
+    };
+  } catch (_error) { return { latest: null, items: {} }; }
+}
+
+function saveBookmarks(bookmarks) {
+  localStorage.setItem("d2l-bookmarks", JSON.stringify(bookmarks));
+}
+
+function normalizedPageText(pageHtml) {
+  const holder = document.createElement("div");
+  holder.innerHTML = pageHtml || "";
+  return (holder.textContent || "").replace(/\s+/g, " ").trim().toLocaleLowerCase("vi");
+}
+
+function resolveBookmarkPage(mark, pages) {
+  let found = -1;
+  if (mark?.anchor) {
+    found = pages.findIndex((page) => normalizedPageText(page).includes(mark.anchor));
+  }
+  if (found < 0) found = Math.min(Number(mark?.pageIndex || 0), Math.max(0, pages.length - 1));
+  return Math.floor(found / pageStep()) * pageStep();
+}
+
+function updateBookmarkControls() {
+  if (!state.current) return;
+  const bookmarks = loadBookmarks();
+  const currentMark = bookmarks.items[state.current.id];
+  const markedPage = currentMark ? resolveBookmarkPage(currentMark, state.pages) : -1;
+  const isMarkedHere = markedPage === state.pageIndex;
+  elements.bookmarkButton.setAttribute("aria-pressed", String(isMarkedHere));
+  elements.bookmarkButton.setAttribute("aria-label", isMarkedHere ? "Untie ribbon from this leaf" : "Tie a ribbon to this leaf");
+  elements.bookmarkButton.title = isMarkedHere ? "Untie ribbon from this leaf" : "Tie a ribbon to this leaf";
+  elements.bookmarkIcon.textContent = isMarkedHere ? "◆" : "◇";
+  elements.bookmarkLabel.textContent = isMarkedHere ? "Ribbon tied" : "Tie ribbon";
+  const latest = bookmarks.latest && bookmarks.items[bookmarks.latest];
+  const latestIsHere = bookmarks.latest === state.current.id && latest
+    && resolveBookmarkPage(latest, state.pages) === state.pageIndex;
+  elements.resumeButton.hidden = !latest || latestIsHere;
+  elements.notebookSpread.classList.toggle("is-bookmarked", isMarkedHere);
+}
+
+function toggleBookmark() {
+  if (!state.current) return;
+  const bookmarks = loadBookmarks();
+  const current = bookmarks.items[state.current.id];
+  const currentPage = current ? resolveBookmarkPage(current, state.pages) : -1;
+  if (currentPage === state.pageIndex) {
+    delete bookmarks.items[state.current.id];
+    if (bookmarks.latest === state.current.id) {
+      const remaining = Object.entries(bookmarks.items).sort((a, b) => b[1].savedAt - a[1].savedAt);
+      bookmarks.latest = remaining[0]?.[0] || null;
+    }
+  } else {
+    bookmarks.items[state.current.id] = {
+      pageIndex: state.pageIndex,
+      anchor: normalizedPageText(state.pages[state.pageIndex]).slice(0, 160),
+      savedAt: Date.now(),
+    };
+    bookmarks.latest = state.current.id;
+  }
+  saveBookmarks(bookmarks);
+  updateBookmarkControls();
+}
+
+async function goToLatestBookmark() {
+  const bookmarks = loadBookmarks();
+  const documentId = bookmarks.latest;
+  const mark = documentId && bookmarks.items[documentId];
+  if (!mark) return;
+  await loadDocument(documentId, { targetMark: mark });
+}
 
 function updateDocumentChrome() {
   const item = state.current;
@@ -135,23 +214,24 @@ function updateDocumentChrome() {
   const rightNumber = state.pageIndex + 2;
   elements.documentKind.textContent = label;
   elements.crumbTitle.textContent = item.title;
-  elements.leftKicker.textContent = `${label.toUpperCase()} ${number} · NOTE ${String(leftNumber).padStart(2, "0")}`;
-  elements.rightKicker.textContent = `${label.toUpperCase()} ${number} · NOTE ${String(rightNumber).padStart(2, "0")}`;
+  elements.leftKicker.textContent = `${label.toUpperCase()} ${number} · LEAF ${String(leftNumber).padStart(2, "0")}`;
+  elements.rightKicker.textContent = `${label.toUpperCase()} ${number} · LEAF ${String(rightNumber).padStart(2, "0")}`;
   elements.leftRange.textContent = `Book ${item.book_pages} · PDF ${item.pdf_pages}`;
-  elements.rightRange.textContent = rightNumber <= state.pages.length ? "Vietnamese study page" : "Blank note page";
+  elements.rightRange.textContent = rightNumber <= state.pages.length ? "Vietnamese study leaf" : "Blank manuscript leaf";
   elements.spreadHelp.textContent = mobileQuery.matches
-    ? "Swipe or drag left for the next page; drag right to go back."
-    : "Drag the right page left for the next spread, or the left page right to go back.";
+    ? "Draw or swipe the paper left for the next leaf; draw right to return."
+    : "Draw the right paper leaf left for the next spread, or the left leaf right to return.";
   elements.statusBadge.textContent = statusLabels[item.status] || item.status;
   elements.statusBadge.className = `status-badge ${item.status}`;
   elements.leftFolio.textContent = String(leftNumber).padStart(2, "0");
   elements.rightFolio.textContent = String(rightNumber).padStart(2, "0");
-  document.title = `${item.title} · D2L Notebook`;
+  document.title = `${item.title} · D2L Secret Manual`;
   const visibleEnd = Math.min(state.pageIndex + visiblePageCount(), state.pages.length);
   elements.positionLabel.textContent = visibleEnd === leftNumber
-    ? `Page ${leftNumber} of ${state.pages.length}`
-    : `Pages ${leftNumber}–${visibleEnd} of ${state.pages.length}`;
+    ? `Leaf ${leftNumber} of ${state.pages.length}`
+    : `Leaves ${leftNumber}–${visibleEnd} of ${state.pages.length}`;
   updateNavigationControls();
+  updateBookmarkControls();
 }
 
 function navigationTarget(offset) {
@@ -169,10 +249,10 @@ function updateNavigationControls() {
   elements.nextButton.disabled = !next;
   elements.footerNext.disabled = !next;
   elements.previousTitle.textContent = previous?.type === "page"
-    ? `Notes ${Math.max(1, state.pageIndex - pageStep() + 1)}–${state.pageIndex}`
+    ? `Leaves ${Math.max(1, state.pageIndex - pageStep() + 1)}–${state.pageIndex}`
     : previous?.document.title || "—";
   elements.nextTitle.textContent = next?.type === "page"
-    ? `Notes ${next.pageIndex + 1}–${Math.min(next.pageIndex + pageStep(), state.pages.length)}`
+    ? `Leaves ${next.pageIndex + 1}–${Math.min(next.pageIndex + pageStep(), state.pages.length)}`
     : next?.document.title || "—";
 }
 
@@ -303,11 +383,41 @@ function pushProbePage(probe, pages) {
   probe.replaceChildren();
 }
 
+function fillRemainingWithList(node, probe, pages) {
+  if (!node.matches?.("ul, ol") || node.children.length < 2) return false;
+  const items = [...node.children];
+  const fitted = node.cloneNode(false);
+  const initialOrdinal = Number(node.getAttribute("start") || 1);
+  probe.append(fitted);
+  let fittedCount = 0;
+  for (const item of items) {
+    fitted.append(item.cloneNode(true));
+    if (probeOverflows(probe)) {
+      fitted.lastElementChild.remove();
+      break;
+    }
+    fittedCount += 1;
+  }
+  if (!fittedCount) {
+    fitted.remove();
+    return false;
+  }
+  pushProbePage(probe, pages);
+  if (fittedCount < items.length) {
+    const remainder = node.cloneNode(false);
+    if (node.tagName === "OL") remainder.setAttribute("start", String(initialOrdinal + fittedCount));
+    items.slice(fittedCount).forEach((item) => remainder.append(item.cloneNode(true)));
+    addNodeToPages(remainder, probe, pages);
+  }
+  return true;
+}
+
 function addNodeToPages(node, probe, pages) {
   probe.append(node);
   if (!probeOverflows(probe)) return;
   if (probe.childNodes.length > 1) {
     node.remove();
+    if (fillRemainingWithList(node, probe, pages)) return;
     const previous = probe.lastElementChild;
     if (previous?.matches("h1, h2, h3, h4")) {
       previous.remove();
@@ -453,12 +563,12 @@ function sheetHtml(item, pages, pageIndex, side) {
   const noteNumber = pageIndex + 1;
   const content = pages[pageIndex] || blankPageHtml();
   const range = side === "left" ? `Book ${item.book_pages} · PDF ${item.pdf_pages}`
-    : noteNumber <= pages.length ? "Vietnamese study page" : "Blank note page";
+    : noteNumber <= pages.length ? "Vietnamese study leaf" : "Blank manuscript leaf";
   const badge = side === "left"
     ? `<span class="status-badge ${escapeHtml(item.status)}">${escapeHtml(statusLabels[item.status] || item.status)}</span>`
-    : '<span class="page-side-label">NOTES</span>';
-  const footer = side === "left" ? "D2L · Vietnamese study notes" : "Drag or swipe to turn";
-  return `<header class="page-header"><div><p class="chapter-kicker">${escapeHtml(label.toUpperCase())} ${escapeHtml(number)} · NOTE ${String(noteNumber).padStart(2, "0")}</p><p class="page-range">${escapeHtml(range)}</p></div>${badge}</header><div class="chapter-page">${content}</div><footer class="page-footer"><span>${footer}</span><span>${String(noteNumber).padStart(2, "0")}</span></footer>`;
+    : '<span class="page-side-label">墨記</span>';
+  const footer = side === "left" ? "D2L · Vietnamese study manuscript" : "Draw or swipe the paper edge";
+  return `<header class="page-header"><div><p class="chapter-kicker">${escapeHtml(label.toUpperCase())} ${escapeHtml(number)} · LEAF ${String(noteNumber).padStart(2, "0")}</p><p class="page-range">${escapeHtml(range)}</p></div>${badge}</header><div class="chapter-page">${content}</div><footer class="page-footer"><span>${footer}</span><span>${String(noteNumber).padStart(2, "0")}</span></footer>`;
 }
 
 function makeOverlayInert(container) {
@@ -528,8 +638,14 @@ async function loadDocument(id, options = {}) {
   const wantedIndex = state.documents.findIndex((item) => item.id === id);
   if (wantedIndex < 0 || state.changingPage) return;
   if (wantedIndex === state.currentIndex && !options.force) {
-    state.pageIndex = options.openLast ? lastPageStart() : 0;
-    await renderSpread();
+    const targetPage = options.targetMark
+      ? resolveBookmarkPage(options.targetMark, state.pages)
+      : options.openLast ? lastPageStart() : 0;
+    if (targetPage === state.pageIndex) { updateBookmarkControls(); return; }
+    const direction = targetPage > state.pageIndex ? 1 : -1;
+    const targetState = currentTargetState(targetPage);
+    prepareFlip(direction, targetState);
+    await settlePreparedFlip(direction, targetState, 0, false);
     return;
   }
   const direction = state.currentIndex < 0 || wantedIndex > state.currentIndex ? 1 : -1;
@@ -543,7 +659,9 @@ async function loadDocument(id, options = {}) {
     state.layoutCache.set(`${id}:${layoutSignature()}:resolved`, pages);
     const targetState = {
       documentIndex: wantedIndex, payload, pages,
-      pageIndex: options.openLast ? lastPageStartFor(pages) : 0,
+      pageIndex: options.targetMark
+        ? resolveBookmarkPage(options.targetMark, pages)
+        : options.openLast ? lastPageStartFor(pages) : 0,
     };
     if (state.currentIndex < 0) {
       await commitTarget(targetState);
@@ -560,7 +678,7 @@ async function loadDocument(id, options = {}) {
     }
   } catch (error) {
     resetFlip();
-    showError(`Could not open this chapter: ${error.message}`);
+    showError(`Could not open this scroll: ${error.message}`);
   } finally { state.changingPage = false; }
 }
 
@@ -577,7 +695,7 @@ async function navigate(offset) {
   } catch (error) {
     resetFlip();
     state.changingPage = false;
-    showError(`Could not turn this page: ${error.message}`);
+    showError(`Could not turn this paper leaf: ${error.message}`);
   }
 }
 
@@ -654,7 +772,7 @@ function finishDrag(event) {
   state.drag = null;
   if (direction && targetState && progress >= .18) {
     settlePreparedFlip(direction, targetState, progress, true).catch((error) => {
-      resetFlip(); state.changingPage = false; showError(`Could not turn this page: ${error.message}`);
+      resetFlip(); state.changingPage = false; showError(`Could not turn this paper leaf: ${error.message}`);
     });
   } else if (targetState) cancelPreparedFlip(progress); else resetFlip();
 }
@@ -686,7 +804,8 @@ function cacheElements() {
     "previousTitle", "nextTitle", "notebookSpread", "leftPage", "rightPage", "termTooltip", "tooltipTerm",
     "tooltipVi", "tooltipExplanation", "tooltipExample", "sidebar", "sidebarScrim", "menuButton", "sidebarClose",
     "imageDialog", "imageClose", "dialogImage", "dialogCaption", "errorToast", "spreadHelp", "themeButton",
-    "themeIcon", "themeLabel", "turnUnderlayLeft", "turnUnderlayRight", "flipLeaf", "flipFront", "flipBack",
+    "themeIcon", "themeLabel", "bookmarkButton", "bookmarkIcon", "bookmarkLabel", "resumeButton", "resumeLabel",
+    "turnUnderlayLeft", "turnUnderlayRight", "flipLeaf", "flipFront", "flipBack",
   ].forEach((id) => { elements[id] = byId(id); });
 }
 
@@ -700,6 +819,8 @@ function registerTermEvents(container) {
 function registerEvents() {
   elements.chapterSearch.addEventListener("input", (event) => renderNavigation(event.target.value));
   elements.themeButton.addEventListener("click", toggleTheme);
+  elements.bookmarkButton.addEventListener("click", toggleBookmark);
+  elements.resumeButton.addEventListener("click", goToLatestBookmark);
   elements.completeButton.addEventListener("click", toggleComplete);
   elements.previousButton.addEventListener("click", () => navigate(-1));
   elements.footerPrevious.addEventListener("click", () => navigate(-1));
@@ -745,7 +866,7 @@ async function initialize() {
     const requested = location.hash.slice(1);
     const firstId = state.documents.some((item) => item.id === requested) ? requested : state.documents[0]?.id;
     if (firstId) await loadDocument(firstId, { initial: true });
-  } catch (error) { showError(`Could not load the notebook: ${error.message}`); }
+  } catch (error) { showError(`Could not open the study archive: ${error.message}`); }
 }
 
 initialize();

@@ -4,7 +4,7 @@
 
 This repository is a Vietnamese, beginner-first learning notebook based on the local source book `../didl.pdf` (*Dive into Deep Learning*). The learner is new to machine learning and deep learning and may be discouraged by dense terminology. Teach for understanding, not for literal sentence-by-sentence translation.
 
-The current repository initialization must not translate whole chapters. Future requests will normally author one chapter at a time.
+Only author whole chapters when the learner explicitly requests them. Multiple explicitly requested chapters may be completed together while preserving the same source-review standard for each one.
 
 ## Source of truth
 
@@ -86,6 +86,7 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 
 - Prefer Python and PyTorch, matching this PDF edition where applicable. State shapes and dtypes when they matter.
 - Keep code examples small and executable. Seed randomness when the result is discussed, and do not claim execution unless it was run.
+- Fence Python examples with ` ```python ` so the server can apply offline Pygments syntax highlighting. Follow readable Python conventions: `snake_case` functions/variables, `PascalCase` classes, four-space indentation, useful type hints/docstrings, and shape comments at tensor boundaries. Avoid compressed one-line teaching code.
 - Preserve the intent and numbering of book exercises, but explain them in original Vietnamese prose. Add notebook exercises only when labeled **Bài tập bổ sung**.
 - For each worked problem: identify knowns and unknowns, choose the idea or formula, solve step by step, sanity-check the result, then name the common trap.
 - Never expose a full solution before a hint if the exercise is intended for self-practice.
@@ -101,6 +102,9 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 - Support page turning by pointer drag/swipe as well as buttons and the Left/Right arrow keys. During a turn, stage the bottom page and both faces of the moving leaf so the learner can see the upcoming content before releasing the pointer. Honor `prefers-reduced-motion`, and never make dragging the only navigation method.
 - Keep body copy visually aligned through typography rather than ruled lines: note paper has no horizontal rules, while text uses a compact, consistent baseline, restrained heading sizes, modest paragraph spacing, predictable vertical rhythm, and tables/code blocks that do not push text outside the sheet.
 - Provide an English-labeled Light/Dark theme control. Use softly off-white paper in Light mode and a dark paper with clearly contrasting text in Dark mode; persist the learner's explicit choice and otherwise respect the operating-system preference.
+- Provide persistent page marks. A learner can mark the current physical page, see that it is marked, and jump back to the latest mark. Store a stable text anchor as well as the page index so reflow across viewport sizes does not silently lose the reading position.
+- Use an ancient Chinese manuscript visual language throughout the reader: xuan-paper/parchment tones, ink-dark text, cinnabar seals, restrained gold and jade accents, stitched-binding details, squared archival controls, and subtle wood or ink-wash surroundings. Dark mode should feel like a night-ink manuscript rather than a generic blue-black application.
+- Keep this theme atmospheric but readable. Chinese characters may appear as decorative seals or archival marks, while operational UI labels remain in English and Vietnamese learning content remains untouched. Do not sacrifice contrast, keyboard access, responsive layout, page density, or the no-scroll physical-page rule for ornament.
 - Feature the rhyming motto “Học chậm cho thấm, hiểu sâu nhớ lâu.” prominently in the sidebar rather than as small footer copy.
 - The reader must still start with `python app.py` after dependencies are installed.
 

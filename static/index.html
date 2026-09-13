@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A two-page study notebook for Vietnamese Dive into Deep Learning notes.">
-    <title>D2L Study Notebook</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <meta name="description" content="An ancient Chinese manuscript-inspired reader for Vietnamese Dive into Deep Learning notes.">
+    <title>D2L Secret Manual</title>
+    <link rel="stylesheet" href="/static/styles.css?v=ancient-manuscript-1">
     <script>
       window.MathJax = {
         tex: {
@@ -18,16 +18,17 @@
       };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    <script defer src="/static/app.js"></script>
+    <script defer src="/static/app.js?v=ancient-manuscript-1"></script>
   </head>
-  <body>
+  <body class="ancient-manuscript">
     <div class="app-shell">
       <aside class="sidebar" id="sidebar" aria-label="Table of contents">
         <div class="brand">
-          <div class="brand-mark" aria-hidden="true">∂</div>
+          <div class="brand-mark" aria-hidden="true"><span>學</span></div>
           <div>
-            <p class="eyebrow">Study notebook</p>
+            <p class="eyebrow">Ancient study archive</p>
             <p class="brand-name">Dive into<br>Deep Learning</p>
+            <p class="brand-edition" aria-hidden="true">武學筆記 · SECRET MANUAL</p>
           </div>
           <button class="icon-button sidebar-close" id="sidebarClose" aria-label="Close table of contents">×</button>
         </div>
@@ -35,13 +36,13 @@
         <label class="search-box">
           <span aria-hidden="true">⌕</span>
           <span class="sr-only">Search chapters</span>
-          <input id="chapterSearch" type="search" placeholder="Search a chapter…" autocomplete="off">
+          <input id="chapterSearch" type="search" placeholder="Search the scrolls…" autocomplete="off">
           <kbd>/</kbd>
         </label>
 
         <div class="completion-card">
           <div class="completion-copy">
-            <span>Your progress</span>
+            <span>Cultivation progress</span>
             <strong id="completionText">0 / 23</strong>
           </div>
           <div class="progress-track" aria-hidden="true">
@@ -49,10 +50,10 @@
           </div>
         </div>
 
-        <nav class="chapter-nav" id="chapterNav" aria-label="Chapter list"></nav>
+        <nav class="chapter-nav" id="chapterNav" aria-label="Scroll catalog"></nav>
 
         <blockquote class="study-motto">
-          <span aria-hidden="true">✦</span>
+          <span aria-hidden="true">印</span>
           <strong>Học chậm cho thấm,<br>hiểu sâu nhớ lâu.</strong>
         </blockquote>
       </aside>
@@ -63,47 +64,56 @@
         <header class="topbar">
           <button class="icon-button menu-button" id="menuButton" aria-label="Open table of contents">☰</button>
           <div class="crumb">
-            <span id="documentKind">Chapter</span>
+            <span class="archive-seal" aria-hidden="true">藏</span>
+            <span id="documentKind">Scroll</span>
             <span aria-hidden="true">/</span>
             <strong id="crumbTitle">Loading…</strong>
           </div>
           <div class="top-actions">
-            <span class="drag-hint"><span aria-hidden="true">↔</span> Drag a page to turn</span>
+            <span class="drag-hint"><span aria-hidden="true">↔</span> Draw the paper edge to turn</span>
             <span class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd></span>
-            <button class="theme-button" id="themeButton" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+            <button class="theme-button" id="themeButton" type="button" aria-label="Switch to night ink theme" title="Switch to night ink theme">
               <span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span>
-              <span id="themeLabel">Dark</span>
+              <span id="themeLabel">Night ink</span>
+            </button>
+            <button class="bookmark-button" id="bookmarkButton" type="button" aria-pressed="false" aria-label="Tie a ribbon to this leaf" title="Tie a ribbon to this leaf">
+              <span class="bookmark-icon" id="bookmarkIcon" aria-hidden="true">◇</span>
+              <span id="bookmarkLabel">Tie ribbon</span>
+            </button>
+            <button class="resume-button" id="resumeButton" type="button" aria-label="Return to the latest ribbon" title="Return to the latest ribbon" hidden>
+              <span aria-hidden="true">↗</span>
+              <span id="resumeLabel">Return to ribbon</span>
             </button>
             <button class="complete-button" id="completeButton" type="button" aria-pressed="false">
               <span class="complete-check" aria-hidden="true">✓</span>
-              <span id="completeLabel">Mark as learned</span>
+              <span id="completeLabel">Seal as studied</span>
             </button>
           </div>
         </header>
 
         <section class="reader" aria-live="polite">
-          <button class="page-arrow previous" id="previousButton" aria-label="Previous spread">←</button>
+          <button class="page-arrow previous" id="previousButton" aria-label="Previous spread">❮</button>
 
           <div class="book-stage">
             <div class="notebook-spread" id="notebookSpread">
               <article class="note-sheet left-sheet" id="leftSheet" aria-label="Left note page">
                 <header class="page-header">
-                  <div><p class="chapter-kicker" id="leftKicker">CHAPTER 01</p><p class="page-range" id="leftRange">Book 1–29 · PDF 41–69</p></div>
-                  <span class="status-badge placeholder" id="statusBadge">Not started</span>
+                  <div><p class="chapter-kicker" id="leftKicker">SCROLL 01</p><p class="page-range" id="leftRange">Book 1–29 · PDF 41–69</p></div>
+                  <span class="status-badge placeholder" id="statusBadge">Unopened</span>
                 </header>
                 <div class="chapter-page" id="leftPage"><div class="loading-block wide"></div><div class="loading-block"></div></div>
-                <footer class="page-footer"><span>D2L · Vietnamese study notes</span><span id="leftFolio">01</span></footer>
+                <footer class="page-footer"><span>D2L · Vietnamese study manuscript</span><span id="leftFolio">01</span></footer>
               </article>
 
               <div class="book-gutter" aria-hidden="true"></div>
 
               <article class="note-sheet right-sheet" id="rightSheet" aria-label="Right note page">
                 <header class="page-header">
-                  <div><p class="chapter-kicker" id="rightKicker">CHAPTER 01</p><p class="page-range" id="rightRange">Drag this page left</p></div>
-                  <span class="page-side-label">NOTES</span>
+                  <div><p class="chapter-kicker" id="rightKicker">SCROLL 01</p><p class="page-range" id="rightRange">Draw this leaf to the left</p></div>
+                  <span class="page-side-label">墨記</span>
                 </header>
                 <div class="chapter-page" id="rightPage"><div class="loading-block"></div><div class="loading-block short"></div></div>
-                <footer class="page-footer"><span>Drag or swipe to turn</span><span id="rightFolio">02</span></footer>
+                <footer class="page-footer"><span>Draw or swipe the paper edge</span><span id="rightFolio">02</span></footer>
               </article>
 
               <article class="turn-underlay turn-underlay-left" id="turnUnderlayLeft" aria-hidden="true"></article>
@@ -114,28 +124,28 @@
                 <span class="flip-edge" aria-hidden="true"></span>
               </div>
             </div>
-            <p class="spread-help" id="spreadHelp">Drag the right page left for the next spread, or the left page right to go back.</p>
+            <p class="spread-help" id="spreadHelp">Draw the right paper leaf left for the next spread, or the left leaf right to return.</p>
           </div>
 
-          <button class="page-arrow next" id="nextButton" aria-label="Next spread">→</button>
+          <button class="page-arrow next" id="nextButton" aria-label="Next spread">❯</button>
         </section>
 
         <footer class="reader-footer">
           <button class="footer-nav previous" id="footerPrevious" type="button">
-            <span aria-hidden="true">←</span>
+            <span aria-hidden="true">❮</span>
             <span><small>Previous</small><strong id="previousTitle">—</strong></span>
           </button>
-          <p id="positionLabel">Pages 1–2 of 2</p>
+          <p id="positionLabel">Leaves 1–2 of 2</p>
           <button class="footer-nav next" id="footerNext" type="button">
             <span><small>Next</small><strong id="nextTitle">—</strong></span>
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">❯</span>
           </button>
         </footer>
       </main>
     </div>
 
     <aside class="term-tooltip" id="termTooltip" role="tooltip" hidden>
-      <p class="term-label">TERM NOTE</p>
+      <p class="term-label">GLOSSARY SLIP · 詞</p>
       <strong id="tooltipTerm"></strong>
       <span id="tooltipVi"></span>
       <p id="tooltipExplanation"></p>

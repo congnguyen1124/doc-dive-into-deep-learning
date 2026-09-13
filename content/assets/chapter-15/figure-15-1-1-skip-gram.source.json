@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 732,
+  "book_page": 692,
+  "figure_id": "Figure 15.1.1",
+  "caption": "Skip-gram predicts context words from a center word",
+  "dpi": 180,
+  "crop_percent": {
+    "x": 40.0,
+    "y": 49.0,
+    "width": 23.0,
+    "height": 13.0
+  },
+  "rendered_page_pixels": [
+    1489,
+    2105
+  ],
+  "output_pixels": [
+    342,
+    274
+  ],
+  "created_at": "2026-09-13T01:46:05.015661+00:00"
+}

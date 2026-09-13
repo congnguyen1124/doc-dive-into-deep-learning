@@ -171,12 +171,22 @@ def render_document(document: Document) -> str:
             GlossaryExtension(),
             "attr_list",
             "fenced_code",
+            "codehilite",
             "md_in_html",
             "sane_lists",
             "tables",
             "toc",
         ],
-        extension_configs={"toc": {"permalink": False, "toc_depth": "2-4"}},
+        extension_configs={
+            "toc": {"permalink": False, "toc_depth": "2-4"},
+            "codehilite": {
+                "css_class": "codehilite",
+                "guess_lang": False,
+                "linenums": False,
+                "noclasses": False,
+                "use_pygments": True,
+            },
+        },
         output_format="html5",
     )
     return _rewrite_relative_images(renderer.convert(document.body), document)

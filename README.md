@@ -1,6 +1,6 @@
 # Dive into Deep Learning — vở học tiếng Việt
 
-Đây là dự án biến `didl.pdf` thành một quyển vở học Machine Learning/Deep Learning dễ đọc cho người mới. **Chương 1–3 đã được biên soạn bằng tiếng Việt**; Chương 4–21 và hai phụ lục vẫn là khung chờ cho các lần học tiếp theo.
+Đây là dự án biến `didl.pdf` thành một quyển vở học Machine Learning/Deep Learning dễ đọc cho người mới. **Chương 1–3, 14, 15 và 21 đã được biên soạn bằng tiếng Việt**; các chương/phụ lục còn lại vẫn là khung chờ cho các lần học tiếp theo.
 
 ## Chạy notebook reader
 
@@ -20,6 +20,9 @@ Reader có:
 - hai trang giấy note đặt cạnh nhau trên desktop và một trang trên mobile; nội dung tự dàn sang tờ kế tiếp, không cuộn dọc bên trong giấy;
 - hiệu ứng lật có mặt trước, mặt sau và trang nằm dưới để nhìn thấy bài tiếp theo ngay khi kéo; vẫn dùng được nút hoặc phím `←`/`→`;
 - nút Light/Dark theme, tự nhớ lựa chọn trên trình duyệt;
+- giao diện cổ thư Trung Hoa với giấy tuyên, mực tàu, son triện và gáy chỉ khâu;
+- đánh dấu trang đang đọc và quay lại dấu gần nhất, kể cả sau khi mở lại trình duyệt;
+- syntax highlighting Python chạy offline bằng Pygments, kèm quy ước tên/shape/comment dễ học;
 - ghi nhớ chương đã học ngay trên trình duyệt;
 - tooltip cho thuật ngữ tiếng Anh khi rê chuột hoặc dùng bàn phím focus;
 - chú thích nguồn cho ảnh, phóng to ảnh và giao diện mobile;
