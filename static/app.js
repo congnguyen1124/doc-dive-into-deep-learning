@@ -17,6 +17,11 @@ function pageStep() { return visiblePageCount(); }
 function nextFrame() { return new Promise((resolve) => window.requestAnimationFrame(resolve)); }
 function sleep(milliseconds) { return new Promise((resolve) => window.setTimeout(resolve, milliseconds)); }
 
+function clearTextSelection() {
+  const selection = window.getSelection?.();
+  if (selection && !selection.isCollapsed) selection.removeAllRanges();
+}
+
 function escapeHtml(value) {
   const node = document.createElement("span");
   node.textContent = String(value);
@@ -196,6 +201,9 @@ function applySkin(id, persist = true) {
   const skin = skinById(id);
   document.documentElement.dataset.skin = skin.id;
   elements.notebookSpread.dataset.turn = skin.turn;
+  elements.brandSeal.textContent = skin.seal;
+  elements.archiveSeal.textContent = skin.seal;
+  elements.pageSeal.textContent = `${skin.seal}記`;
   elements.skinLabel.textContent = skin.name;
   elements.skinButton.setAttribute("aria-label", `Reader style: ${skin.name}. Choose another style.`);
   elements.skinButton.title = `Reader style: ${skin.name}`;
@@ -603,16 +611,30 @@ function addNodeToPages(node, probe, pages) {
   });
 }
 
+function paginationBox() {
+  const leftBox = elements.leftPage.getBoundingClientRect();
+  const rightBox = elements.rightPage.getBoundingClientRect();
+  const visibleBoxes = [leftBox, rightBox].filter((box) => box.width > 0 && box.height > 0);
+  if (!visibleBoxes.length) return { width: 0, height: 0 };
+  return {
+    width: Math.min(...visibleBoxes.map((box) => box.width)),
+    height: Math.min(...visibleBoxes.map((box) => box.height)),
+  };
+}
+
 function layoutSignature() {
-  const box = elements.leftPage.getBoundingClientRect();
+  const box = paginationBox();
   return `${activeSkin().id}:${mobileQuery.matches ? "single" : "spread"}:${Math.round(box.width)}x${Math.round(box.height)}`;
 }
 
 async function paginateAuthoredPages(sourcePages) {
-  const box = elements.leftPage.getBoundingClientRect();
+  const box = paginationBox();
   if (!box.width || !box.height) return sourcePages;
   const probe = document.createElement("div");
   probe.className = "chapter-page pagination-probe";
+  // The right leaf has wider gutter padding. Use the smaller content box so
+  // every generated page fits either desktop leaf. On mobile, the hidden
+  // right leaf is ignored so its zero-size box cannot disable pagination.
   probe.style.width = `${box.width}px`;
   probe.style.height = `${box.height}px`;
   document.body.append(probe);
@@ -723,7 +745,7 @@ function sheetHtml(item, pages, pageIndex, side) {
     : noteNumber <= pages.length ? "Vietnamese study leaf" : "Blank manuscript leaf";
   const badge = side === "left"
     ? `<span class="status-badge ${escapeHtml(item.status)}">${escapeHtml(statusLabels[item.status] || item.status)}</span>`
-    : '<span class="page-side-label">墨記</span>';
+    : `<span class="page-side-label">${escapeHtml(activeSkin().seal)}記</span>`;
   const footer = side === "left" ? "D2L · Vietnamese study manuscript" : "Draw or swipe the paper edge";
   return `<header class="page-header"><div><p class="chapter-kicker">${escapeHtml(label.toUpperCase())} ${escapeHtml(number)} · LEAF ${String(noteNumber).padStart(2, "0")}</p><p class="page-range">${escapeHtml(range)}</p></div>${badge}</header><div class="chapter-page">${content}</div><footer class="page-footer"><span>${footer}</span><span>${String(noteNumber).padStart(2, "0")}</span></footer>`;
 }
@@ -741,6 +763,7 @@ function turnTiming(name, fallback) {
 }
 
 function resetFlip() {
+  clearTextSelection();
   elements.notebookSpread.classList.remove("is-dragging", "is-settling", "is-cancelling");
   elements.notebookSpread.style.setProperty("--flip-progress", "0");
   elements.flipLeaf.className = "flip-leaf";
@@ -901,6 +924,8 @@ function showError(message) {
 function beginDrag(event) {
   if (state.changingPage || event.button !== 0) return;
   if (event.target.closest("a, button, input, summary, .glossary-term, img, pre")) return;
+  event.preventDefault();
+  clearTextSelection();
   state.drag = { pointerId: event.pointerId, startX: event.clientX, direction: 0, progress: 0, targetState: null };
   elements.notebookSpread.setPointerCapture(event.pointerId);
   elements.notebookSpread.classList.add("is-dragging");
@@ -908,6 +933,8 @@ function beginDrag(event) {
 
 function moveDrag(event) {
   if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+  event.preventDefault();
+  clearTextSelection();
   const delta = event.clientX - state.drag.startX;
   if (Math.abs(delta) < 3) return;
   const direction = delta < 0 ? 1 : -1;
@@ -926,11 +953,12 @@ function moveDrag(event) {
   state.drag.progress = progress;
   state.drag.targetState = targetState;
   elements.notebookSpread.style.setProperty("--flip-progress", progress.toFixed(3));
-  if (progress > .03) event.preventDefault();
 }
 
 function finishDrag(event) {
   if (!state.drag || state.drag.pointerId !== event.pointerId) return;
+  event.preventDefault();
+  clearTextSelection();
   const { direction, progress, targetState } = state.drag;
   state.drag = null;
   if (direction && targetState && progress >= .18) {
@@ -969,7 +997,7 @@ function cacheElements() {
     "imageDialog", "imageClose", "dialogImage", "dialogCaption", "errorToast", "spreadHelp", "themeButton",
     "themeIcon", "themeLabel", "bookmarkButton", "bookmarkIcon", "bookmarkLabel", "resumeButton", "resumeLabel",
     "turnUnderlayLeft", "turnUnderlayRight", "flipLeaf", "flipFront", "flipBack",
-    "skinPicker", "skinButton", "skinMenu", "skinLabel", "skinSwatch",
+    "skinPicker", "skinButton", "skinMenu", "skinLabel", "skinSwatch", "brandSeal", "archiveSeal", "pageSeal",
   ].forEach((id) => { elements[id] = byId(id); });
 }
 
@@ -1003,6 +1031,7 @@ function registerEvents() {
   elements.notebookSpread.addEventListener("pointermove", moveDrag);
   elements.notebookSpread.addEventListener("pointerup", finishDrag);
   elements.notebookSpread.addEventListener("pointercancel", finishDrag);
+  elements.notebookSpread.addEventListener("lostpointercapture", finishDrag);
   document.addEventListener("keydown", (event) => {
     const typing = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName);
     if (event.key === "/" && !typing) { event.preventDefault(); elements.chapterSearch.focus(); openSidebar(); }

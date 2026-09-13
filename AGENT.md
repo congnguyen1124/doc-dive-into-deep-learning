@@ -87,6 +87,7 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 - Prefer Python and PyTorch, matching this PDF edition where applicable. State shapes and dtypes when they matter.
 - Keep code examples small and executable. Seed randomness when the result is discussed, and do not claim execution unless it was run.
 - Fence Python examples with ` ```python ` so the server can apply offline Pygments syntax highlighting. Follow readable Python conventions: `snake_case` functions/variables, `PascalCase` classes, four-space indentation, useful type hints/docstrings, and shape comments at tensor boundaries. Avoid compressed one-line teaching code.
+- Write algorithms and pseudocode as semantic `<div class="algorithm-block" markdown="1">` study blocks with an `.algorithm-label`, explicit inputs/outputs, and ordered steps. Do not use unsupported LaTeX `algorithm` environments. Their jade/ink treatment must remain visually distinct from dark Python code blocks in every skin and theme.
 - Preserve the intent and numbering of book exercises, but explain them in original Vietnamese prose. Add notebook exercises only when labeled **Bài tập bổ sung**.
 - For each worked problem: identify knowns and unknowns, choose the idea or formula, solve step by step, sanity-check the result, then name the common trap.
 - Never expose a full solution before a hint if the exercise is intended for self-practice.
@@ -100,6 +101,7 @@ Keep the original numbered sections and titles from the PDF. Within that structu
 - Present authored Markdown as an open, two-page note-paper spread on desktop. Use `<!-- pagebreak -->` between intentional study sections; the client may subdivide a section into additional physical note pages to fit the current viewport. On narrow screens, show one note page at a time without losing content.
 - A physical note page must never have its own vertical scrollbar. Measure and paginate rendered blocks into following pages; do not clip or hide authored material. Horizontal scrolling is allowed only where it is necessary for code or equations.
 - Support page turning by pointer drag/swipe as well as buttons and the Left/Right arrow keys. During a turn, stage the bottom page and both faces of the moving leaf so the learner can see the upcoming content before releasing the pointer. Honor `prefers-reduced-motion`, and never make dragging the only navigation method.
+- Pointer-driven page turning must never leave browser text selection active. Prevent the drag gesture's default selection behavior, clear any selection on move/end/cancel, and clean up when pointer capture is lost.
 - Keep body copy visually aligned through typography rather than ruled lines: note paper has no horizontal rules, while text uses a compact, consistent baseline, restrained heading sizes, modest paragraph spacing, predictable vertical rhythm, and tables/code blocks that do not push text outside the sheet.
 - Provide an English-labeled Light/Dark theme control. Use softly off-white paper in Light mode and a dark paper with clearly contrasting text in Dark mode; persist the learner's explicit choice and otherwise respect the operating-system preference.
 - Provide persistent page marks. A learner can mark the current physical page, see that it is marked, and jump back to the latest mark. Store a stable text anchor as well as the page index so reflow across viewport sizes does not silently lose the reading position.
@@ -109,6 +111,8 @@ Keep the original numbered sections and titles from the PDF. Within that structu
   in `static/styles.css`. Every skin must define the complete token contract in BOTH modes — never hardcode a
   surface colour in a rule, add a token instead — and `layoutSignature()` must keep the skin in its cache key so
   pages are re-measured when type metrics change.
+- A picker entry is not complete until selecting it visibly changes computed paper, ink, surrounding surfaces, seal, and turn character in both Light and Dark modes. Keep a regression test that checks every `SKINS` id has both CSS token blocks.
+- Bump the `?v=` cache key on `styles.css` and `app.js` whenever a reader release changes either asset; otherwise an already-open browser may keep the old UI and make a valid skin change appear broken.
 - A skin may retune the page turn through `data-turn` (duration, easing, lift, bend, sheen width, cast reach), but
   every variant keeps the same staged DOM and must read as real paper: the hinge side darkens, a specular band
   sweeps the leaf, and the lifted leaf casts a shadow on the sheet it uncovers. Never make a turn instant or flat.

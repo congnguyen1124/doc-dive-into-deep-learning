@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import sys
 import tempfile
 import unittest
@@ -51,6 +52,28 @@ class NotebookContentTests(unittest.TestCase):
         rendered = app.render_document(document)
         self.assertIn('class="codehilite"', rendered)
         self.assertIn('class="kn"', rendered)
+
+    def test_math_is_preserved_for_mathjax_without_markdown_emphasis(self) -> None:
+        source = app.discover_documents()[0]
+        equation = r"$$P(w_o\mid w_c)=\frac{e^{u_o}}{\sum_{i\in V}e^{u_i}}.$$"
+        document = app.Document(
+            id=source.id,
+            path=source.path,
+            metadata=source.metadata,
+            body=f"# Demo\n\nInline $w_c$ and display:\n\n{equation}",
+        )
+        rendered = app.render_document(document)
+        self.assertIn("Inline $w_c$", rendered)
+        self.assertIn(equation, rendered)
+        self.assertNotIn("<em", rendered)
+
+    def test_chapter_15_skipgram_algorithm_renders_as_study_block(self) -> None:
+        document = next(doc for doc in app.discover_documents() if doc.id == "chapter-15")
+        rendered = app.render_document(document)
+        self.assertIn('class="algorithm-block"', rendered)
+        self.assertIn('class="algorithm-label"', rendered)
+        self.assertIn("LUỒNG THUẬT TOÁN · SKIP-GRAM", rendered)
+        self.assertNotIn("<em V", rendered)
 
     def test_authored_chapters_are_split_into_note_pages(self) -> None:
         for document in app.discover_documents()[:3]:
@@ -150,8 +173,295 @@ class NotebookContentTests(unittest.TestCase):
             self.assertEqual(positions, sorted(positions), document_id)
             self.assertNotIn("nội dung chưa được biên soạn", document.body)
 
+    def test_chapters_7_to_11_keep_complete_pdf_section_order(self) -> None:
+        expected = {
+            "chapter-07": """
+                7.1 From Fully Connected Layers to Convolutions
+                7.1.1 Invariance
+                7.1.2 Constraining the MLP
+                7.1.3 Convolutions
+                7.1.4 Channels
+                7.1.5 Summary and Discussion
+                7.1.6 Exercises
+                7.2 Convolutions for Images
+                7.2.1 The Cross-Correlation Operation
+                7.2.2 Convolutional Layers
+                7.2.3 Object Edge Detection in Images
+                7.2.4 Learning a Kernel
+                7.2.5 Cross-Correlation and Convolution
+                7.2.6 Feature Map and Receptive Field
+                7.2.7 Summary
+                7.2.8 Exercises
+                7.3 Padding and Stride
+                7.3.1 Padding
+                7.3.2 Stride
+                7.3.3 Summary and Discussion
+                7.3.4 Exercises
+                7.4 Multiple Input and Multiple Output Channels
+                7.4.1 Multiple Input Channels
+                7.4.2 Multiple Output Channels
+                7.4.3 1 × 1 Convolutional Layer
+                7.4.4 Discussion
+                7.4.5 Exercises
+                7.5 Pooling
+                7.5.1 Maximum Pooling and Average Pooling
+                7.5.2 Padding and Stride
+                7.5.3 Multiple Channels
+                7.5.4 Summary
+                7.5.5 Exercises
+                7.6 Convolutional Neural Networks (LeNet)
+                7.6.1 LeNet
+                7.6.2 Training
+                7.6.3 Summary
+                7.6.4 Exercises
+            """,
+            "chapter-08": """
+                8.1 Deep Convolutional Neural Networks (AlexNet)
+                8.1.1 Representation Learning
+                8.1.2 AlexNet
+                8.1.3 Training
+                8.1.4 Discussion
+                8.1.5 Exercises
+                8.2 Networks Using Blocks (VGG)
+                8.2.1 VGG Blocks
+                8.2.2 VGG Network
+                8.2.3 Training
+                8.2.4 Summary
+                8.2.5 Exercises
+                8.3 Network in Network (NiN)
+                8.3.1 NiN Blocks
+                8.3.2 NiN Model
+                8.3.3 Training
+                8.3.4 Summary
+                8.3.5 Exercises
+                8.4 Multi-Branch Networks (GoogLeNet)
+                8.4.1 Inception Blocks
+                8.4.2 GoogLeNet Model
+                8.4.3 Training
+                8.4.4 Discussion
+                8.4.5 Exercises
+                8.5 Batch Normalization
+                8.5.1 Training Deep Networks
+                8.5.2 Batch Normalization Layers
+                8.5.3 Implementation from Scratch
+                8.5.4 LeNet with Batch Normalization
+                8.5.5 Concise Implementation
+                8.5.6 Discussion
+                8.5.7 Exercises
+                8.6 Residual Networks (ResNet) and ResNeXt
+                8.6.1 Function Classes
+                8.6.2 Residual Blocks
+                8.6.3 ResNet Model
+                8.6.4 Training
+                8.6.5 ResNeXt
+                8.6.6 Summary and Discussion
+                8.6.7 Exercises
+                8.7 Densely Connected Networks (DenseNet)
+                8.7.1 From ResNet to DenseNet
+                8.7.2 Dense Blocks
+                8.7.3 Transition Layers
+                8.7.4 DenseNet Model
+                8.7.5 Training
+                8.7.6 Summary and Discussion
+                8.7.7 Exercises
+                8.8 Designing Convolution Network Architectures
+                8.8.1 The AnyNet Design Space
+                8.8.2 Distributions and Parameters of Design Spaces
+                8.8.3 RegNet
+                8.8.4 Training
+                8.8.5 Discussion
+                8.8.6 Exercises
+            """,
+            "chapter-09": """
+                9.1 Working with Sequences
+                9.1.1 Autoregressive Models
+                9.1.2 Sequence Models
+                9.1.3 Training
+                9.1.4 Prediction
+                9.1.5 Summary
+                9.1.6 Exercises
+                9.2 Converting Raw Text into Sequence Data
+                9.2.1 Reading the Dataset
+                9.2.2 Tokenization
+                9.2.3 Vocabulary
+                9.2.4 Putting It All Together
+                9.2.5 Exploratory Language Statistics
+                9.2.6 Summary
+                9.2.7 Exercises
+                9.3 Language Models
+                9.3.1 Learning Language Models
+                9.3.2 Perplexity
+                9.3.3 Partitioning Sequences
+                9.3.4 Summary and Discussion
+                9.3.5 Exercises
+                9.4 Recurrent Neural Networks
+                9.4.1 Neural Networks without Hidden States
+                9.4.2 Recurrent Neural Networks with Hidden States
+                9.4.3 RNN-Based Character-Level Language Models
+                9.4.4 Summary
+                9.4.5 Exercises
+                9.5 Recurrent Neural Network Implementation
+                9.5.1 RNN Model
+                9.5.2 RNN-Based Language Model
+                9.5.3 Gradient Clipping
+                9.5.4 Training
+                9.5.5 Decoding
+                9.5.6 Summary
+                9.5.7 Exercises
+                9.6 Concise Implementation of Recurrent Neural Networks
+                9.6.1 Defining the Model
+                9.6.2 Training and Predicting
+                9.6.3 Summary
+                9.6.4 Exercises
+                9.7 Backpropagation Through Time
+                9.7.1 Analysis of Gradients in RNNs
+                9.7.2 Backpropagation Through Time in Detail
+                9.7.3 Summary
+                9.7.4 Exercises
+            """,
+            "chapter-10": """
+                10.1 Long Short-Term Memory (LSTM)
+                10.1.1 Gated Memory Cell
+                10.1.2 Implementation from Scratch
+                10.1.3 Concise Implementation
+                10.1.4 Summary
+                10.1.5 Exercises
+                10.2 Gated Recurrent Units (GRU)
+                10.2.1 Reset Gate and Update Gate
+                10.2.2 Candidate Hidden State
+                10.2.3 Hidden State
+                10.2.4 Implementation from Scratch
+                10.2.5 Concise Implementation
+                10.2.6 Summary
+                10.2.7 Exercises
+                10.3 Deep Recurrent Neural Networks
+                10.3.1 Implementation from Scratch
+                10.3.2 Concise Implementation
+                10.3.3 Summary
+                10.3.4 Exercises
+                10.4 Bidirectional Recurrent Neural Networks
+                10.4.1 Implementation from Scratch
+                10.4.2 Concise Implementation
+                10.4.3 Summary
+                10.4.4 Exercises
+                10.5 Machine Translation and the Dataset
+                10.5.1 Downloading and Preprocessing the Dataset
+                10.5.2 Tokenization
+                10.5.3 Loading Sequences of Fixed Length
+                10.5.4 Reading the Dataset
+                10.5.5 Summary
+                10.5.6 Exercises
+                10.6 The Encoder−Decoder Architecture
+                10.6.1 Encoder
+                10.6.2 Decoder
+                10.6.3 Putting the Encoder and Decoder Together
+                10.6.4 Summary
+                10.6.5 Exercises
+                10.7 Sequence-to-Sequence Learning for Machine Translation
+                10.7.1 Teacher Forcing
+                10.7.2 Encoder
+                10.7.3 Decoder
+                10.7.4 Encoder–Decoder for Sequence-to-Sequence Learning
+                10.7.5 Loss Function with Masking
+                10.7.6 Training
+                10.7.7 Prediction
+                10.7.8 Evaluation of Predicted Sequences
+                10.7.9 Summary
+                10.7.10 Exercises
+                10.8 Beam Search
+                10.8.1 Greedy Search
+                10.8.2 Exhaustive Search
+                10.8.3 Beam Search
+                10.8.4 Summary
+                10.8.5 Exercises
+            """,
+            "chapter-11": """
+                11.1 Queries, Keys, and Values
+                11.1.1 Visualization
+                11.1.2 Summary
+                11.1.3 Exercises
+                11.2 Attention Pooling by Similarity
+                11.2.1 Kernels and Data
+                11.2.2 Attention Pooling via Nadaraya–Watson Regression
+                11.2.3 Adapting Attention Pooling
+                11.2.4 Summary
+                11.2.5 Exercises
+                11.3 Attention Scoring Functions
+                11.3.1 Dot Product Attention
+                11.3.2 Convenience Functions
+                11.3.3 Scaled Dot Product Attention
+                11.3.4 Additive Attention
+                11.3.5 Summary
+                11.3.6 Exercises
+                11.4 The Bahdanau Attention Mechanism
+                11.4.1 Model
+                11.4.2 Defining the Decoder with Attention
+                11.4.3 Training
+                11.4.4 Summary
+                11.4.5 Exercises
+                11.5 Multi-Head Attention
+                11.5.1 Model
+                11.5.2 Implementation
+                11.5.3 Summary
+                11.5.4 Exercises
+                11.6 Self-Attention and Positional Encoding
+                11.6.1 Self-Attention
+                11.6.2 Comparing CNNs, RNNs, and Self-Attention
+                11.6.3 Positional Encoding
+                11.6.4 Summary
+                11.6.5 Exercises
+                11.7 The Transformer Architecture
+                11.7.1 Model
+                11.7.2 Positionwise Feed-Forward Networks
+                11.7.3 Residual Connection and Layer Normalization
+                11.7.4 Encoder
+                11.7.5 Decoder
+                11.7.6 Training
+                11.7.7 Summary
+                11.7.8 Exercises
+                11.8 Transformers for Vision
+                11.8.1 Model
+                11.8.2 Patch Embedding
+                11.8.3 Vision Transformer Encoder
+                11.8.4 Putting It All Together
+                11.8.5 Training
+                11.8.6 Summary and Discussion
+                11.8.7 Exercises
+                11.9 Large-Scale Pretraining with Transformers
+                11.9.1 Encoder-Only
+                11.9.2 Encoder–Decoder
+                11.9.3 Decoder-Only
+                11.9.4 Scalability
+                11.9.5 Large Language Models
+                11.9.6 Summary and Discussion
+                11.9.7 Exercises
+            """,
+        }
+        documents = {doc.id: doc for doc in app.discover_documents()}
+        for document_id, heading_text in expected.items():
+            document = documents[document_id]
+            self.assertEqual(document.metadata["status"], "reviewed")
+            headings = [line.strip() for line in heading_text.splitlines() if line.strip()]
+            positions = [document.body.index(heading) for heading in headings]
+            self.assertEqual(positions, sorted(positions), document_id)
+            self.assertNotIn("nội dung chưa được biên soạn", document.body)
+
+    def test_chapters_7_to_11_python_examples_compile(self) -> None:
+        documents = {doc.id: doc for doc in app.discover_documents()}
+        for number in range(7, 12):
+            document = documents[f"chapter-{number:02d}"]
+            code_blocks = re.findall(r"```python\n(.*?)```", document.body, re.DOTALL)
+            self.assertGreaterEqual(len(code_blocks), 1, document.id)
+            for block_number, code in enumerate(code_blocks, start=1):
+                compile(code, f"{document.id}:block-{block_number}", "exec")
+
     def test_new_chapter_figures_have_pdf_provenance(self) -> None:
         expected = [
+            "content/assets/chapter-07/figure-7-2-1-cross-correlation.source.json",
+            "content/assets/chapter-08/figure-8-6-2-residual-block.source.json",
+            "content/assets/chapter-09/figure-9-4-1-rnn-hidden-state.source.json",
+            "content/assets/chapter-10/figure-10-1-4-lstm.source.json",
+            "content/assets/chapter-11/figure-11-7-1-transformer.source.json",
             "content/assets/chapter-14/figure-14-7-1-ssd-architecture.source.json",
             "content/assets/chapter-15/figure-15-8-1-bert-comparison.source.json",
             "content/assets/chapter-21/figure-21-1-1-recommendation-process.source.json",
@@ -177,20 +487,51 @@ class NotebookContentTests(unittest.TestCase):
         self.assertIn('id="flipBack"', index_html)
         self.assertIn('id="turnUnderlayRight"', index_html)
         self.assertIn('id="themeButton"', index_html)
+        self.assertIn('id="skinButton"', index_html)
+        self.assertIn('id="skinMenu"', index_html)
+        self.assertEqual(index_html.count("?v=reader-fixes-5"), 2)
         self.assertIn('id="bookmarkButton"', index_html)
         self.assertIn('id="resumeButton"', index_html)
         self.assertIn('class="ancient-manuscript"', index_html)
-        self.assertIn('aria-hidden="true"><span>學</span>', index_html)
+        self.assertIn('id="brandSeal">武</span>', index_html)
         self.assertIn("paginateAuthoredPages", script)
+        self.assertIn("function paginationBox()", script)
+        self.assertIn("filter((box) => box.width > 0 && box.height > 0)", script)
         self.assertIn("fillRemainingWithList", script)
         self.assertIn('localStorage.setItem("d2l-theme"', script)
+        self.assertIn('localStorage.setItem("d2l-skin"', script)
         self.assertIn('localStorage.setItem("d2l-bookmarks"', script)
         self.assertIn('classList.toggle("is-bookmarked"', script)
         self.assertIn(':root[data-theme="dark"]', styles)
         self.assertIn("--cinnabar:", styles)
         self.assertIn(".notebook-spread.is-bookmarked::after", styles)
         self.assertIn(".codehilite", styles)
+        self.assertIn(".algorithm-block", styles)
+        self.assertIn("--algorithm-bg:", styles)
+        self.assertIn("clearTextSelection", script)
+        self.assertIn("event.preventDefault();", script)
         self.assertRegex(styles, r"\.chapter-page\s*\{[^}]*overflow:hidden")
+
+        skin_ids = ["manuscript", "xuan", "bamboo", "porcelain", "dunhuang", "vermilion"]
+        required_skin_tokens = [
+            "--paper:", "--ink:", "--accent:", "--body-bg:", "--sidebar-bg:",
+            "--sheet-texture:", "--sheet-edge:", "--spine-bg:", "--read-size:",
+        ]
+        for skin_id in skin_ids:
+            self.assertIn(f'id: "{skin_id}"', script)
+            light_match = re.search(
+                rf':root\[data-skin="{skin_id}"\]\s*\{{(.*?)\n\}}', styles, re.DOTALL
+            )
+            dark_match = re.search(
+                rf':root\[data-skin="{skin_id}"\]\[data-theme="dark"\]\s*\{{(.*?)\n\}}',
+                styles,
+                re.DOTALL,
+            )
+            self.assertIsNotNone(light_match, f"missing light tokens for {skin_id}")
+            self.assertIsNotNone(dark_match, f"missing dark tokens for {skin_id}")
+            for token in required_skin_tokens:
+                self.assertIn(token, light_match.group(1), f"{skin_id} light: {token}")
+                self.assertIn(token, dark_match.group(1), f"{skin_id} dark: {token}")
 
 
 class FigureExtractionTests(unittest.TestCase):

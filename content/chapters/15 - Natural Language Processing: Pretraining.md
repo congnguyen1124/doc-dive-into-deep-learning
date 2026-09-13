@@ -81,6 +81,21 @@ $$
 
 Nếu cặp thường đi cùng, tối ưu làm dot product của chúng lớn tương đối so với các từ khác. Training cực đại likelihood tương đương cực tiểu tổng negative log-likelihood.
 
+<div class="algorithm-block" markdown="1">
+<p class="algorithm-label">LUỒNG THUẬT TOÁN · SKIP-GRAM</p>
+
+**Đầu vào:** chuỗi token, kích thước cửa sổ $m$, các vector center $\mathbf v$ và context $\mathbf u$.
+
+1. Chọn token ở vị trí $t$ làm center $w^{(t)}$.
+2. Lấy từng token $w^{(t+j)}$ trong cửa sổ $-m\le j\le m,\ j\ne0$ làm context thật.
+3. Với mỗi cặp center–context, tính score $\mathbf u_o^\top\mathbf v_c$, rồi dùng softmax để có $P(w_o\mid w_c)$.
+4. Cộng $-\log P(w_o\mid w_c)$ vào loss; backpropagation cập nhật các vector để cặp thật có score tương đối lớn hơn.
+
+**Đầu ra:** word embeddings; trong ứng dụng thường lấy các vector center $\mathbf v_i$ làm biểu diễn của từ.
+</div>
+
+> **Cách nhớ:** skip-gram đi theo mũi tên **một center → nhiều context**. “Skip” không có nghĩa là bỏ qua training; nó nói model tạo các cặp với những từ nằm rải quanh center trong cửa sổ.
+
 ### 15.1.4 The Continuous Bag of Words (CBOW) Model
 
 CBOW lấy trung bình vector context $\bar{\mathbf v}_o$ rồi đoán center:

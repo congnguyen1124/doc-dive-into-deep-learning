@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 390,
+  "book_page": 350,
+  "figure_id": "Figure 9.4.1",
+  "caption": "An RNN with a hidden state.",
+  "dpi": 240,
+  "crop_percent": {
+    "x": 27.0,
+    "y": 56.0,
+    "width": 59.0,
+    "height": 14.2
+  },
+  "rendered_page_pixels": [
+    1985,
+    2807
+  ],
+  "output_pixels": [
+    1171,
+    399
+  ],
+  "created_at": "2026-09-13T11:30:04.815137+00:00"
+}

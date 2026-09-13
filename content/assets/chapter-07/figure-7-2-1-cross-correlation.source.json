@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 281,
+  "book_page": 241,
+  "figure_id": "Figure 7.2.1",
+  "caption": "Two-dimensional cross-correlation operation.",
+  "dpi": 240,
+  "crop_percent": {
+    "x": 34.0,
+    "y": 8.0,
+    "width": 34.0,
+    "height": 6.8
+  },
+  "rendered_page_pixels": [
+    1985,
+    2807
+  ],
+  "output_pixels": [
+    675,
+    190
+  ],
+  "created_at": "2026-09-13T11:30:03.223154+00:00"
+}

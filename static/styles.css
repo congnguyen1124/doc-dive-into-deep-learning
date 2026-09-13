@@ -1,4 +1,4 @@
-:root {
+:root, :root[data-skin="manuscript"] {
   color-scheme: light;
   --canvas: #3b2a1b;
   --canvas-mid: #5a4228;
@@ -83,7 +83,7 @@
   --read-lh: 25px;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"], :root[data-skin="manuscript"][data-theme="dark"] {
   color-scheme: dark;
   --canvas: #0d0a08;
   --canvas-mid: #211711;
@@ -161,6 +161,311 @@
   --cast-shadow: rgba(0, 0, 0, .7);
   --read-size: 15px;
   --read-lh: 25px;
+}
+
+/* Xuan Ink Wash — quiet raw paper, carbon ink, and a single cinnabar seal. */
+:root[data-skin="xuan"] {
+  color-scheme:light;
+  --canvas:#9b9a94; --canvas-mid:#c5c2b9; --canvas-deep:#6f716d;
+  --paper:#f6f3ec; --paper-warm:#ebe7de; --ink:#1d1c1a; --muted:#66635e;
+  --rule:rgba(22,21,19,.09); --red-rule:rgba(156,50,38,.34); --border:#b8b3a9;
+  --accent:#9c3226; --accent-deep:#78251d; --cinnabar:#9c3226;
+  --gold:#8f8a7d; --gold-soft:#c4bfb4; --sage:#5c6960; --sage-soft:#d8ddd8;
+  --sidebar:#282b29; --sidebar-muted:#b7bbb6; --sidebar-ink:#f0eee8;
+  --baseline:24px; --topbar:rgba(239,237,231,.94); --control:rgba(250,249,246,.8);
+  --control-border:rgba(31,31,29,.22); --blockquote:rgba(32,31,28,.045); --blockquote-ink:#4c4a46;
+  --inline-code:#e6e1d8; --inline-code-ink:#78251d; --code-block:#1c1d1b; --code-block-ink:#f0eee7;
+  --syntax-comment:#95958d; --syntax-keyword:#d06a56; --syntax-name:#f0eee7; --syntax-string:#c6ad64;
+  --syntax-number:#8ab0a8; --syntax-function:#9fbd8c; --table:rgba(246,243,236,.84);
+  --table-head:#dedbd4; --table-head-ink:#2e302d; --detail:rgba(255,255,255,.56); --tooltip:#f6f3ec;
+  --paper-backdrop:#555550; --paper-shadow:0 31px 72px rgba(25,26,24,.27),0 5px 13px rgba(18,19,17,.18);
+  --serif:"Noto Serif CJK SC","Songti SC",Georgia,serif; --display:"Noto Serif CJK SC","STKaiti","KaiTi",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(230,226,215,.15);
+  --sidebar-bg:radial-gradient(ellipse at 20% 2%,rgba(255,255,255,.08),transparent 20rem),linear-gradient(154deg,#303431,#202321);
+  --body-bg:radial-gradient(ellipse at 73% 10%,rgba(255,255,255,.5),transparent 34rem),radial-gradient(circle at 14% 84%,rgba(29,28,26,.13),transparent 28rem),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 52%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#555550,#73736e 49%,#555550); --board-border:rgba(25,25,23,.24);
+  --sheet-texture:radial-gradient(ellipse at 20% 7%,rgba(255,255,255,.72),transparent 31%),radial-gradient(circle at 83% 78%,rgba(30,29,26,.035),transparent 22%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 52px rgba(35,33,29,.055); --sheet-edge:linear-gradient(90deg,transparent 0 8%,#8f3025 8% 11%,transparent 11% 89%,#8f3025 89% 92%,transparent 92%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#343431 0 2px,#aaa59b 2px 3px,transparent 4px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(25,25,23,.15),rgba(255,255,255,.45),rgba(25,25,23,.18),transparent);
+  --spine-blend:multiply; --seal-bg:#9c3226; --seal-ink:#f6f3ec; --seal-border:#c05c4e;
+  --ribbon-bg:linear-gradient(90deg,#75251d,#ac4033 48%,#76251d); --toast-bg:#7e2a22; --toast-ink:#fff4e8;
+  --turn-sheen:rgba(255,255,255,.72); --turn-shade:rgba(38,37,34,.36); --cast-shadow:rgba(28,27,24,.34);
+  --read-size:14.75px; --read-lh:24px;
+}
+
+:root[data-skin="xuan"][data-theme="dark"] {
+  color-scheme:dark;
+  --canvas:#10110f; --canvas-mid:#1d1f1c; --canvas-deep:#070806;
+  --paper:#181916; --paper-warm:#20211e; --ink:#e6e3da; --muted:#aaa79e;
+  --rule:rgba(235,232,222,.08); --red-rule:rgba(205,76,60,.4); --border:#4d4f49;
+  --accent:#d05a49; --accent-deep:#e87a67; --cinnabar:#d05a49;
+  --gold:#a5a093; --gold-soft:#c6c1b5; --sage:#93a298; --sage-soft:#303730;
+  --sidebar:#0c0e0d; --sidebar-muted:#a9ada8; --sidebar-ink:#e9e7df;
+  --baseline:24px; --topbar:rgba(15,17,15,.94); --control:rgba(38,40,36,.86);
+  --control-border:rgba(220,218,209,.2); --blockquote:rgba(208,90,73,.08); --blockquote-ink:#cbc8be;
+  --inline-code:#2b2d29; --inline-code-ink:#ee806d; --code-block:#070807; --code-block-ink:#eeece5;
+  --syntax-comment:#868a83; --syntax-keyword:#ed806b; --syntax-name:#eeece5; --syntax-string:#d2ba6f;
+  --syntax-number:#86b6ad; --syntax-function:#a1c08e; --table:rgba(24,25,22,.91);
+  --table-head:#30322e; --table-head-ink:#e0ddd4; --detail:rgba(43,45,41,.82); --tooltip:#1d1f1c;
+  --paper-backdrop:#020302; --paper-shadow:0 32px 88px rgba(0,0,0,.62),0 5px 18px rgba(0,0,0,.46);
+  --serif:"Noto Serif CJK SC","Songti SC",Georgia,serif; --display:"Noto Serif CJK SC","STKaiti","KaiTi",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(230,226,215,.11); --sidebar-bg:radial-gradient(ellipse at 20% 2%,rgba(255,255,255,.035),transparent 20rem),linear-gradient(154deg,#151816,#090b0a);
+  --body-bg:radial-gradient(ellipse at 72% 6%,rgba(210,214,206,.06),transparent 35rem),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 52%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#050605,#10110f 49%,#050605); --board-border:rgba(214,211,201,.14);
+  --sheet-texture:radial-gradient(ellipse at 20% 7%,rgba(255,255,255,.035),transparent 31%),radial-gradient(circle at 83% 78%,rgba(0,0,0,.25),transparent 22%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 52px rgba(0,0,0,.42); --sheet-edge:linear-gradient(90deg,transparent 0 8%,#8e2f25 8% 11%,transparent 11% 89%,#8e2f25 89% 92%,transparent 92%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#4a4c46 0 2px,#8d8c84 2px 3px,transparent 4px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(0,0,0,.54),rgba(230,227,217,.1),rgba(0,0,0,.58),transparent);
+  --spine-blend:normal; --seal-bg:#892f26; --seal-ink:#f1e9df; --seal-border:#b3594b;
+  --ribbon-bg:linear-gradient(90deg,#591a15,#9f382d 48%,#5b1b16); --toast-bg:#5f211b; --toast-ink:#f7e9dd;
+  --turn-sheen:rgba(255,255,255,.26); --turn-shade:rgba(0,0,0,.68); --cast-shadow:rgba(0,0,0,.74);
+  --read-size:14.75px; --read-lh:24px;
+}
+
+/* Bamboo Slips — sun-dried slats, moss-green cord, and warm carved ink. */
+:root[data-skin="bamboo"] {
+  color-scheme:light;
+  --canvas:#3f4935; --canvas-mid:#68714e; --canvas-deep:#252b20;
+  --paper:#e8d9ab; --paper-warm:#deca92; --ink:#2a2417; --muted:#736443;
+  --rule:rgba(73,57,27,.13); --red-rule:rgba(138,59,34,.34); --border:#aa8d50;
+  --accent:#8a3b22; --accent-deep:#6c2d1b; --cinnabar:#8a3b22;
+  --gold:#9c793d; --gold-soft:#d0ad64; --sage:#5e7a4e; --sage-soft:#c3ceaa;
+  --sidebar:#263020; --sidebar-muted:#aeba8e; --sidebar-ink:#ecdfb5;
+  --baseline:24px; --topbar:rgba(224,209,165,.94); --control:rgba(237,220,172,.8);
+  --control-border:rgba(71,68,35,.31); --blockquote:rgba(94,122,78,.09); --blockquote-ink:#51482f;
+  --inline-code:#d5bf82; --inline-code-ink:#6c2d1b; --code-block:#252419; --code-block-ink:#ece1bd;
+  --syntax-comment:#9d9878; --syntax-keyword:#dc7950; --syntax-name:#ece1bd; --syntax-string:#d6bf67;
+  --syntax-number:#91b59a; --syntax-function:#b0cc84; --table:rgba(232,217,171,.82);
+  --table-head:#c7b272; --table-head-ink:#35311f; --detail:rgba(246,233,190,.5); --tooltip:#e8d9ab;
+  --paper-backdrop:#1c2117; --paper-shadow:0 31px 74px rgba(16,20,12,.39),0 5px 15px rgba(16,18,10,.28);
+  --serif:"Noto Serif CJK SC","FangSong","STFangsong",Georgia,serif; --display:"Noto Serif CJK SC","KaiTi","STKaiti",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(188,178,111,.25); --sidebar-bg:repeating-linear-gradient(90deg,rgba(236,217,157,.025) 0 2px,transparent 2px 18px),linear-gradient(150deg,#35402b,#1d2518);
+  --body-bg:radial-gradient(ellipse at 73% 6%,rgba(196,193,122,.2),transparent 35rem),repeating-linear-gradient(92deg,rgba(255,244,194,.018) 0 2px,transparent 2px 24px),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 50%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#232a1c,#3b452f 49%,#232a1c); --board-border:rgba(190,161,91,.27);
+  --sheet-texture:repeating-linear-gradient(90deg,rgba(88,66,28,.035) 0 1px,transparent 1px 58px),radial-gradient(ellipse at 15% 5%,rgba(255,245,205,.3),transparent 30%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 46px rgba(90,64,26,.12); --sheet-edge:linear-gradient(90deg,#4f693f 0 11%,#a98744 11% 14%,transparent 14% 86%,#a98744 86% 89%,#4f693f 89%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#496039 0 3px,#9ca86d 3px 4px,transparent 5px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(39,47,28,.34),rgba(225,215,164,.28),rgba(39,47,28,.4),transparent);
+  --spine-blend:multiply; --seal-bg:#84391f; --seal-ink:#eddeb0; --seal-border:#b28d48;
+  --ribbon-bg:linear-gradient(90deg,#3f5633,#71845a 48%,#405633); --toast-bg:#6f351f; --toast-ink:#f2e1b5;
+  --turn-sheen:rgba(255,243,193,.5); --turn-shade:rgba(47,48,27,.48); --cast-shadow:rgba(24,30,17,.5);
+  --read-size:14.75px; --read-lh:24px;
+}
+
+:root[data-skin="bamboo"][data-theme="dark"] {
+  color-scheme:dark;
+  --canvas:#11150e; --canvas-mid:#22291a; --canvas-deep:#070906;
+  --paper:#241f13; --paper-warm:#2e2716; --ink:#ebdeb5; --muted:#ab9b70;
+  --rule:rgba(226,207,146,.09); --red-rule:rgba(191,77,44,.39); --border:#5d5130;
+  --accent:#cc6542; --accent-deep:#e07b58; --cinnabar:#cc6542;
+  --gold:#b28d48; --gold-soft:#d0ad64; --sage:#91aa74; --sage-soft:#303a26;
+  --sidebar:#0e120c; --sidebar-muted:#9eab82; --sidebar-ink:#e8dcb4;
+  --baseline:24px; --topbar:rgba(17,21,13,.94); --control:rgba(42,47,30,.88);
+  --control-border:rgba(196,181,119,.24); --blockquote:rgba(110,139,85,.11); --blockquote-ink:#d0c39c;
+  --inline-code:#37301c; --inline-code-ink:#e27e5b; --code-block:#080a07; --code-block-ink:#eee2bd;
+  --syntax-comment:#89866b; --syntax-keyword:#e27c58; --syntax-name:#eee2bd; --syntax-string:#d6bc65;
+  --syntax-number:#8eb09a; --syntax-function:#a5c77c; --table:rgba(35,31,19,.92);
+  --table-head:#39341f; --table-head-ink:#e1d09d; --detail:rgba(49,45,27,.84); --tooltip:#292416;
+  --paper-backdrop:#030402; --paper-shadow:0 32px 90px rgba(0,0,0,.64),0 5px 18px rgba(0,0,0,.48);
+  --serif:"Noto Serif CJK SC","FangSong","STFangsong",Georgia,serif; --display:"Noto Serif CJK SC","KaiTi","STKaiti",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(188,178,111,.16); --sidebar-bg:repeating-linear-gradient(90deg,rgba(236,217,157,.012) 0 2px,transparent 2px 18px),linear-gradient(150deg,#171e13,#090c08);
+  --body-bg:radial-gradient(ellipse at 73% 6%,rgba(144,161,96,.07),transparent 35rem),repeating-linear-gradient(92deg,rgba(255,244,194,.008) 0 2px,transparent 2px 24px),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 50%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#070a06,#11150e 49%,#070a06); --board-border:rgba(176,157,94,.16);
+  --sheet-texture:repeating-linear-gradient(90deg,rgba(228,209,147,.018) 0 1px,transparent 1px 58px),radial-gradient(ellipse at 15% 5%,rgba(255,245,205,.025),transparent 30%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 48px rgba(0,0,0,.45); --sheet-edge:linear-gradient(90deg,#405433 0 11%,#81672f 11% 14%,transparent 14% 86%,#81672f 86% 89%,#405433 89%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#425737 0 3px,#778158 3px 4px,transparent 5px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(0,0,0,.55),rgba(202,192,139,.09),rgba(0,0,0,.6),transparent);
+  --spine-blend:normal; --seal-bg:#6c2e1c; --seal-ink:#e8d8a9; --seal-border:#906e38;
+  --ribbon-bg:linear-gradient(90deg,#2b3d25,#596a48 48%,#2c3e25); --toast-bg:#57291a; --toast-ink:#efdfb6;
+  --turn-sheen:rgba(237,222,168,.23); --turn-shade:rgba(0,0,0,.68); --cast-shadow:rgba(0,0,0,.74);
+  --read-size:14.75px; --read-lh:24px;
+}
+
+/* Blue and White — cool porcelain paper with cobalt linework and crackle. */
+:root[data-skin="porcelain"] {
+  color-scheme:light;
+  --canvas:#aebdca; --canvas-mid:#d4dce1; --canvas-deep:#71869a;
+  --paper:#f2f4f3; --paper-warm:#e7edf0; --ink:#16202e; --muted:#647181;
+  --rule:rgba(29,70,119,.1); --red-rule:rgba(31,78,140,.31); --border:#9eafbf;
+  --accent:#1f4e8c; --accent-deep:#173d71; --cinnabar:#9c3226;
+  --gold:#7894ad; --gold-soft:#b5c8d6; --sage:#4b7180; --sage-soft:#ccdde1;
+  --sidebar:#142d4b; --sidebar-muted:#a9bdd0; --sidebar-ink:#edf4f6;
+  --baseline:24px; --topbar:rgba(235,241,243,.94); --control:rgba(248,251,251,.82);
+  --control-border:rgba(26,67,113,.25); --blockquote:rgba(31,78,140,.065); --blockquote-ink:#40546b;
+  --inline-code:#dce6eb; --inline-code-ink:#1c4a83; --code-block:#132237; --code-block-ink:#edf4f7;
+  --syntax-comment:#91a6b9; --syntax-keyword:#70a9ed; --syntax-name:#edf4f7; --syntax-string:#d6bd70;
+  --syntax-number:#82d0d5; --syntax-function:#9bc5a3; --table:rgba(242,244,243,.84);
+  --table-head:#d5e2e8; --table-head-ink:#1c426d; --detail:rgba(255,255,255,.6); --tooltip:#f2f4f3;
+  --paper-backdrop:#455b70; --paper-shadow:0 31px 74px rgba(18,42,65,.27),0 5px 15px rgba(15,39,61,.2);
+  --serif:"Noto Serif CJK SC","Songti SC",Georgia,serif; --display:"Noto Serif CJK SC","STSong",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(167,195,218,.23); --sidebar-bg:radial-gradient(circle at 75% 20%,rgba(130,175,213,.16),transparent 18rem),linear-gradient(150deg,#1b3d63,#0c2038);
+  --body-bg:radial-gradient(ellipse at 74% 4%,rgba(255,255,255,.62),transparent 36rem),radial-gradient(circle at 13% 84%,rgba(25,70,113,.15),transparent 28rem),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 51%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#496075,#6c8498 49%,#496075); --board-border:rgba(217,232,240,.3);
+  --sheet-texture:repeating-radial-gradient(circle at 82% 18%,transparent 0 18px,rgba(31,78,140,.022) 19px 20px,transparent 21px 38px),radial-gradient(ellipse at 18% 8%,rgba(255,255,255,.72),transparent 29%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 47px rgba(22,63,104,.07); --sheet-edge:linear-gradient(90deg,#1f4e8c 0 12%,#8fb2ca 12% 15%,transparent 15% 85%,#8fb2ca 85% 88%,#1f4e8c 88%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#1f4e8c 0 3px,#aac2d2 3px 4px,transparent 5px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(18,53,88,.22),rgba(255,255,255,.58),rgba(18,53,88,.25),transparent);
+  --spine-blend:multiply; --seal-bg:#9c3226; --seal-ink:#f5ebe4; --seal-border:#c26b60;
+  --ribbon-bg:linear-gradient(90deg,#153c70,#2b64a3 48%,#153d71); --toast-bg:#244f7e; --toast-ink:#f4f8fa;
+  --turn-sheen:rgba(255,255,255,.82); --turn-shade:rgba(18,52,87,.35); --cast-shadow:rgba(19,50,80,.4);
+  --read-size:14.75px; --read-lh:24px;
+}
+
+:root[data-skin="porcelain"][data-theme="dark"] {
+  color-scheme:dark;
+  --canvas:#07111e; --canvas-mid:#10253d; --canvas-deep:#02060b;
+  --paper:#101c2b; --paper-warm:#16263a; --ink:#e7eff2; --muted:#a2b3c2;
+  --rule:rgba(151,190,220,.08); --red-rule:rgba(78,139,206,.38); --border:#3a5873;
+  --accent:#69a6e8; --accent-deep:#8dbdf0; --cinnabar:#d45a4b;
+  --gold:#789fbd; --gold-soft:#aac6d9; --sage:#82afb8; --sage-soft:#253d45;
+  --sidebar:#050f1c; --sidebar-muted:#94abc0; --sidebar-ink:#e9f1f4;
+  --baseline:24px; --topbar:rgba(6,15,27,.94); --control:rgba(24,42,62,.9);
+  --control-border:rgba(143,185,220,.22); --blockquote:rgba(93,154,218,.1); --blockquote-ink:#c4d3de;
+  --inline-code:#21364b; --inline-code-ink:#8dc2f3; --code-block:#030912; --code-block-ink:#eaf2f5;
+  --syntax-comment:#738da4; --syntax-keyword:#80b9ef; --syntax-name:#eaf2f5; --syntax-string:#d6bd70;
+  --syntax-number:#78c8d4; --syntax-function:#94c39f; --table:rgba(14,26,40,.92);
+  --table-head:#203a54; --table-head-ink:#d5e6ef; --detail:rgba(25,43,62,.84); --tooltip:#122238;
+  --paper-backdrop:#010306; --paper-shadow:0 32px 90px rgba(0,0,0,.65),0 5px 18px rgba(0,0,0,.5);
+  --serif:"Noto Serif CJK SC","Songti SC",Georgia,serif; --display:"Noto Serif CJK SC","STSong",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(141,181,215,.16); --sidebar-bg:radial-gradient(circle at 75% 20%,rgba(70,130,184,.1),transparent 18rem),linear-gradient(150deg,#0c2239,#020915);
+  --body-bg:radial-gradient(ellipse at 74% 4%,rgba(94,148,196,.08),transparent 36rem),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 51%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#01050a,#07111e 49%,#01050a); --board-border:rgba(119,162,198,.16);
+  --sheet-texture:repeating-radial-gradient(circle at 82% 18%,transparent 0 18px,rgba(116,169,214,.02) 19px 20px,transparent 21px 38px),radial-gradient(ellipse at 18% 8%,rgba(255,255,255,.028),transparent 29%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 48px rgba(0,0,0,.43); --sheet-edge:linear-gradient(90deg,#275987 0 12%,#5e819d 12% 15%,transparent 15% 85%,#5e819d 85% 88%,#275987 88%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#32699a 0 3px,#7196b4 3px 4px,transparent 5px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(0,0,0,.55),rgba(150,188,218,.1),rgba(0,0,0,.6),transparent);
+  --spine-blend:normal; --seal-bg:#7e3029; --seal-ink:#f0ddd8; --seal-border:#a65a51;
+  --ribbon-bg:linear-gradient(90deg,#15385e,#2b6597 48%,#15395f); --toast-bg:#173b61; --toast-ink:#eef5f8;
+  --turn-sheen:rgba(162,207,239,.28); --turn-shade:rgba(0,0,0,.66); --cast-shadow:rgba(0,0,0,.74);
+  --read-size:14.75px; --read-lh:24px;
+}
+
+/* Dunhuang Fresco — mineral blue, malachite, ochre, and weathered cave plaster. */
+:root[data-skin="dunhuang"] {
+  color-scheme:light;
+  --canvas:#76543c; --canvas-mid:#aa7951; --canvas-deep:#493225;
+  --paper:#eddcc0; --paper-warm:#e1c9a4; --ink:#2a1d13; --muted:#796149;
+  --rule:rgba(105,65,32,.12); --red-rule:rgba(168,66,31,.4); --border:#b98d5c;
+  --accent:#a8421f; --accent-deep:#7c3019; --cinnabar:#a8421f;
+  --gold:#c08a3e; --gold-soft:#dfb86f; --sage:#3f7771; --sage-soft:#b8d0bf;
+  --sidebar:#3a241d; --sidebar-muted:#c0a078; --sidebar-ink:#f0dcb9;
+  --baseline:24px; --topbar:rgba(229,207,170,.94); --control:rgba(241,221,186,.8);
+  --control-border:rgba(105,59,27,.29); --blockquote:rgba(50,111,106,.085); --blockquote-ink:#58442f;
+  --inline-code:#d9b98a; --inline-code-ink:#79311d; --code-block:#2d221d; --code-block-ink:#f0dfbd;
+  --syntax-comment:#aa9474; --syntax-keyword:#e07950; --syntax-name:#f0dfbd; --syntax-string:#dcbd62;
+  --syntax-number:#76b6b0; --syntax-function:#97c58f; --table:rgba(237,220,192,.82);
+  --table-head:#d8b77f; --table-head-ink:#46301d; --detail:rgba(250,230,196,.5); --tooltip:#eddcc0;
+  --paper-backdrop:#2c1c15; --paper-shadow:0 32px 76px rgba(32,17,10,.43),0 5px 15px rgba(29,16,9,.3);
+  --serif:"Noto Serif CJK SC","FangSong",Georgia,serif; --display:"Noto Serif CJK SC","STKaiti","KaiTi",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(209,157,82,.25); --sidebar-bg:radial-gradient(circle at 84% 12%,rgba(49,116,111,.18),transparent 18rem),radial-gradient(circle at 10% 86%,rgba(185,79,31,.18),transparent 18rem),linear-gradient(150deg,#4d3024,#281812);
+  --body-bg:radial-gradient(ellipse at 72% 5%,rgba(218,166,85,.23),transparent 34rem),radial-gradient(circle at 12% 82%,rgba(43,108,104,.14),transparent 27rem),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 49%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#352219,#60402c 49%,#352219); --board-border:rgba(219,166,87,.25);
+  --sheet-texture:radial-gradient(circle at 82% 14%,rgba(44,114,108,.075),transparent 8rem),radial-gradient(circle at 14% 84%,rgba(174,73,29,.07),transparent 10rem),radial-gradient(ellipse at 18% 7%,rgba(255,242,209,.34),transparent 28%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 50px rgba(117,69,31,.13); --sheet-edge:linear-gradient(90deg,#a8421f 0 10%,#c8933f 10% 14%,#3e7771 14% 18%,transparent 18% 82%,#3e7771 82% 86%,#c8933f 86% 90%,#a8421f 90%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#3d746e 0 3px,#c08a3e 3px 4px,transparent 5px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(75,44,26,.3),rgba(244,222,179,.34),rgba(75,44,26,.36),transparent);
+  --spine-blend:multiply; --seal-bg:#a8421f; --seal-ink:#f0ddbd; --seal-border:#d09b51;
+  --ribbon-bg:linear-gradient(90deg,#2d625f,#4f8a83 48%,#2e625f); --toast-bg:#87391f; --toast-ink:#f4dfbd;
+  --turn-sheen:rgba(255,231,183,.5); --turn-shade:rgba(77,42,22,.48); --cast-shadow:rgba(45,25,14,.5);
+  --read-size:15px; --read-lh:25px;
+}
+
+:root[data-skin="dunhuang"][data-theme="dark"] {
+  color-scheme:dark;
+  --canvas:#160e0a; --canvas-mid:#2d1c15; --canvas-deep:#070403;
+  --paper:#261b15; --paper-warm:#302219; --ink:#eedbb8; --muted:#ad9471;
+  --rule:rgba(225,187,126,.09); --red-rule:rgba(202,81,42,.42); --border:#654a31;
+  --accent:#dc7048; --accent-deep:#ee8b66; --cinnabar:#dc7048;
+  --gold:#c9984a; --gold-soft:#ddb56d; --sage:#70a69e; --sage-soft:#2d453f;
+  --sidebar:#100a08; --sidebar-muted:#a98e69; --sidebar-ink:#ead5b1;
+  --baseline:24px; --topbar:rgba(21,13,9,.94); --control:rgba(49,34,25,.89);
+  --control-border:rgba(204,157,88,.23); --blockquote:rgba(73,145,137,.11); --blockquote-ink:#d1bc99;
+  --inline-code:#3a291e; --inline-code-ink:#ed8d68; --code-block:#090604; --code-block-ink:#efddba;
+  --syntax-comment:#8c795e; --syntax-keyword:#ed8963; --syntax-name:#efddba; --syntax-string:#d9b85e;
+  --syntax-number:#74b8b2; --syntax-function:#96c18b; --table:rgba(38,27,21,.92);
+  --table-head:#443025; --table-head-ink:#e1c492; --detail:rgba(55,39,29,.84); --tooltip:#2b1e17;
+  --paper-backdrop:#020101; --paper-shadow:0 32px 90px rgba(0,0,0,.66),0 5px 18px rgba(0,0,0,.52);
+  --serif:"Noto Serif CJK SC","FangSong",Georgia,serif; --display:"Noto Serif CJK SC","STKaiti","KaiTi",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(209,157,82,.16); --sidebar-bg:radial-gradient(circle at 84% 12%,rgba(49,116,111,.1),transparent 18rem),radial-gradient(circle at 10% 86%,rgba(185,79,31,.09),transparent 18rem),linear-gradient(150deg,#1d110d,#080504);
+  --body-bg:radial-gradient(ellipse at 72% 5%,rgba(194,129,53,.08),transparent 34rem),radial-gradient(circle at 12% 82%,rgba(43,108,104,.07),transparent 27rem),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 49%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#070403,#160e0a 49%,#070403); --board-border:rgba(195,143,72,.15);
+  --sheet-texture:radial-gradient(circle at 82% 14%,rgba(65,139,132,.045),transparent 8rem),radial-gradient(circle at 14% 84%,rgba(191,78,36,.04),transparent 10rem),radial-gradient(ellipse at 18% 7%,rgba(255,229,181,.025),transparent 28%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 50px rgba(0,0,0,.45); --sheet-edge:linear-gradient(90deg,#9b451f 0 10%,#936b2e 10% 14%,#32635e 14% 18%,transparent 18% 82%,#32635e 82% 86%,#936b2e 86% 90%,#9b451f 90%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#35665f 0 3px,#88642e 3px 4px,transparent 5px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(0,0,0,.56),rgba(222,190,133,.09),rgba(0,0,0,.61),transparent);
+  --spine-blend:normal; --seal-bg:#7e341f; --seal-ink:#ead5b1; --seal-border:#a3733b;
+  --ribbon-bg:linear-gradient(90deg,#214a47,#3d746e 48%,#224b48); --toast-bg:#622a1b; --toast-ink:#efdbb7;
+  --turn-sheen:rgba(229,190,126,.23); --turn-shade:rgba(0,0,0,.69); --cast-shadow:rgba(0,0,0,.76);
+  --read-size:15px; --read-lh:25px;
+}
+
+/* Imperial Edict — vermilion lacquer around a gold-silk decree. */
+:root[data-skin="vermilion"] {
+  color-scheme:light;
+  --canvas:#6f1714; --canvas-mid:#9c2920; --canvas-deep:#3c0b0a;
+  --paper:#f6e7c1; --paper-warm:#ead39d; --ink:#2b1a10; --muted:#765837;
+  --rule:rgba(103,58,19,.12); --red-rule:rgba(158,35,24,.46); --border:#bc8d3d;
+  --accent:#9e2318; --accent-deep:#76170f; --cinnabar:#9e2318;
+  --gold:#c9a04a; --gold-soft:#e2c475; --sage:#66774f; --sage-soft:#ccd3aa;
+  --sidebar:#430d0c; --sidebar-muted:#d0a45b; --sidebar-ink:#f7e4b1;
+  --baseline:24px; --topbar:rgba(239,213,154,.95); --control:rgba(248,225,171,.83);
+  --control-border:rgba(116,48,18,.31); --blockquote:rgba(158,35,24,.08); --blockquote-ink:#594027;
+  --inline-code:#e0c17e; --inline-code-ink:#76170f; --code-block:#2b1710; --code-block-ink:#f5e3b7;
+  --syntax-comment:#a89266; --syntax-keyword:#e3704e; --syntax-name:#f5e3b7; --syntax-string:#e0c765;
+  --syntax-number:#87b7aa; --syntax-function:#a6c77e; --table:rgba(246,231,193,.82);
+  --table-head:#dcbf79; --table-head-ink:#492b14; --detail:rgba(255,239,201,.48); --tooltip:#f6e7c1;
+  --paper-backdrop:#250504; --paper-shadow:0 33px 80px rgba(50,5,4,.5),0 5px 17px rgba(42,5,4,.36);
+  --serif:"Noto Serif CJK SC","Songti SC",Georgia,serif; --display:"Noto Serif CJK SC","STKaiti","KaiTi",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(226,181,90,.28); --sidebar-bg:repeating-linear-gradient(45deg,rgba(232,184,85,.025) 0 2px,transparent 2px 11px),radial-gradient(circle at 50% 0,rgba(214,150,42,.14),transparent 22rem),linear-gradient(150deg,#5b1310,#2b0706);
+  --body-bg:radial-gradient(ellipse at 74% 5%,rgba(236,183,78,.23),transparent 35rem),repeating-linear-gradient(45deg,rgba(255,218,131,.018) 0 2px,transparent 2px 12px),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 48%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#370807,#681410 49%,#370807); --board-border:rgba(232,188,93,.34);
+  --sheet-texture:repeating-linear-gradient(45deg,rgba(159,102,24,.025) 0 1px,transparent 1px 9px),radial-gradient(ellipse at 18% 7%,rgba(255,248,213,.36),transparent 29%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 52px rgba(120,67,20,.12); --sheet-edge:linear-gradient(90deg,#8c1c14 0 10%,#c89c43 10% 18%,transparent 18% 82%,#c89c43 82% 90%,#8c1c14 90%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#8f2018 0 3px,#c9a04a 3px 5px,transparent 6px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(75,15,10,.38),rgba(255,232,165,.34),rgba(75,15,10,.42),transparent);
+  --spine-blend:multiply; --seal-bg:#9e2318; --seal-ink:#f7e4b1; --seal-border:#d1a34c;
+  --ribbon-bg:linear-gradient(90deg,#8a1d15,#d5a442 48%,#8b1d15); --toast-bg:#761b14; --toast-ink:#f8e6b6;
+  --turn-sheen:rgba(255,234,174,.6); --turn-shade:rgba(104,31,15,.5); --cast-shadow:rgba(73,11,8,.55);
+  --read-size:15px; --read-lh:25px;
+}
+
+:root[data-skin="vermilion"][data-theme="dark"] {
+  color-scheme:dark;
+  --canvas:#120201; --canvas-mid:#300706; --canvas-deep:#050000;
+  --paper:#25150d; --paper-warm:#321c10; --ink:#f0dca8; --muted:#b59459;
+  --rule:rgba(229,190,101,.09); --red-rule:rgba(220,65,46,.45); --border:#68481f;
+  --accent:#df5a43; --accent-deep:#f17a5f; --cinnabar:#df5a43;
+  --gold:#d0a54d; --gold-soft:#e0c16f; --sage:#98aa72; --sage-soft:#343b24;
+  --sidebar:#0d0101; --sidebar-muted:#b58e4f; --sidebar-ink:#f0daa4;
+  --baseline:24px; --topbar:rgba(22,3,2,.95); --control:rgba(57,24,16,.9);
+  --control-border:rgba(216,169,76,.25); --blockquote:rgba(214,71,51,.11); --blockquote-ink:#d5bc83;
+  --inline-code:#402316; --inline-code-ink:#f17c60; --code-block:#080201; --code-block-ink:#f1dda9;
+  --syntax-comment:#8e774d; --syntax-keyword:#f07c5d; --syntax-name:#f1dda9; --syntax-string:#dabe59;
+  --syntax-number:#81b9aa; --syntax-function:#9fc477; --table:rgba(37,21,13,.92);
+  --table-head:#472817; --table-head-ink:#e4c776; --detail:rgba(57,31,18,.84); --tooltip:#2d190f;
+  --paper-backdrop:#010000; --paper-shadow:0 33px 92px rgba(0,0,0,.69),0 5px 19px rgba(0,0,0,.54);
+  --serif:"Noto Serif CJK SC","Songti SC",Georgia,serif; --display:"Noto Serif CJK SC","STKaiti","KaiTi",Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sidebar-border:rgba(211,163,70,.17); --sidebar-bg:repeating-linear-gradient(45deg,rgba(232,184,85,.012) 0 2px,transparent 2px 11px),radial-gradient(circle at 50% 0,rgba(181,112,25,.08),transparent 22rem),linear-gradient(150deg,#1b0302,#060000);
+  --body-bg:radial-gradient(ellipse at 74% 5%,rgba(188,116,26,.08),transparent 35rem),repeating-linear-gradient(45deg,rgba(255,218,131,.007) 0 2px,transparent 2px 12px),linear-gradient(132deg,var(--canvas),var(--canvas-mid) 48%,var(--canvas-deep));
+  --board-bg:linear-gradient(90deg,#030000,#110201 49%,#030000); --board-border:rgba(200,148,56,.16);
+  --sheet-texture:repeating-linear-gradient(45deg,rgba(224,180,80,.015) 0 1px,transparent 1px 9px),radial-gradient(ellipse at 18% 7%,rgba(255,236,181,.025),transparent 29%),linear-gradient(90deg,transparent 0 24px,var(--red-rule) 24px 25px,transparent 25px),var(--paper);
+  --sheet-inner:inset 0 0 52px rgba(0,0,0,.46); --sheet-edge:linear-gradient(90deg,#75150f 0 10%,#8f6e2d 10% 18%,transparent 18% 82%,#8f6e2d 82% 90%,#75150f 90%);
+  --spine-bg:radial-gradient(circle at 50% 25px,#6b1611 0 3px,#98752e 3px 5px,transparent 6px) 0 0/100% 58px repeat-y,linear-gradient(90deg,transparent,rgba(0,0,0,.58),rgba(220,184,104,.08),rgba(0,0,0,.62),transparent);
+  --spine-blend:normal; --seal-bg:#70160f; --seal-ink:#ecd59e; --seal-border:#9a7531;
+  --ribbon-bg:linear-gradient(90deg,#61110d,#9d762d 48%,#62120d); --toast-bg:#53110d; --toast-ink:#f0daa3;
+  --turn-sheen:rgba(227,188,103,.25); --turn-shade:rgba(0,0,0,.7); --cast-shadow:rgba(0,0,0,.78);
+  --read-size:15px; --read-lh:25px;
+}
+
+/* Derived study-block colors inherit each skin's own paper, jade, ink, and seal palette. */
+:root {
+  --algorithm-bg:color-mix(in srgb,var(--sage-soft) 62%,var(--paper));
+  --algorithm-head:color-mix(in srgb,var(--sage) 18%,var(--paper));
+  --algorithm-border:var(--sage);
+  --algorithm-ink:var(--ink);
+  --algorithm-step:var(--accent-deep);
 }
 
 * { box-sizing: border-box; }
@@ -377,6 +682,13 @@ kbd { padding:2px 5px; border:1px solid currentColor; border-radius:2px; font:10
 .codehilite .m, .codehilite .mi, .codehilite .mf { color:var(--syntax-number); }
 .codehilite .nf, .codehilite .fm, .codehilite .nc { color:var(--syntax-function); font-weight:700; }
 .codehilite .nb, .codehilite .bp { color:var(--syntax-number); }
+.chapter-page .algorithm-block { margin:14px 0; padding:0 13px 10px; border:1px solid var(--algorithm-border); border-left-width:4px; border-radius:2px; background:var(--algorithm-bg); color:var(--algorithm-ink); box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--algorithm-border) 9%,transparent); }
+.chapter-page .algorithm-block .algorithm-label { margin:0 -13px 9px; padding:6px 11px; border-bottom:1px solid color-mix(in srgb,var(--algorithm-border) 42%,transparent); background:var(--algorithm-head); color:var(--algorithm-step); font:800 8px/15px var(--sans); letter-spacing:.13em; }
+.chapter-page .algorithm-block p, .chapter-page .algorithm-block ol { margin-bottom:7px; }
+.chapter-page .algorithm-block ol { padding-left:23px; }
+.chapter-page .algorithm-block li { margin-bottom:2px; }
+.chapter-page .algorithm-block li::marker { color:var(--algorithm-step); font-family:var(--sans); font-weight:850; }
+.chapter-page .algorithm-block > :last-child { margin-bottom:0; }
 .chapter-page table { width:100%; margin:14px 0; border:2px double var(--border); border-collapse:collapse; background:var(--table); font-family:var(--sans); font-size:10.25px; line-height:15px; }
 .chapter-page th, .chapter-page td { padding:7px; border:1px solid var(--border); text-align:left; vertical-align:top; }
 .chapter-page th { background:var(--table-head); color:var(--table-head-ink); font-weight:750; }
@@ -406,6 +718,7 @@ kbd { padding:2px 5px; border:1px solid currentColor; border-radius:2px; font:10
 .page-arrow:disabled { cursor:not-allowed; opacity:.23; }
 
 .notebook-spread.is-dragging { cursor:grabbing; user-select:none; }
+.notebook-spread.is-dragging, .notebook-spread.is-dragging * { -webkit-user-select:none !important; user-select:none !important; }
 
 .reader-footer { display:grid; width:min(100%,1280px); grid-template-columns:1fr auto 1fr; align-items:center; gap:18px; margin:0 auto; padding:6px 65px 28px; }
 .reader-footer > p { margin:0; padding:5px 11px; border-right:1px solid var(--border); border-left:1px solid var(--border); color:var(--muted); font:italic 10px var(--display); text-align:center; }

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/home/congnguyencn/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 473,
+  "book_page": 433,
+  "figure_id": "Figure 11.5.1",
+  "caption": "Multi-head attention.",
+  "dpi": 240,
+  "crop_percent": {
+    "x": 35.0,
+    "y": 8.0,
+    "width": 35.0,
+    "height": 12.0
+  },
+  "rendered_page_pixels": [
+    1985,
+    2807
+  ],
+  "output_pixels": [
+    695,
+    336
+  ],
+  "created_at": "2026-09-13T11:30:06.254188+00:00"
+}

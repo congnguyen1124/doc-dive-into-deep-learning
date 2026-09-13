@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An ancient Chinese manuscript-inspired reader for Vietnamese Dive into Deep Learning notes.">
     <title>D2L Secret Manual</title>
-    <link rel="stylesheet" href="/static/styles.css?v=skin-library-1">
+    <link rel="stylesheet" href="/static/styles.css?v=reader-fixes-5">
     <script>
       window.MathJax = {
         tex: {
@@ -18,13 +18,13 @@
       };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    <script defer src="/static/app.js?v=skin-library-1"></script>
+    <script defer src="/static/app.js?v=reader-fixes-5"></script>
   </head>
   <body class="ancient-manuscript">
     <div class="app-shell">
       <aside class="sidebar" id="sidebar" aria-label="Table of contents">
         <div class="brand">
-          <div class="brand-mark" aria-hidden="true"><span>學</span></div>
+          <div class="brand-mark" aria-hidden="true"><span id="brandSeal">武</span></div>
           <div>
             <p class="eyebrow">Ancient study archive</p>
             <p class="brand-name">Dive into<br>Deep Learning</p>
@@ -64,7 +64,7 @@
         <header class="topbar">
           <button class="icon-button menu-button" id="menuButton" aria-label="Open table of contents">☰</button>
           <div class="crumb">
-            <span class="archive-seal" aria-hidden="true">藏</span>
+            <span class="archive-seal" id="archiveSeal" aria-hidden="true">武</span>
             <span id="documentKind">Scroll</span>
             <span aria-hidden="true">/</span>
             <strong id="crumbTitle">Loading…</strong>
@@ -121,7 +121,7 @@
               <article class="note-sheet right-sheet" id="rightSheet" aria-label="Right note page">
                 <header class="page-header">
                   <div><p class="chapter-kicker" id="rightKicker">SCROLL 01</p><p class="page-range" id="rightRange">Draw this leaf to the left</p></div>
-                  <span class="page-side-label">墨記</span>
+                  <span class="page-side-label" id="pageSeal">武記</span>
                 </header>
                 <div class="chapter-page" id="rightPage"><div class="loading-block"></div><div class="loading-block short"></div></div>
                 <footer class="page-footer"><span>Draw or swipe the paper edge</span><span id="rightFolio">02</span></footer>

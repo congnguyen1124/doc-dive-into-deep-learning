@@ -22,6 +22,7 @@ try:
     import yaml
     from markdown.extensions import Extension
     from markdown.inlinepatterns import InlineProcessor
+    from markdown.preprocessors import Preprocessor
 except ImportError as exc:  # pragma: no cover - exercised only without dependencies
     print(
         "Thiếu thư viện. Hãy chạy: python -m pip install -r requirements.txt",
@@ -39,6 +40,13 @@ TERM_PATTERN = re.compile(r"\{\{term:([a-z0-9-]+)(?:\|([^}]+))?\}\}")
 IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\(([^\s)]+)(?:\s+['\"][^'\"]*['\"])?\)")
 IMAGE_SRC_PATTERN = re.compile(r'(<img\b[^>]*\bsrc=")([^"]+)(")', re.IGNORECASE)
 PAGEBREAK_PATTERN = re.compile(r"<!--\s*pagebreak\s*-->", re.IGNORECASE)
+MATH_PATTERN = re.compile(
+    r"(?<!\\)\$\$(?:.|\n)+?(?<!\\)\$\$"
+    r"|\\\[(?:.|\n)+?\\\]"
+    r"|\\\((?:.|\n)+?\\\)"
+    r"|(?<![\\$])\$(?!\$)[^\n$]+?(?<!\\)\$(?!\$)",
+    re.DOTALL,
+)
 
 
 class NotebookError(ValueError):
@@ -86,6 +94,25 @@ class GlossaryExtension(Extension):
         md.inlinePatterns.register(
             GlossaryInlineProcessor(TERM_PATTERN.pattern, md), "glossary_term", 175
         )
+
+
+class MathStashPreprocessor(Preprocessor):
+    """Protect MathJax delimiters from Markdown emphasis and HTML parsing."""
+
+    def run(self, lines: list[str]) -> list[str]:
+        source = "\n".join(lines)
+        protected = MATH_PATTERN.sub(
+            lambda match: self.md.htmlStash.store(match.group(0)),
+            source,
+        )
+        return protected.split("\n")
+
+
+class MathStashExtension(Extension):
+    def extendMarkdown(self, md: markdown.Markdown) -> None:  # noqa: N802
+        # Fenced code is stashed first (priority 25), so dollar signs in examples
+        # remain code while real equations reach MathJax byte-for-byte intact.
+        md.preprocessors.register(MathStashPreprocessor(md), "math_stash", 24)
 
 
 def parse_front_matter(path: Path) -> tuple[dict[str, Any], str]:
@@ -169,6 +196,7 @@ def render_document(document: Document) -> str:
     renderer = markdown.Markdown(
         extensions=[
             GlossaryExtension(),
+            MathStashExtension(),
             "attr_list",
             "fenced_code",
             "codehilite",
