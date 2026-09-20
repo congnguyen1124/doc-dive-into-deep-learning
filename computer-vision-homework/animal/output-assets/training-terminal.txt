@@ -1,0 +1,15 @@
+$ ../../../.venv/bin/python train_cnn.py --epochs 5 --image-size 96 --batch-size 64 --workers 0 --lr 0.01 --momentum 0.9 --seed 42 --data-path datasets --checkpoint-dir . --results-dir output-assets --tensorboard animal_log
+
+[config] device=cpu seed=42 image_size=96 batch_size=64
+[config] epochs=5 learning_rate=0.01 momentum=0.9 workers=0
+[dataset] train=23583 validation=2596 classes=10
+[classes] butterfly, cat, chicken, cow, dog, elephant, horse, sheep, spider, squirrel
+[model] AdvancedCNN parameters=510,578 pretrained=False
+Epoch 01/5 | train_loss=2.0672 | val_loss=2.2019 | accuracy=0.2712 | macro_precision=0.3186 | macro_recall=0.2051 | macro_f1=0.1578
+Epoch 02/5 | train_loss=1.7827 | val_loss=1.8111 | accuracy=0.3690 | macro_precision=0.3449 | macro_recall=0.3004 | macro_f1=0.2714
+Epoch 03/5 | train_loss=1.5379 | val_loss=1.4898 | accuracy=0.4530 | macro_precision=0.4262 | macro_recall=0.3584 | macro_f1=0.3334
+Epoch 04/5 | train_loss=1.3746 | val_loss=1.3743 | accuracy=0.5235 | macro_precision=0.5632 | macro_recall=0.4301 | macro_f1=0.4508
+Epoch 05/5 | train_loss=1.2537 | val_loss=1.5343 | accuracy=0.4919 | macro_precision=0.5697 | macro_recall=0.4070 | macro_f1=0.4135
+[complete] best_epoch=4 best_accuracy=0.5235 elapsed=303.1s
+[artifacts] metrics=output-assets/training-metrics.json tensorboard=animal_log
+[checkpoints] best=best.pt last=last.pt (ignored by Git)
