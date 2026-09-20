@@ -1,0 +1,17 @@
+# Local datasets and source archives
+datasets/
+.ark-*/
+animals_v2.rar
+
+# Training outputs
+animal_log/
+runs/
+best.pt
+last.pt
+
+# Generated local inference files
+uploads/
+
+# Python cache
+__pycache__/
+*.py[cod]
