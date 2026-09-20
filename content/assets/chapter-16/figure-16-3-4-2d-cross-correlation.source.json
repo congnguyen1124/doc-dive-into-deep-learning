@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/Users/nguyen.nguyen3/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 795,
+  "book_page": 755,
+  "figure_id": "Figure 16.3.4",
+  "caption": "Two-dimensional cross-correlation operation with a single input channel.",
+  "dpi": 180,
+  "crop_percent": {
+    "x": 31.0,
+    "y": 7.6,
+    "width": 44.0,
+    "height": 8.2
+  },
+  "rendered_page_pixels": [
+    1488,
+    2105
+  ],
+  "output_pixels": [
+    655,
+    173
+  ],
+  "created_at": "2026-09-15T08:01:41.576626+00:00",
+  "renderer": "pure-python page extraction + macOS sips (Poppler unavailable)"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "figure-extracted-from-pdf",
+  "source_pdf": "/Users/nguyen.nguyen3/CN_Develop/deep-learning/didl.pdf",
+  "source_pdf_sha256": "b3129f44c4a26b534176bb0f83d85e1ed26a6cdf93ebebacb20104eab2d6bc00",
+  "pdf_page": 823,
+  "book_page": 783,
+  "figure_id": "Figure 17.1.1",
+  "caption": "A simple gridworld navigation task where the robot not only has to find its way to the goal location (shown as a green house) but also has to avoid trap locations (shown as red cross signs).",
+  "dpi": 180,
+  "crop_percent": {
+    "x": 36.0,
+    "y": 8.2,
+    "width": 33.0,
+    "height": 23.0
+  },
+  "rendered_page_pixels": [
+    1488,
+    2105
+  ],
+  "output_pixels": [
+    491,
+    484
+  ],
+  "created_at": "2026-09-16T03:29:15.327294+00:00",
+  "renderer": "pure-python page extraction + macOS sips (Poppler unavailable)"
+}

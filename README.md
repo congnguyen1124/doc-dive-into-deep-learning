@@ -52,8 +52,8 @@ Reader mang phong cách bí kíp cổ trang Trung Hoa nhưng phần điều khi�
 
 | Trạng thái | Chương |
 |---|---|
-| **Đã biên soạn và kiểm tra** | 1–3, 7–11, 14, 15 và 21 |
-| **Đang chờ biên soạn** | 4–6, 12–13 và 16–20 |
+| **Đã biên soạn và kiểm tra** | 1–3, 7–11, 14–18 và 21 |
+| **Đang chờ biên soạn** | 4–6, 12–13 và 19–20 |
 | **Phụ lục đang chờ** | A — Mathematics for Deep Learning; B — Tools for Deep Learning |
 
 Mục lục, filename, số chương và phạm vi trang luôn bám theo đúng edition của PDF trong workspace.
@@ -159,6 +159,23 @@ Vùng crop dùng phần trăm của **trang PDF vật lý**:
 ```
 
 Công cụ tạo PNG và `.source.json` chứa checksum PDF, số trang, DPI và vùng crop để hình luôn truy xuất được nguồn.
+
+Công cụ trên cần Poppler (`pdftoppm`). Nếu máy bạn không có Poppler, dùng bản thay thế có **cùng CLI và cùng định dạng `.source.json`**:
+
+```bash
+../.venv/bin/python tools/extract_pdf_figure_nopoppler.py \
+  --pdf-page 784 --book-page 744 --crop 17,47,73,17 \
+  --figure-id "Figure 16.1" \
+  --output content/assets/chapter-16/figure-16-1-nlp-application-map.png
+```
+
+Bản này tách trang cần dùng thành một PDF một trang đã phóng tỉ lệ (bằng `tools/pdf_page.py` và `tools/pdf_reader.py`, thuần Python) rồi render bằng `sips` của macOS.
+
+`tools/pdf_reader.py` còn chạy độc lập để **đọc văn bản** của một khoảng trang, tiện khi đối chiếu bản dịch với PDF:
+
+```bash
+../.venv/bin/python tools/pdf_reader.py ../didl.pdf 784 820
+```
 
 </details>
 

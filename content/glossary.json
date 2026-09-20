@@ -1,141 +1,1146 @@
 {
   "version": 1,
   "terms": {
-    "affine-transformation": {"term":"Affine transformation","vi":"phép biến đổi affine","explanation":"Phép biến đổi tuyến tính rồi cộng thêm bias: y = Wx + b.","example":"Dự đoán giá bằng diện tích × trọng số + giá nền.","chapter":"chapter-03"},
-    "agent": {"term":"Agent","vi":"tác tử","explanation":"Thực thể quan sát môi trường và chọn hành động.","example":"Chương trình điều khiển nhân vật trong game.","chapter":"chapter-01"},
-    "aleatoric-uncertainty": {"term":"Aleatoric uncertainty","vi":"bất định vốn có","explanation":"Độ không chắc chắn do nhiễu tự nhiên, thường không biến mất chỉ nhờ thêm dữ liệu cùng loại.","example":"Cùng điều kiện nhưng thời gian giao hàng vẫn dao động.","chapter":"chapter-02"},
-    "axis": {"term":"Axis","vi":"trục","explanation":"Một hướng của tensor; mỗi axis có một ý nghĩa và độ dài.","example":"Tensor ảnh có thể có axis batch, channel, height, width.","chapter":"chapter-02"},
-    "bayes-theorem": {"term":"Bayes’ theorem","vi":"định lý Bayes","explanation":"Công thức cập nhật xác suất của một giả thuyết sau khi thấy bằng chứng.","example":"Cập nhật nguy cơ bệnh sau kết quả xét nghiệm.","chapter":"chapter-02"},
-    "bias": {"term":"Bias","vi":"độ chệch / hệ số tự do","explanation":"Giá trị cộng thêm giúp đường dự đoán không bắt buộc đi qua gốc.","example":"b trong y = wx + b.","chapter":"chapter-03"},
-    "broadcasting": {"term":"Broadcasting","vi":"mở rộng ngầm","explanation":"Quy tắc cho phép tính giữa tensor khác shape khi các chiều tương thích.","example":"Cộng scalar vào mọi phần tử của matrix.","chapter":"chapter-02"},
-    "classification": {"term":"Classification","vi":"phân loại","explanation":"Bài toán dự đoán một lớp rời rạc hoặc xác suất của các lớp.","example":"Spam hay không spam.","chapter":"chapter-01"},
-    "computational-graph": {"term":"Computational graph","vi":"đồ thị tính toán","explanation":"Bản ghi các phép toán và quan hệ phụ thuộc dùng để truyền gradient.","example":"x → x² → sum → loss.","chapter":"chapter-02"},
-    "cross-validation": {"term":"Cross-validation","vi":"kiểm định chéo","explanation":"Luân phiên nhiều phần dữ liệu làm validation để ước lượng ổn định hơn.","example":"5-fold huấn luyện năm lần với năm fold validation.","chapter":"chapter-03"},
-    "data-module": {"term":"DataModule","vi":"khối quản lý dữ liệu","explanation":"Thành phần đóng gói việc tạo, chia, xử lý và nạp batch dữ liệu.","example":"Một class cung cấp train_dataloader và val_dataloader.","chapter":"chapter-03"},
-    "dataset": {"term":"Dataset","vi":"tập dữ liệu","explanation":"Tập hợp nhiều examples dùng để học hoặc đánh giá.","example":"10.000 ảnh kèm nhãn mèo/chó.","chapter":"chapter-01"},
-    "deep-learning": {"term":"Deep learning","vi":"học sâu","explanation":"Nhánh machine learning dùng nhiều tầng biến đổi học được để tạo representation và prediction.","example":"Neural network nhiều tầng nhận diện vật thể.","chapter":"chapter-01"},
-    "derivative": {"term":"Derivative","vi":"đạo hàm","explanation":"Tốc độ một đầu ra thay đổi khi đầu vào dịch một lượng rất nhỏ.","example":"Đạo hàm x² là 2x.","chapter":"chapter-02"},
-    "distribution-shift": {"term":"Distribution shift","vi":"dịch chuyển phân bố","explanation":"Dữ liệu lúc triển khai khác có hệ thống so với dữ liệu huấn luyện.","example":"Bộ lọc spam gặp chiến thuật gửi thư mới.","chapter":"chapter-01"},
-    "dot-product": {"term":"Dot product","vi":"tích vô hướng","explanation":"Tổng các tích theo vị trí của hai vector cùng độ dài.","example":"[1,2]·[3,4] = 11.","chapter":"chapter-02"},
-    "elementwise-operation": {"term":"Elementwise operation","vi":"phép toán theo phần tử","explanation":"Áp dụng cùng phép tính cho từng vị trí tương ứng.","example":"[1,2] * [3,4] = [3,8].","chapter":"chapter-02"},
-    "end-to-end-learning": {"term":"End-to-end learning","vi":"học đầu-cuối","explanation":"Tối ưu đồng thời cả chuỗi từ input thô tới output cuối bằng một mục tiêu.","example":"Âm thanh đi thẳng tới văn bản qua một hệ được huấn luyện chung.","chapter":"chapter-01"},
-    "environment": {"term":"Environment","vi":"môi trường","explanation":"Thế giới mà agent quan sát, tác động và nhận reward.","example":"Bàn cờ và luật chơi đối với agent chơi cờ.","chapter":"chapter-01"},
-    "epistemic-uncertainty": {"term":"Epistemic uncertainty","vi":"bất định do thiếu hiểu biết","explanation":"Độ không chắc chắn do model hoặc dữ liệu chưa đủ, có thể giảm bằng thông tin phù hợp.","example":"Model chưa thấy ảnh chụp ban đêm.","chapter":"chapter-02"},
-    "expectation": {"term":"Expectation","vi":"kỳ vọng","explanation":"Giá trị trung bình dài hạn, có trọng số theo xác suất.","example":"Kỳ vọng của xúc xắc đều là 3,5.","chapter":"chapter-02"},
-    "feature": {"term":"Feature","vi":"đặc trưng đầu vào","explanation":"Thuộc tính dùng để mô tả một example cho model.","example":"Diện tích và số phòng của căn nhà.","chapter":"chapter-01"},
-    "fully-connected-layer": {"term":"Fully connected layer","vi":"tầng kết nối đầy đủ","explanation":"Mỗi output nhận đóng góp từ tất cả input của tầng trước.","example":"Linear layer tính Wx + b.","chapter":"chapter-03"},
-    "generalization-error": {"term":"Generalization error","vi":"sai số tổng quát hóa","explanation":"Sai số kỳ vọng trên dữ liệu mới từ môi trường mục tiêu.","example":"Lỗi dự báo giá của các căn chưa từng dùng để học.","chapter":"chapter-03"},
-    "gradient": {"term":"Gradient","vi":"vector đạo hàm","explanation":"Tập các partial derivatives, chỉ hướng hàm tăng nhanh nhất cục bộ.","example":"Optimizer đi ngược gradient của loss.","chapter":"chapter-02"},
-    "gradient-descent": {"term":"Gradient descent","vi":"hạ dốc theo gradient","explanation":"Cập nhật parameters theo hướng ngược gradient để giảm objective.","example":"θ ← θ − η∇L.","chapter":"chapter-01"},
-    "hadamard-product": {"term":"Hadamard product","vi":"tích theo phần tử","explanation":"Nhân từng ô tương ứng của hai tensor cùng shape.","example":"Khác với matrix multiplication.","chapter":"chapter-02"},
-    "hyperparameter": {"term":"Hyperparameter","vi":"siêu tham số","explanation":"Giá trị do người làm thí nghiệm chọn, không được model học trực tiếp từ gradient.","example":"Learning rate và batch size.","chapter":"chapter-03"},
-    "iid": {"term":"IID","vi":"độc lập và cùng phân phối","explanation":"Giả định examples không ảnh hưởng nhau và được lấy từ cùng một phân bố.","example":"Các căn nhà được lấy mẫu độc lập từ cùng thị trường.","chapter":"chapter-03"},
-    "in-place-operation": {"term":"In-place operation","vi":"phép toán tại chỗ","explanation":"Sửa trực tiếp vùng nhớ của tensor thay vì tạo tensor mới.","example":"x += 1.","chapter":"chapter-02"},
-    "inference": {"term":"Inference","vi":"suy luận bằng mô hình","explanation":"Dùng model đã huấn luyện để tạo prediction cho input.","example":"Ước lượng giá cho một căn nhà mới.","chapter":"chapter-03"},
-    "label": {"term":"Label","vi":"nhãn / đáp án","explanation":"Giá trị đúng mà supervised model cần học để dự đoán.","example":"Giá bán thật của căn nhà.","chapter":"chapter-01"},
-    "learning-rate": {"term":"Learning rate","vi":"tốc độ học","explanation":"Hệ số quyết định độ dài mỗi bước cập nhật parameter.","example":"η = 0,03 trong SGD.","chapter":"chapter-03"},
-    "linear-regression": {"term":"Linear regression","vi":"hồi quy tuyến tính","explanation":"Model dự đoán số bằng tổ hợp tuyến tính của features và một bias.","example":"ŷ = Xw + b.","chapter":"chapter-03"},
-    "loss-function": {"term":"Loss function","vi":"hàm mất mát","explanation":"Con số đo mức dự đoán sai để việc học có mục tiêu rõ ràng.","example":"Squared loss cho dự đoán giá.","chapter":"chapter-01"},
-    "machine-learning": {"term":"Machine learning","vi":"học máy","explanation":"Cách xây hệ thống cải thiện hiệu quả từ dữ liệu hoặc kinh nghiệm.","example":"Bộ lọc spam học từ email đã gắn nhãn.","chapter":"chapter-01"},
-    "matrix": {"term":"Matrix","vi":"ma trận","explanation":"Mảng số hai chiều gồm hàng và cột.","example":"Batch 32 examples × 10 features có shape (32,10).","chapter":"chapter-02"},
-    "minibatch-sgd": {"term":"Minibatch SGD","vi":"hạ dốc ngẫu nhiên theo lô nhỏ","explanation":"Ước lượng gradient bằng một nhóm examples rồi cập nhật parameters.","example":"Mỗi bước dùng 32 examples.","chapter":"chapter-03"},
-    "model": {"term":"Model","vi":"mô hình","explanation":"Hàm có parameters biến input thành prediction.","example":"Đường thẳng ŷ = wx + b.","chapter":"chapter-01"},
-    "module": {"term":"Module","vi":"khối mô hình","explanation":"Đơn vị code đóng gói parameters và forward computation.","example":"Một lớp kế thừa torch.nn.Module.","chapter":"chapter-03"},
-    "multilabel-classification": {"term":"Multi-label classification","vi":"phân loại đa nhãn","explanation":"Mỗi example có thể đồng thời thuộc nhiều nhãn.","example":"Ảnh mang nhãn biển, thuyền và hoàng hôn.","chapter":"chapter-01"},
-    "norm": {"term":"Norm","vi":"chuẩn / độ lớn","explanation":"Hàm đo độ lớn của vector hoặc matrix và thỏa các tính chất nhất định.","example":"L2 norm của [3,4] là 5.","chapter":"chapter-02"},
-    "optimization": {"term":"Optimization","vi":"tối ưu hóa","explanation":"Quá trình tìm parameters làm objective tốt hơn.","example":"Giảm loss bằng gradient descent.","chapter":"chapter-01"},
-    "overfitting": {"term":"Overfitting","vi":"quá khớp","explanation":"Model khớp training data rất tốt nhưng yếu trên dữ liệu mới.","example":"Nhớ cả nhiễu của 20 mẫu huấn luyện.","chapter":"chapter-01"},
-    "parameter": {"term":"Parameter","vi":"tham số học được","explanation":"Con số bên trong model được điều chỉnh trong training.","example":"Weight và bias.","chapter":"chapter-01"},
-    "partial-derivative": {"term":"Partial derivative","vi":"đạo hàm riêng","explanation":"Đạo hàm theo một biến khi giữ các biến còn lại cố định.","example":"∂f/∂x của f(x,y).","chapter":"chapter-02"},
-    "policy": {"term":"Policy","vi":"chính sách hành động","explanation":"Quy tắc agent dùng để chọn action từ quan sát hoặc trạng thái.","example":"Nếu vật cản gần thì robot rẽ trái.","chapter":"chapter-01"},
-    "probability": {"term":"Probability","vi":"xác suất","explanation":"Ngôn ngữ định lượng mức không chắc chắn của các event.","example":"Xác suất đồng xu ngửa bằng 0,5.","chapter":"chapter-02"},
-    "random-variable": {"term":"Random variable","vi":"biến ngẫu nhiên","explanation":"Hàm gán một giá trị số cho mỗi kết quả trong sample space.","example":"Số chấm khi tung xúc xắc.","chapter":"chapter-02"},
-    "recommender-system": {"term":"Recommender system","vi":"hệ thống gợi ý","explanation":"Hệ thống xếp hoặc dự đoán nội dung một người có thể quan tâm.","example":"Gợi ý phim dựa trên lịch sử xem.","chapter":"chapter-01"},
-    "reduction": {"term":"Reduction","vi":"phép thu gọn","explanation":"Gộp các phần tử dọc một hay nhiều axis bằng sum, mean, max…","example":"Mean từng cột của matrix.","chapter":"chapter-02"},
-    "regression": {"term":"Regression","vi":"hồi quy","explanation":"Bài toán dự đoán một đại lượng số liên tục.","example":"Dự đoán thời gian giao hàng.","chapter":"chapter-01"},
-    "regularization": {"term":"Regularization","vi":"điều chuẩn","explanation":"Biện pháp thêm thiên kiến để hạn chế model khớp nhiễu và cải thiện generalization.","example":"Phạt weights quá lớn.","chapter":"chapter-03"},
-    "reinforcement-learning": {"term":"Reinforcement learning","vi":"học tăng cường","explanation":"Agent học cách hành động qua tương tác và reward, không cần đáp án cho từng bước.","example":"Agent học chơi game.","chapter":"chapter-01"},
-    "representation-learning": {"term":"Representation learning","vi":"học biểu diễn","explanation":"Để model tự học cách mã hóa dữ liệu hữu ích cho nhiệm vụ.","example":"Các tầng ảnh học cạnh rồi hình rồi vật thể.","chapter":"chapter-01"},
-    "reward": {"term":"Reward","vi":"phần thưởng","explanation":"Tín hiệu số đánh giá hậu quả hành động của agent.","example":"+1 khi thắng ván chơi.","chapter":"chapter-01"},
-    "sample-space": {"term":"Sample space","vi":"không gian mẫu","explanation":"Tập tất cả kết quả có thể của một thí nghiệm ngẫu nhiên.","example":"Tung xu có Ω = {ngửa, sấp}.","chapter":"chapter-02"},
-    "scalar": {"term":"Scalar","vi":"vô hướng","explanation":"Một giá trị số đơn, tương ứng tensor bậc 0.","example":"Nhiệt độ 28°C.","chapter":"chapter-02"},
-    "self-supervised-learning": {"term":"Self-supervised learning","vi":"học tự giám sát","explanation":"Tự tạo target từ cấu trúc của dữ liệu chưa gắn nhãn.","example":"Che một từ rồi dự đoán từ đó.","chapter":"chapter-01"},
-    "sequence-learning": {"term":"Sequence learning","vi":"học trên chuỗi","explanation":"Bài toán trong đó thứ tự của input hoặc output mang ý nghĩa.","example":"Dịch một câu theo thứ tự từ.","chapter":"chapter-01"},
-    "statistics": {"term":"Statistics","vi":"thống kê","explanation":"Dùng mẫu quan sát để suy luận về quá trình hoặc tổng thể sinh dữ liệu.","example":"Ước lượng xác suất ngửa từ 1.000 lần tung.","chapter":"chapter-02"},
-    "supervised-learning": {"term":"Supervised learning","vi":"học có giám sát","explanation":"Học ánh xạ từ input tới output bằng examples có đáp án.","example":"Ảnh kèm nhãn mèo/chó.","chapter":"chapter-01"},
-    "tensor": {"term":"Tensor","vi":"ten-xơ / mảng nhiều chiều","explanation":"Cấu trúc số có một hoặc nhiều axis, nền tảng dữ liệu của PyTorch.","example":"Batch ảnh shape (32,3,224,224).","chapter":"chapter-02"},
-    "trainer": {"term":"Trainer","vi":"bộ điều phối huấn luyện","explanation":"Thành phần chạy epoch, batch, optimizer và validation.","example":"Vòng lặp gọi training_step cho từng batch.","chapter":"chapter-03"},
-    "training-error": {"term":"Training error","vi":"sai số huấn luyện","explanation":"Sai số đo trên chính dữ liệu dùng để fit parameters.","example":"MSE trên training set.","chapter":"chapter-03"},
-    "transpose": {"term":"Transpose","vi":"chuyển vị","explanation":"Đổi hàng thành cột và cột thành hàng của matrix.","example":"Matrix (3,2) thành (2,3).","chapter":"chapter-02"},
-    "underfitting": {"term":"Underfitting","vi":"chưa khớp","explanation":"Model quá yếu hoặc chưa được tối ưu đủ để nắm tín hiệu ngay trên training data.","example":"Dùng đường thẳng cho quan hệ cong mạnh.","chapter":"chapter-03"},
-    "unsupervised-learning": {"term":"Unsupervised learning","vi":"học không giám sát","explanation":"Tìm cấu trúc trong dữ liệu khi không có target do con người cung cấp.","example":"Gom khách hàng thành các nhóm hành vi.","chapter":"chapter-01"},
-    "validation-set": {"term":"Validation set","vi":"tập kiểm định","explanation":"Dữ liệu giữ ngoài training để chọn model và hyperparameters.","example":"Chọn lambda có validation loss thấp nhất.","chapter":"chapter-03"},
-    "variance": {"term":"Variance","vi":"phương sai","explanation":"Kỳ vọng bình phương độ lệch khỏi mean, đo mức phân tán.","example":"Hai cảm biến cùng mean nhưng variance khác nhau.","chapter":"chapter-02"},
-    "vector": {"term":"Vector","vi":"véc-tơ","explanation":"Danh sách số có thứ tự, thường biểu diễn một điểm hoặc một nhóm features.","example":"[diện tích, số phòng, tuổi nhà].","chapter":"chapter-02"},
-    "weight": {"term":"Weight","vi":"trọng số","explanation":"Parameter nhân với feature, biểu thị hướng và mức ảnh hưởng tuyến tính.","example":"w₁ cho feature diện tích.","chapter":"chapter-03"},
-    "weight-decay": {"term":"Weight decay","vi":"suy giảm trọng số","explanation":"Regularization làm weights co về 0, thường tương ứng L2 penalty.","example":"Thêm λ||w||²/2 vào objective.","chapter":"chapter-03"},
-    "anchor-box": {"term":"Anchor box","vi":"hộp neo / hộp ứng viên","explanation":"Box tham chiếu đặt tại các vị trí và tỉ lệ khác nhau để detector phân loại rồi tinh chỉnh.","example":"Một cell có anchors vuông, ngang và dọc.","chapter":"chapter-14"},
-    "bert": {"term":"BERT","vi":"mô hình mã hóa Transformer hai chiều","explanation":"Model pretrained biểu diễn token theo context hai phía và thích nghi cho nhiều nhiệm vụ bằng output head nhỏ.","example":"Vector bank đổi giữa river bank và bank account.","chapter":"chapter-15"},
-    "bilinear-interpolation": {"term":"Bilinear interpolation","vi":"nội suy song tuyến tính","explanation":"Ước lượng pixel mới bằng trung bình có trọng số từ bốn điểm lân cận.","example":"Upsample feature map mượt hơn nearest neighbor.","chapter":"chapter-14"},
-    "bounding-box": {"term":"Bounding box","vi":"hộp giới hạn","explanation":"Hình chữ nhật xấp xỉ vị trí một object bằng bốn tọa độ hoặc tâm-kích thước.","example":"(xmin, ymin, xmax, ymax) quanh con mèo.","chapter":"chapter-14"},
-    "byte-pair-encoding": {"term":"Byte pair encoding","vi":"mã hóa theo cặp byte/symbol","explanation":"Thuật toán greedily gộp cặp symbols liền nhau phổ biến để tạo subword vocabulary.","example":"l + o → lo rồi lo + w → low.","chapter":"chapter-15"},
-    "click-through-rate": {"term":"Click-through rate","vi":"tỷ lệ nhấp","explanation":"Tỷ lệ hoặc xác suất một item được click sau khi được hiển thị.","example":"50 clicks trên 1000 impressions cho CTR 5%.","chapter":"chapter-21"},
-    "cold-start": {"term":"Cold-start","vi":"khởi đầu lạnh","explanation":"Khó gợi ý khi user hoặc item mới chưa có đủ lịch sử tương tác.","example":"Bài hát mới chưa ai nghe.","chapter":"chapter-21"},
-    "collaborative-filtering": {"term":"Collaborative filtering","vi":"lọc cộng tác","explanation":"Dự đoán sở thích từ mẫu tương tác của nhiều user với nhiều item.","example":"Người giống bạn thích album này.","chapter":"chapter-21"},
-    "context-sensitive-representation": {"term":"Context-sensitive representation","vi":"biểu diễn phụ thuộc ngữ cảnh","explanation":"Vector của cùng token thay đổi theo các token xung quanh.","example":"Crane là chim hoặc cần cẩu tùy câu.","chapter":"chapter-15"},
-    "embedding-layer": {"term":"Embedding layer","vi":"tầng tra cứu vector","explanation":"Bảng parameters ánh xạ mỗi token ID tới một vector học được.","example":"Weight shape (vocab_size, embed_dim).","chapter":"chapter-15"},
-    "explicit-feedback": {"term":"Explicit feedback","vi":"phản hồi tường minh","explanation":"Sở thích user chủ động biểu đạt bằng rating, like hoặc dislike.","example":"Chấm phim 5 sao.","chapter":"chapter-21"},
-    "fasttext": {"term":"fastText","vi":"mô hình embedding theo subword","explanation":"Biểu diễn word bằng tổng vectors của các character n-grams để chia sẻ thông tin hình thái.","example":"helped chia sẻ mảnh help với helping.","chapter":"chapter-15"},
-    "fine-tuning": {"term":"Fine-tuning","vi":"tinh chỉnh","explanation":"Tiếp tục huấn luyện model pretrained trên dữ liệu/nhiệm vụ đích, thường với learning rate nhỏ.","example":"Tinh chỉnh ResNet ImageNet để nhận diện hot dog.","chapter":"chapter-14"},
-    "fully-convolutional-network": {"term":"Fully convolutional network","vi":"mạng tích chập hoàn toàn","explanation":"CNN không cần fully connected head và tạo output dày đặc theo không gian.","example":"Dự đoán class cho từng pixel.","chapter":"chapter-14"},
-    "glove": {"term":"GloVe","vi":"embedding từ vector toàn cục","explanation":"Học word vectors bằng cách khớp log thống kê đồng xuất hiện trên toàn corpus.","example":"Ice đồng xuất hiện với solid nhiều hơn steam.","chapter":"chapter-15"},
-    "gram-matrix": {"term":"Gram matrix","vi":"ma trận Gram","explanation":"Ma trận dot products/correlations giữa các feature channels, thường dùng mô tả style.","example":"G = XXᵀ sau khi trải phẳng spatial axes.","chapter":"chapter-14"},
-    "hierarchical-softmax": {"term":"Hierarchical softmax","vi":"softmax phân cấp","explanation":"Biểu diễn từ bằng leaf trong cây và tính xác suất qua chuỗi quyết định trên đường đi.","example":"Cây cân bằng cần khoảng log₂|V| quyết định.","chapter":"chapter-15"},
-    "image-augmentation": {"term":"Image augmentation","vi":"tăng cường ảnh","explanation":"Tạo biến thể ngẫu nhiên còn giữ nhãn để tăng đa dạng training examples.","example":"Crop và lật ngang ảnh trong training.","chapter":"chapter-14"},
-    "implicit-feedback": {"term":"Implicit feedback","vi":"phản hồi ngầm","explanation":"Tín hiệu sở thích được suy ra từ hành vi thay vì user trực tiếp chấm.","example":"Click, mua hoặc xem hết video.","chapter":"chapter-21"},
-    "instance-segmentation": {"term":"Instance segmentation","vi":"phân đoạn theo từng thực thể","explanation":"Gán mask pixel và đồng thời tách riêng các object cùng class.","example":"Hai con chó có hai mask khác nhau.","chapter":"chapter-14"},
-    "intersection-over-union": {"term":"Intersection over Union","vi":"tỷ lệ giao trên hợp","explanation":"Chỉ số overlap của hai box/mask bằng diện tích giao chia diện tích hợp.","example":"IoU 1 khi hai box trùng hoàn toàn.","chapter":"chapter-14"},
-    "matrix-factorization": {"term":"Matrix factorization","vi":"phân rã ma trận","explanation":"Biểu diễn user và item bằng latent vectors sao cho tích của chúng xấp xỉ interaction/rating.","example":"Rating xấp xỉ dot product user vector và item vector.","chapter":"chapter-21"},
-    "negative-sampling": {"term":"Negative sampling","vi":"lấy mẫu âm","explanation":"Thay full softmax bằng bài toán phân biệt cặp thật với một số noise pairs.","example":"Một context thật và năm từ nhiễu.","chapter":"chapter-15"},
-    "neural-style-transfer": {"term":"Neural style transfer","vi":"chuyển phong cách bằng mạng nơ-ron","explanation":"Tối ưu pixels để giữ content features nhưng khớp style statistics của ảnh khác.","example":"Phong cảnh thật mang nét cọ tranh sơn dầu.","chapter":"chapter-14"},
-    "non-maximum-suppression": {"term":"Non-maximum suppression","vi":"khử cực đại không tối đa","explanation":"Giữ prediction score cao và loại các boxes cùng class chồng quá nhiều.","example":"Nhiều anchors quanh một con mèo còn một box.","chapter":"chapter-14"},
-    "object-detection": {"term":"Object detection","vi":"phát hiện vật thể","explanation":"Dự đoán class và vị trí của nhiều object trong ảnh.","example":"Tìm người, xe và box của từng vật.","chapter":"chapter-14"},
-    "receptive-field": {"term":"Receptive field","vi":"trường tiếp nhận","explanation":"Vùng input có thể ảnh hưởng tới một activation trên feature map.","example":"Cell tầng sâu nhìn vùng ảnh lớn hơn cell tầng nông.","chapter":"chapter-14"},
-    "roi-pooling": {"term":"RoI pooling","vi":"pooling vùng quan tâm","explanation":"Biến features của các region khác kích thước thành output shape cố định.","example":"Mọi proposal thành feature 7×7.","chapter":"chapter-14"},
-    "semantic-segmentation": {"term":"Semantic segmentation","vi":"phân đoạn ngữ nghĩa","explanation":"Dự đoán semantic class cho từng pixel nhưng không tách instances cùng class.","example":"Mọi pixel chó cùng nhãn dog.","chapter":"chapter-14"},
-    "single-shot-multibox-detection": {"term":"Single Shot Multibox Detection","vi":"phát hiện đa hộp một lượt","explanation":"One-stage detector dự đoán class và offsets của anchors trên nhiều feature scales trong một forward pass.","example":"SSD phát hiện vật nhỏ và lớn từ các map khác nhau.","chapter":"chapter-14"},
-    "top-n-recommendation": {"term":"Top-n recommendation","vi":"gợi ý n mục đứng đầu","explanation":"Xếp hạng candidates riêng cho user rồi trả n item có score cao nhất.","example":"Top-10 phim cho tối nay.","chapter":"chapter-21"},
-    "transfer-learning": {"term":"Transfer learning","vi":"học chuyển giao","explanation":"Tái sử dụng kiến thức học từ source task/dataset cho target task/dataset.","example":"ImageNet features cho dataset hot dog nhỏ.","chapter":"chapter-14"},
-    "transposed-convolution": {"term":"Transposed convolution","vi":"tích chập chuyển vị","explanation":"Phép tuyến tính dùng transpose của convolution operator để tăng spatial size; không phải nghịch đảo giá trị.","example":"Upsample feature map trong FCN.","chapter":"chapter-14"},
-    "word-embedding": {"term":"Word embedding","vi":"biểu diễn từ bằng vector","explanation":"Ánh xạ word/token ID tới vector liên tục học được để mang quan hệ thống kê/ngữ nghĩa.","example":"King và queen có vectors gần nhau.","chapter":"chapter-15"},
-    "word2vec": {"term":"word2vec","vi":"họ mô hình embedding theo context","explanation":"Gồm skip-gram và CBOW, học word vectors bằng cách dự đoán giữa center và context words.","example":"Skip-gram dùng loves để đoán man và son.","chapter":"chapter-15"},
-    "attention": {"term":"Attention","vi":"cơ chế chú ý","explanation":"Dùng query để chấm điểm các keys, rồi trộn values theo các trọng số đã chuẩn hóa.","example":"Khi dịch một từ, decoder tập trung vào vài từ nguồn liên quan nhất.","chapter":"chapter-11"},
-    "batch-normalization": {"term":"Batch normalization","vi":"chuẩn hóa theo batch","explanation":"Chuẩn hóa activation bằng thống kê minibatch rồi áp dụng scale và shift học được.","example":"Một channel được đưa về gần mean 0, variance 1 trước khi nhân gamma và cộng beta.","chapter":"chapter-08"},
-    "beam-search": {"term":"Beam search","vi":"tìm kiếm chùm","explanation":"Giữ lại k chuỗi ứng viên tốt nhất ở mỗi bước giải mã để cân bằng chất lượng và chi phí.","example":"Beam size 4 mở rộng bốn bản dịch hứa hẹn nhất.","chapter":"chapter-10"},
-    "bleu": {"term":"BLEU","vi":"điểm đánh giá bản dịch","explanation":"Đo mức trùng n-gram với bản dịch tham chiếu và phạt output quá ngắn.","example":"Bản dịch khớp nhiều cụm từ tham chiếu sẽ có BLEU cao hơn.","chapter":"chapter-10"},
-    "convolution-kernel": {"term":"Convolution kernel","vi":"nhân tích chập / bộ lọc","explanation":"Tensor trọng số nhỏ trượt trên input để phát hiện cùng một mẫu ở nhiều vị trí.","example":"Kernel 1×2 có thể phát hiện biên dọc sáng-tối.","chapter":"chapter-07"},
-    "cross-correlation": {"term":"Cross-correlation","vi":"tương quan chéo","explanation":"Phép trượt kernel trên input và lấy tổng tích từng vùng; đây là phép mà các thư viện deep learning thường gọi là convolution.","example":"Kernel 3×3 tạo một giá trị từ mỗi cửa sổ ảnh 3×3.","chapter":"chapter-07"},
-    "deep-rnn": {"term":"Deep RNN","vi":"RNN nhiều tầng","explanation":"Xếp nhiều recurrent layers để representation ở mỗi time step đi qua nhiều mức biến đổi.","example":"Hidden sequence của tầng 1 là input sequence cho tầng 2.","chapter":"chapter-10"},
-    "feature-map": {"term":"Feature map","vi":"bản đồ đặc trưng","explanation":"Output không gian của một convolution channel, cho biết mẫu được phát hiện mạnh ở đâu.","example":"Một feature map có thể sáng tại các vị trí chứa cạnh dọc.","chapter":"chapter-07"},
-    "gradient-clipping": {"term":"Gradient clipping","vi":"cắt gradient","explanation":"Giới hạn norm của gradient để tránh bước cập nhật bùng nổ trong mạng chuỗi dài.","example":"Nếu norm vượt theta, scale toàn bộ gradient về norm theta.","chapter":"chapter-09"},
-    "gru": {"term":"GRU","vi":"đơn vị hồi tiếp có cổng","explanation":"RNN có reset gate và update gate để giữ hoặc thay thông tin qua thời gian.","example":"Update gate gần 1 khiến hidden state cũ được giữ lâu hơn.","chapter":"chapter-10"},
-    "in-context-learning": {"term":"In-context learning","vi":"học trong ngữ cảnh","explanation":"Model làm theo task từ mô tả hoặc examples ngay trong prompt mà không cập nhật parameters.","example":"Đưa hai cặp hỏi-đáp mẫu rồi yêu cầu model trả lời câu thứ ba.","chapter":"chapter-11"},
-    "language-model": {"term":"Language model","vi":"mô hình ngôn ngữ","explanation":"Gán xác suất cho chuỗi token, thường bằng cách dự đoán token tiếp theo từ context trước đó.","example":"P(learning | deep) cao hơn P(banana | deep) trong ngữ cảnh kỹ thuật.","chapter":"chapter-09"},
-    "large-language-model": {"term":"Large language model","vi":"mô hình ngôn ngữ lớn","explanation":"Language model có quy mô parameters và dữ liệu lớn, thường dựa trên Transformer và được pretrained rộng.","example":"Một decoder-only Transformer sinh câu theo từng token.","chapter":"chapter-11"},
-    "layer-normalization": {"term":"Layer normalization","vi":"chuẩn hóa theo tầng","explanation":"Chuẩn hóa dọc chiều features của từng example/token, không phụ thuộc các example khác trong batch.","example":"Mỗi token vector được chuẩn hóa riêng trước scale và shift.","chapter":"chapter-11"},
-    "lstm": {"term":"LSTM","vi":"bộ nhớ dài-ngắn hạn","explanation":"RNN có cell state cùng input, forget và output gates để kiểm soát luồng nhớ.","example":"Forget gate gần 0 xóa phần cell state không còn hữu ích.","chapter":"chapter-10"},
-    "multi-head-attention": {"term":"Multi-head attention","vi":"attention nhiều đầu","explanation":"Chạy nhiều attention heads song song trong các không gian chiếu khác nhau rồi ghép kết quả.","example":"Một head theo quan hệ gần, head khác theo phụ thuộc xa.","chapter":"chapter-11"},
-    "padding": {"term":"Padding","vi":"đệm biên","explanation":"Thêm giá trị quanh biên input để kiểm soát kích thước output và giữ thông tin sát mép.","example":"Đệm một pixel mỗi phía giúp convolution 3×3 giữ nguyên chiều cao-rộng.","chapter":"chapter-07"},
-    "perplexity": {"term":"Perplexity","vi":"độ bối rối","explanation":"Exponent của cross-entropy trung bình; có thể hiểu là số lựa chọn hiệu dụng model còn phân vân.","example":"Perplexity 10 nghĩa là độ khó tương tự phải chọn đều giữa khoảng 10 token.","chapter":"chapter-09"},
-    "pooling": {"term":"Pooling","vi":"phép gộp cục bộ","explanation":"Tóm tắt một cửa sổ không gian bằng max hoặc average để giảm kích thước và tăng tính ổn định vị trí.","example":"Max-pooling 2×2 giữ giá trị lớn nhất trong mỗi ô vuông.","chapter":"chapter-07"},
-    "positional-encoding": {"term":"Positional encoding","vi":"mã hóa vị trí","explanation":"Bổ sung thông tin thứ tự vào token representations vì self-attention tự thân không biết vị trí.","example":"Sóng sin-cos khác nhau được cộng vào các vị trí 0, 1, 2.","chapter":"chapter-11"},
-    "recurrent-neural-network": {"term":"Recurrent neural network","vi":"mạng nơ-ron hồi tiếp","explanation":"Mạng cập nhật hidden state theo thứ tự để mang thông tin từ các bước trước sang bước hiện tại.","example":"RNN đọc từng ký tự và dự đoán ký tự tiếp theo.","chapter":"chapter-09"},
-    "self-attention": {"term":"Self-attention","vi":"attention tự thân","explanation":"Queries, keys và values đều được tạo từ cùng một sequence để các vị trí trao đổi thông tin.","example":"Mỗi từ trong câu tổng hợp ngữ cảnh từ mọi từ còn lại.","chapter":"chapter-11"},
-    "stride": {"term":"Stride","vi":"bước trượt","explanation":"Số ô cửa sổ convolution hoặc pooling dịch chuyển sau mỗi lần tính.","example":"Stride 2 thường làm chiều cao và rộng giảm gần một nửa.","chapter":"chapter-07"},
-    "teacher-forcing": {"term":"Teacher forcing","vi":"dùng token đúng làm đầu vào khi huấn luyện","explanation":"Ở mỗi bước decoder khi training, đưa token target thật của bước trước thay vì prediction của model.","example":"Decoder nhận từ đúng thứ ba để học dự đoán từ thứ tư.","chapter":"chapter-10"},
-    "tokenization": {"term":"Tokenization","vi":"tách và mã hóa token","explanation":"Chia văn bản thành đơn vị như từ, subword hoặc ký tự trước khi đổi sang IDs.","example":"deep learning có thể thành hai word tokens.","chapter":"chapter-09"},
-    "translation-equivariance": {"term":"Translation equivariance","vi":"tính đồng biến theo phép tịnh tiến","explanation":"Khi input dịch vị trí, feature map cũng dịch tương ứng thay vì đổi bản chất phép phát hiện.","example":"Dời con mèo sang phải làm activation phát hiện mèo dời sang phải.","chapter":"chapter-07"},
-    "vision-transformer": {"term":"Vision Transformer","vi":"Transformer cho thị giác","explanation":"Chia ảnh thành patches, biến mỗi patch thành token rồi xử lý bằng Transformer encoder.","example":"Ảnh 224×224 với patch 16×16 tạo 196 patch tokens.","chapter":"chapter-11"},
-    "vocabulary": {"term":"Vocabulary","vi":"bộ từ vựng","explanation":"Ánh xạ hữu hạn giữa token strings và integer IDs mà model xử lý.","example":"Token hiếm có thể được ánh xạ thành <unk>.","chapter":"chapter-09"}
+    "action-value-function": {
+      "term": "Action-value function",
+      "vi": "hàm giá trị hành động",
+      "explanation": "Q(s, a) giống value function nhưng action của bước đầu bị cố định là a; nhờ đó chọn action chỉ cần lấy argmax.",
+      "example": "Action tốt nhất tại s là argmax_a Q(s, a).",
+      "chapter": "chapter-17"
+    },
+    "affine-transformation": {
+      "term": "Affine transformation",
+      "vi": "phép biến đổi affine",
+      "explanation": "Phép biến đổi tuyến tính rồi cộng thêm bias: y = Wx + b.",
+      "example": "Dự đoán giá bằng diện tích × trọng số + giá nền.",
+      "chapter": "chapter-03"
+    },
+    "agent": {
+      "term": "Agent",
+      "vi": "tác tử",
+      "explanation": "Thực thể quan sát môi trường và chọn hành động.",
+      "example": "Chương trình điều khiển nhân vật trong game.",
+      "chapter": "chapter-01"
+    },
+    "aleatoric-uncertainty": {
+      "term": "Aleatoric uncertainty",
+      "vi": "bất định do nhiễu",
+      "explanation": "Độ bất định không giảm được, vốn có trong phép đo; thu thập thêm dữ liệu cũng không làm nó mất đi.",
+      "example": "Cộng sigma² vào đường chéo ma trận hiệp phương sai.",
+      "chapter": "chapter-18"
+    },
+    "anchor-box": {
+      "term": "Anchor box",
+      "vi": "hộp neo / hộp ứng viên",
+      "explanation": "Box tham chiếu đặt tại các vị trí và tỉ lệ khác nhau để detector phân loại rồi tinh chỉnh.",
+      "example": "Một cell có anchors vuông, ngang và dọc.",
+      "chapter": "chapter-14"
+    },
+    "attention": {
+      "term": "Attention",
+      "vi": "cơ chế chú ý",
+      "explanation": "Dùng query để chấm điểm các keys, rồi trộn values theo các trọng số đã chuẩn hóa.",
+      "example": "Khi dịch một từ, decoder tập trung vào vài từ nguồn liên quan nhất.",
+      "chapter": "chapter-11"
+    },
+    "axis": {
+      "term": "Axis",
+      "vi": "trục",
+      "explanation": "Một hướng của tensor; mỗi axis có một ý nghĩa và độ dài.",
+      "example": "Tensor ảnh có thể có axis batch, channel, height, width.",
+      "chapter": "chapter-02"
+    },
+    "batch-normalization": {
+      "term": "Batch normalization",
+      "vi": "chuẩn hóa theo batch",
+      "explanation": "Chuẩn hóa activation bằng thống kê minibatch rồi áp dụng scale và shift học được.",
+      "example": "Một channel được đưa về gần mean 0, variance 1 trước khi nhân gamma và cộng beta.",
+      "chapter": "chapter-08"
+    },
+    "bayes-theorem": {
+      "term": "Bayes’ theorem",
+      "vi": "định lý Bayes",
+      "explanation": "Công thức cập nhật xác suất của một giả thuyết sau khi thấy bằng chứng.",
+      "example": "Cập nhật nguy cơ bệnh sau kết quả xét nghiệm.",
+      "chapter": "chapter-02"
+    },
+    "beam-search": {
+      "term": "Beam search",
+      "vi": "tìm kiếm chùm",
+      "explanation": "Giữ lại k chuỗi ứng viên tốt nhất ở mỗi bước giải mã để cân bằng chất lượng và chi phí.",
+      "example": "Beam size 4 mở rộng bốn bản dịch hứa hẹn nhất.",
+      "chapter": "chapter-10"
+    },
+    "bert": {
+      "term": "BERT",
+      "vi": "mô hình mã hóa Transformer hai chiều",
+      "explanation": "Model pretrained biểu diễn token theo context hai phía và thích nghi cho nhiều nhiệm vụ bằng output head nhỏ.",
+      "example": "Vector bank đổi giữa river bank và bank account.",
+      "chapter": "chapter-15"
+    },
+    "bias": {
+      "term": "Bias",
+      "vi": "độ chệch / hệ số tự do",
+      "explanation": "Giá trị cộng thêm giúp đường dự đoán không bắt buộc đi qua gốc.",
+      "example": "b trong y = wx + b.",
+      "chapter": "chapter-03"
+    },
+    "bilinear-interpolation": {
+      "term": "Bilinear interpolation",
+      "vi": "nội suy song tuyến tính",
+      "explanation": "Ước lượng pixel mới bằng trung bình có trọng số từ bốn điểm lân cận.",
+      "example": "Upsample feature map mượt hơn nearest neighbor.",
+      "chapter": "chapter-14"
+    },
+    "bleu": {
+      "term": "BLEU",
+      "vi": "điểm đánh giá bản dịch",
+      "explanation": "Đo mức trùng n-gram với bản dịch tham chiếu và phạt output quá ngắn.",
+      "example": "Bản dịch khớp nhiều cụm từ tham chiếu sẽ có BLEU cao hơn.",
+      "chapter": "chapter-10"
+    },
+    "bounding-box": {
+      "term": "Bounding box",
+      "vi": "hộp giới hạn",
+      "explanation": "Hình chữ nhật xấp xỉ vị trí một object bằng bốn tọa độ hoặc tâm-kích thước.",
+      "example": "(xmin, ymin, xmax, ymax) quanh con mèo.",
+      "chapter": "chapter-14"
+    },
+    "broadcasting": {
+      "term": "Broadcasting",
+      "vi": "mở rộng ngầm",
+      "explanation": "Quy tắc cho phép tính giữa tensor khác shape khi các chiều tương thích.",
+      "example": "Cộng scalar vào mọi phần tử của matrix.",
+      "chapter": "chapter-02"
+    },
+    "byte-pair-encoding": {
+      "term": "Byte pair encoding",
+      "vi": "mã hóa theo cặp byte/symbol",
+      "explanation": "Thuật toán greedily gộp cặp symbols liền nhau phổ biến để tạo subword vocabulary.",
+      "example": "l + o → lo rồi lo + w → low.",
+      "chapter": "chapter-15"
+    },
+    "classification": {
+      "term": "Classification",
+      "vi": "phân loại",
+      "explanation": "Bài toán dự đoán một lớp rời rạc hoặc xác suất của các lớp.",
+      "example": "Spam hay không spam.",
+      "chapter": "chapter-01"
+    },
+    "click-through-rate": {
+      "term": "Click-through rate",
+      "vi": "tỷ lệ nhấp",
+      "explanation": "Tỷ lệ hoặc xác suất một item được click sau khi được hiển thị.",
+      "example": "50 clicks trên 1000 impressions cho CTR 5%.",
+      "chapter": "chapter-21"
+    },
+    "cold-start": {
+      "term": "Cold-start",
+      "vi": "khởi đầu lạnh",
+      "explanation": "Khó gợi ý khi user hoặc item mới chưa có đủ lịch sử tương tác.",
+      "example": "Bài hát mới chưa ai nghe.",
+      "chapter": "chapter-21"
+    },
+    "collaborative-filtering": {
+      "term": "Collaborative filtering",
+      "vi": "lọc cộng tác",
+      "explanation": "Dự đoán sở thích từ mẫu tương tác của nhiều user với nhiều item.",
+      "example": "Người giống bạn thích album này.",
+      "chapter": "chapter-21"
+    },
+    "computational-graph": {
+      "term": "Computational graph",
+      "vi": "đồ thị tính toán",
+      "explanation": "Bản ghi các phép toán và quan hệ phụ thuộc dùng để truyền gradient.",
+      "example": "x → x² → sum → loss.",
+      "chapter": "chapter-02"
+    },
+    "context-sensitive-representation": {
+      "term": "Context-sensitive representation",
+      "vi": "biểu diễn phụ thuộc ngữ cảnh",
+      "explanation": "Vector của cùng token thay đổi theo các token xung quanh.",
+      "example": "Crane là chim hoặc cần cẩu tùy câu.",
+      "chapter": "chapter-15"
+    },
+    "convolution-kernel": {
+      "term": "Convolution kernel",
+      "vi": "nhân tích chập / bộ lọc",
+      "explanation": "Tensor trọng số nhỏ trượt trên input để phát hiện cùng một mẫu ở nhiều vị trí.",
+      "example": "Kernel 1×2 có thể phát hiện biên dọc sáng-tối.",
+      "chapter": "chapter-07"
+    },
+    "covariance-function": {
+      "term": "Covariance function",
+      "vi": "hàm hiệp phương sai",
+      "explanation": "Tên gọi khác của kernel; nó cho hiệp phương sai giữa hai giá trị hàm tại hai đầu vào.",
+      "example": "k(x, x') = Cov(f(x), f(x')).",
+      "chapter": "chapter-18"
+    },
+    "credible-interval": {
+      "term": "Credible interval",
+      "vi": "khoảng tin cậy Bayes",
+      "explanation": "Khoảng có xác suất cho trước chứa giá trị thật của hàm tại một đầu vào.",
+      "example": "Trung bình ± 2 độ lệch chuẩn cho khoảng 95%.",
+      "chapter": "chapter-18"
+    },
+    "cross-correlation": {
+      "term": "Cross-correlation",
+      "vi": "tương quan chéo",
+      "explanation": "Phép trượt kernel trên input và lấy tổng tích từng vùng; đây là phép mà các thư viện deep learning thường gọi là convolution.",
+      "example": "Kernel 3×3 tạo một giá trị từ mỗi cửa sổ ảnh 3×3.",
+      "chapter": "chapter-07"
+    },
+    "cross-validation": {
+      "term": "Cross-validation",
+      "vi": "kiểm định chéo",
+      "explanation": "Luân phiên nhiều phần dữ liệu làm validation để ước lượng ổn định hơn.",
+      "example": "5-fold huấn luyện năm lần với năm fold validation.",
+      "chapter": "chapter-03"
+    },
+    "data-module": {
+      "term": "DataModule",
+      "vi": "khối quản lý dữ liệu",
+      "explanation": "Thành phần đóng gói việc tạo, chia, xử lý và nạp batch dữ liệu.",
+      "example": "Một class cung cấp train_dataloader và val_dataloader.",
+      "chapter": "chapter-03"
+    },
+    "dataset": {
+      "term": "Dataset",
+      "vi": "tập dữ liệu",
+      "explanation": "Tập hợp nhiều examples dùng để học hoặc đánh giá.",
+      "example": "10.000 ảnh kèm nhãn mèo/chó.",
+      "chapter": "chapter-01"
+    },
+    "decomposable-attention": {
+      "term": "Decomposable attention model",
+      "vi": "model attention phân rã",
+      "explanation": "Model NLI ba bước attending, comparing, aggregating, chỉ dùng attention và MLP, không có recurrent hay convolutional layer.",
+      "example": "Thủ thuật phân rã đưa O(mn) về O(m+n).",
+      "chapter": "chapter-16"
+    },
+    "deep-learning": {
+      "term": "Deep learning",
+      "vi": "học sâu",
+      "explanation": "Nhánh machine learning dùng nhiều tầng biến đổi học được để tạo representation và prediction.",
+      "example": "Neural network nhiều tầng nhận diện vật thể.",
+      "chapter": "chapter-01"
+    },
+    "deep-rnn": {
+      "term": "Deep RNN",
+      "vi": "RNN nhiều tầng",
+      "explanation": "Xếp nhiều recurrent layers để representation ở mỗi time step đi qua nhiều mức biến đổi.",
+      "example": "Hidden sequence của tầng 1 là input sequence cho tầng 2.",
+      "chapter": "chapter-10"
+    },
+    "derivative": {
+      "term": "Derivative",
+      "vi": "đạo hàm",
+      "explanation": "Tốc độ một đầu ra thay đổi khi đầu vào dịch một lượng rất nhỏ.",
+      "example": "Đạo hàm x² là 2x.",
+      "chapter": "chapter-02"
+    },
+    "discount-factor": {
+      "term": "Discount factor",
+      "vi": "hệ số chiết khấu",
+      "explanation": "Số gamma < 1 làm reward ở tương lai xa nhẹ dần, nhờ đó return của quỹ đạo vô hạn vẫn hữu hạn.",
+      "example": "gamma = 0.95 cho tầm nhìn hiệu dụng khoảng 20 bước.",
+      "chapter": "chapter-17"
+    },
+    "distribution-shift": {
+      "term": "Distribution shift",
+      "vi": "dịch chuyển phân bố",
+      "explanation": "Dữ liệu lúc triển khai khác có hệ thống so với dữ liệu huấn luyện.",
+      "example": "Bộ lọc spam gặp chiến thuật gửi thư mới.",
+      "chapter": "chapter-01"
+    },
+    "dot-product": {
+      "term": "Dot product",
+      "vi": "tích vô hướng",
+      "explanation": "Tổng các tích theo vị trí của hai vector cùng độ dài.",
+      "example": "[1,2]·[3,4] = 11.",
+      "chapter": "chapter-02"
+    },
+    "elementwise-operation": {
+      "term": "Elementwise operation",
+      "vi": "phép toán theo phần tử",
+      "explanation": "Áp dụng cùng phép tính cho từng vị trí tương ứng.",
+      "example": "[1,2] * [3,4] = [3,8].",
+      "chapter": "chapter-02"
+    },
+    "embedding-layer": {
+      "term": "Embedding layer",
+      "vi": "tầng tra cứu vector",
+      "explanation": "Bảng parameters ánh xạ mỗi token ID tới một vector học được.",
+      "example": "Weight shape (vocab_size, embed_dim).",
+      "chapter": "chapter-15"
+    },
+    "end-to-end-learning": {
+      "term": "End-to-end learning",
+      "vi": "học đầu-cuối",
+      "explanation": "Tối ưu đồng thời cả chuỗi từ input thô tới output cuối bằng một mục tiêu.",
+      "example": "Âm thanh đi thẳng tới văn bản qua một hệ được huấn luyện chung.",
+      "chapter": "chapter-01"
+    },
+    "environment": {
+      "term": "Environment",
+      "vi": "môi trường",
+      "explanation": "Thế giới mà agent quan sát, tác động và nhận reward.",
+      "example": "Bàn cờ và luật chơi đối với agent chơi cờ.",
+      "chapter": "chapter-01"
+    },
+    "epistemic-uncertainty": {
+      "term": "Epistemic uncertainty",
+      "vi": "bất định do thiếu hiểu biết",
+      "explanation": "Độ bất định giảm được, sinh ra từ việc thiếu dữ liệu; nở rộng khi dự đoán đi xa vùng quan sát.",
+      "example": "Dải tin cậy phình to ở vùng không có điểm dữ liệu.",
+      "chapter": "chapter-18"
+    },
+    "epsilon-greedy": {
+      "term": "Epsilon-greedy",
+      "vi": "tham lam có nhiễu",
+      "explanation": "Chọn action tốt nhất theo ước lượng hiện tại với xác suất 1 - epsilon, và chọn ngẫu nhiên với xác suất epsilon.",
+      "example": "epsilon = 0 làm robot kẹt vì không bao giờ thăm dò.",
+      "chapter": "chapter-17"
+    },
+    "expectation": {
+      "term": "Expectation",
+      "vi": "kỳ vọng",
+      "explanation": "Giá trị trung bình dài hạn, có trọng số theo xác suất.",
+      "example": "Kỳ vọng của xúc xắc đều là 3,5.",
+      "chapter": "chapter-02"
+    },
+    "explicit-feedback": {
+      "term": "Explicit feedback",
+      "vi": "phản hồi tường minh",
+      "explanation": "Sở thích user chủ động biểu đạt bằng rating, like hoặc dislike.",
+      "example": "Chấm phim 5 sao.",
+      "chapter": "chapter-21"
+    },
+    "fasttext": {
+      "term": "fastText",
+      "vi": "mô hình embedding theo subword",
+      "explanation": "Biểu diễn word bằng tổng vectors của các character n-grams để chia sẻ thông tin hình thái.",
+      "example": "helped chia sẻ mảnh help với helping.",
+      "chapter": "chapter-15"
+    },
+    "feature": {
+      "term": "Feature",
+      "vi": "đặc trưng đầu vào",
+      "explanation": "Thuộc tính dùng để mô tả một example cho model.",
+      "example": "Diện tích và số phòng của căn nhà.",
+      "chapter": "chapter-01"
+    },
+    "feature-map": {
+      "term": "Feature map",
+      "vi": "bản đồ đặc trưng",
+      "explanation": "Output không gian của một convolution channel, cho biết mẫu được phát hiện mạnh ở đâu.",
+      "example": "Một feature map có thể sáng tại các vị trí chứa cạnh dọc.",
+      "chapter": "chapter-07"
+    },
+    "fine-tuning": {
+      "term": "Fine-tuning",
+      "vi": "tinh chỉnh",
+      "explanation": "Tiếp tục huấn luyện model pretrained trên dữ liệu/nhiệm vụ đích, thường với learning rate nhỏ.",
+      "example": "Tinh chỉnh ResNet ImageNet để nhận diện hot dog.",
+      "chapter": "chapter-14"
+    },
+    "fully-connected-layer": {
+      "term": "Fully connected layer",
+      "vi": "tầng kết nối đầy đủ",
+      "explanation": "Mỗi output nhận đóng góp từ tất cả input của tầng trước.",
+      "example": "Linear layer tính Wx + b.",
+      "chapter": "chapter-03"
+    },
+    "fully-convolutional-network": {
+      "term": "Fully convolutional network",
+      "vi": "mạng tích chập hoàn toàn",
+      "explanation": "CNN không cần fully connected head và tạo output dày đặc theo không gian.",
+      "example": "Dự đoán class cho từng pixel.",
+      "chapter": "chapter-14"
+    },
+    "gaussian-process": {
+      "term": "Gaussian process",
+      "vi": "quá trình Gauss",
+      "explanation": "Tập biến ngẫu nhiên mà bất kỳ số hữu hạn nào trong chúng cũng có phân phối Gaussian đồng thời; tương đương mọi model tuyến tính theo tham số với prior Gaussian.",
+      "example": "f(x) = w0 + w1·x với w ~ N(0, I).",
+      "chapter": "chapter-18"
+    },
+    "generalization-error": {
+      "term": "Generalization error",
+      "vi": "sai số tổng quát hóa",
+      "explanation": "Sai số kỳ vọng trên dữ liệu mới từ môi trường mục tiêu.",
+      "example": "Lỗi dự báo giá của các căn chưa từng dùng để học.",
+      "chapter": "chapter-03"
+    },
+    "glove": {
+      "term": "GloVe",
+      "vi": "embedding từ vector toàn cục",
+      "explanation": "Học word vectors bằng cách khớp log thống kê đồng xuất hiện trên toàn corpus.",
+      "example": "Ice đồng xuất hiện với solid nhiều hơn steam.",
+      "chapter": "chapter-15"
+    },
+    "gradient": {
+      "term": "Gradient",
+      "vi": "vector đạo hàm",
+      "explanation": "Tập các partial derivatives, chỉ hướng hàm tăng nhanh nhất cục bộ.",
+      "example": "Optimizer đi ngược gradient của loss.",
+      "chapter": "chapter-02"
+    },
+    "gradient-clipping": {
+      "term": "Gradient clipping",
+      "vi": "cắt gradient",
+      "explanation": "Giới hạn norm của gradient để tránh bước cập nhật bùng nổ trong mạng chuỗi dài.",
+      "example": "Nếu norm vượt theta, scale toàn bộ gradient về norm theta.",
+      "chapter": "chapter-09"
+    },
+    "gradient-descent": {
+      "term": "Gradient descent",
+      "vi": "hạ dốc theo gradient",
+      "explanation": "Cập nhật parameters theo hướng ngược gradient để giảm objective.",
+      "example": "θ ← θ − η∇L.",
+      "chapter": "chapter-01"
+    },
+    "gram-matrix": {
+      "term": "Gram matrix",
+      "vi": "ma trận Gram",
+      "explanation": "Ma trận dot products/correlations giữa các feature channels, thường dùng mô tả style.",
+      "example": "G = XXᵀ sau khi trải phẳng spatial axes.",
+      "chapter": "chapter-14"
+    },
+    "gru": {
+      "term": "GRU",
+      "vi": "đơn vị hồi tiếp có cổng",
+      "explanation": "RNN có reset gate và update gate để giữ hoặc thay thông tin qua thời gian.",
+      "example": "Update gate gần 1 khiến hidden state cũ được giữ lâu hơn.",
+      "chapter": "chapter-10"
+    },
+    "hadamard-product": {
+      "term": "Hadamard product",
+      "vi": "tích theo phần tử",
+      "explanation": "Nhân từng ô tương ứng của hai tensor cùng shape.",
+      "example": "Khác với matrix multiplication.",
+      "chapter": "chapter-02"
+    },
+    "hierarchical-softmax": {
+      "term": "Hierarchical softmax",
+      "vi": "softmax phân cấp",
+      "explanation": "Biểu diễn từ bằng leaf trong cây và tính xác suất qua chuỗi quyết định trên đường đi.",
+      "example": "Cây cân bằng cần khoảng log₂|V| quyết định.",
+      "chapter": "chapter-15"
+    },
+    "hyperparameter": {
+      "term": "Hyperparameter",
+      "vi": "siêu tham số",
+      "explanation": "Giá trị do người làm thí nghiệm chọn, không được model học trực tiếp từ gradient.",
+      "example": "Learning rate và batch size.",
+      "chapter": "chapter-03"
+    },
+    "iid": {
+      "term": "IID",
+      "vi": "độc lập và cùng phân phối",
+      "explanation": "Giả định examples không ảnh hưởng nhau và được lấy từ cùng một phân bố.",
+      "example": "Các căn nhà được lấy mẫu độc lập từ cùng thị trường.",
+      "chapter": "chapter-03"
+    },
+    "image-augmentation": {
+      "term": "Image augmentation",
+      "vi": "tăng cường ảnh",
+      "explanation": "Tạo biến thể ngẫu nhiên còn giữ nhãn để tăng đa dạng training examples.",
+      "example": "Crop và lật ngang ảnh trong training.",
+      "chapter": "chapter-14"
+    },
+    "image-segmentation": {
+      "term": "Image segmentation",
+      "vi": "phân vùng ảnh",
+      "explanation": "Chia ảnh thành các vùng dựa vào tương quan pixel; không cần nhãn pixel và không đảm bảo vùng có ngữ nghĩa.",
+      "example": "Tách phần lông đen và phần lông vàng của cùng một con chó.",
+      "chapter": "chapter-14"
+    },
+    "implicit-feedback": {
+      "term": "Implicit feedback",
+      "vi": "phản hồi ngầm",
+      "explanation": "Tín hiệu sở thích được suy ra từ hành vi thay vì user trực tiếp chấm.",
+      "example": "Click, mua hoặc xem hết video.",
+      "chapter": "chapter-21"
+    },
+    "in-context-learning": {
+      "term": "In-context learning",
+      "vi": "học trong ngữ cảnh",
+      "explanation": "Model làm theo task từ mô tả hoặc examples ngay trong prompt mà không cập nhật parameters.",
+      "example": "Đưa hai cặp hỏi-đáp mẫu rồi yêu cầu model trả lời câu thứ ba.",
+      "chapter": "chapter-11"
+    },
+    "in-place-operation": {
+      "term": "In-place operation",
+      "vi": "phép toán tại chỗ",
+      "explanation": "Sửa trực tiếp vùng nhớ của tensor thay vì tạo tensor mới.",
+      "example": "x += 1.",
+      "chapter": "chapter-02"
+    },
+    "inference": {
+      "term": "Inference",
+      "vi": "suy luận bằng mô hình",
+      "explanation": "Dùng model đã huấn luyện để tạo prediction cho input.",
+      "example": "Ước lượng giá cho một căn nhà mới.",
+      "chapter": "chapter-03"
+    },
+    "instance-segmentation": {
+      "term": "Instance segmentation",
+      "vi": "phân đoạn theo từng thực thể",
+      "explanation": "Gán mask pixel và đồng thời tách riêng các object cùng class.",
+      "example": "Hai con chó có hai mask khác nhau.",
+      "chapter": "chapter-14"
+    },
+    "intersection-over-union": {
+      "term": "Intersection over Union",
+      "vi": "tỷ lệ giao trên hợp",
+      "explanation": "Chỉ số overlap của hai box/mask bằng diện tích giao chia diện tích hợp.",
+      "example": "IoU 1 khi hai box trùng hoàn toàn.",
+      "chapter": "chapter-14"
+    },
+    "kernel": {
+      "term": "Kernel",
+      "vi": "hạt nhân / hàm hiệp phương sai",
+      "explanation": "Hàm k(x, x') quyết định mọi tính chất tổng quát hoá của một Gaussian process.",
+      "example": "Kernel cộng và nhân được với nhau để ghép nhiều tính chất.",
+      "chapter": "chapter-18"
+    },
+    "label": {
+      "term": "Label",
+      "vi": "nhãn / đáp án",
+      "explanation": "Giá trị đúng mà supervised model cần học để dự đoán.",
+      "example": "Giá bán thật của căn nhà.",
+      "chapter": "chapter-01"
+    },
+    "language-model": {
+      "term": "Language model",
+      "vi": "mô hình ngôn ngữ",
+      "explanation": "Gán xác suất cho chuỗi token, thường bằng cách dự đoán token tiếp theo từ context trước đó.",
+      "example": "P(learning | deep) cao hơn P(banana | deep) trong ngữ cảnh kỹ thuật.",
+      "chapter": "chapter-09"
+    },
+    "large-language-model": {
+      "term": "Large language model",
+      "vi": "mô hình ngôn ngữ lớn",
+      "explanation": "Language model có quy mô parameters và dữ liệu lớn, thường dựa trên Transformer và được pretrained rộng.",
+      "example": "Một decoder-only Transformer sinh câu theo từng token.",
+      "chapter": "chapter-11"
+    },
+    "layer-normalization": {
+      "term": "Layer normalization",
+      "vi": "chuẩn hóa theo tầng",
+      "explanation": "Chuẩn hóa dọc chiều features của từng example/token, không phụ thuộc các example khác trong batch.",
+      "example": "Mỗi token vector được chuẩn hóa riêng trước scale và shift.",
+      "chapter": "chapter-11"
+    },
+    "learning-rate": {
+      "term": "Learning rate",
+      "vi": "tốc độ học",
+      "explanation": "Hệ số quyết định độ dài mỗi bước cập nhật parameter.",
+      "example": "η = 0,03 trong SGD.",
+      "chapter": "chapter-03"
+    },
+    "linear-regression": {
+      "term": "Linear regression",
+      "vi": "hồi quy tuyến tính",
+      "explanation": "Model dự đoán số bằng tổ hợp tuyến tính của features và một bias.",
+      "example": "ŷ = Xw + b.",
+      "chapter": "chapter-03"
+    },
+    "loss-function": {
+      "term": "Loss function",
+      "vi": "hàm mất mát",
+      "explanation": "Con số đo mức dự đoán sai để việc học có mục tiêu rõ ràng.",
+      "example": "Squared loss cho dự đoán giá.",
+      "chapter": "chapter-01"
+    },
+    "lstm": {
+      "term": "LSTM",
+      "vi": "bộ nhớ dài-ngắn hạn",
+      "explanation": "RNN có cell state cùng input, forget và output gates để kiểm soát luồng nhớ.",
+      "example": "Forget gate gần 0 xóa phần cell state không còn hữu ích.",
+      "chapter": "chapter-10"
+    },
+    "machine-learning": {
+      "term": "Machine learning",
+      "vi": "học máy",
+      "explanation": "Cách xây hệ thống cải thiện hiệu quả từ dữ liệu hoặc kinh nghiệm.",
+      "example": "Bộ lọc spam học từ email đã gắn nhãn.",
+      "chapter": "chapter-01"
+    },
+    "marginal-likelihood": {
+      "term": "Marginal likelihood",
+      "vi": "khả năng biên duyên",
+      "explanation": "p(y | theta) — dùng để học siêu tham số kernel tự động; nó tách thành số hạng khớp dữ liệu và số hạng phạt độ phức tạp.",
+      "example": "Tự tìm ra mức nhiễu 0.24 khi nhiễu thật là 0.25.",
+      "chapter": "chapter-18"
+    },
+    "markov-decision-process": {
+      "term": "Markov decision process",
+      "vi": "quá trình quyết định Markov",
+      "explanation": "Bộ bốn (S, A, T, r) mô tả trạng thái của hệ thay đổi thế nào khi các action được áp lên nó.",
+      "example": "Robot điều hướng trên lưới 4×4 của FrozenLake.",
+      "chapter": "chapter-17"
+    },
+    "matrix": {
+      "term": "Matrix",
+      "vi": "ma trận",
+      "explanation": "Mảng số hai chiều gồm hàng và cột.",
+      "example": "Batch 32 examples × 10 features có shape (32,10).",
+      "chapter": "chapter-02"
+    },
+    "matrix-factorization": {
+      "term": "Matrix factorization",
+      "vi": "phân rã ma trận",
+      "explanation": "Biểu diễn user và item bằng latent vectors sao cho tích của chúng xấp xỉ interaction/rating.",
+      "example": "Rating xấp xỉ dot product user vector và item vector.",
+      "chapter": "chapter-21"
+    },
+    "max-over-time-pooling": {
+      "term": "Max-over-time pooling",
+      "vi": "lấy cực đại theo thời gian",
+      "explanation": "Lấy giá trị lớn nhất của mỗi channel trên mọi bước thời gian, nên các channel được phép dài ngắn khác nhau.",
+      "example": "9 channel rộng 10 và 8 cho một vector 9 chiều.",
+      "chapter": "chapter-16"
+    },
+    "minibatch-sgd": {
+      "term": "Minibatch SGD",
+      "vi": "hạ dốc ngẫu nhiên theo lô nhỏ",
+      "explanation": "Ước lượng gradient bằng một nhóm examples rồi cập nhật parameters.",
+      "example": "Mỗi bước dùng 32 examples.",
+      "chapter": "chapter-03"
+    },
+    "model": {
+      "term": "Model",
+      "vi": "mô hình",
+      "explanation": "Hàm có parameters biến input thành prediction.",
+      "example": "Đường thẳng ŷ = wx + b.",
+      "chapter": "chapter-01"
+    },
+    "module": {
+      "term": "Module",
+      "vi": "khối mô hình",
+      "explanation": "Đơn vị code đóng gói parameters và forward computation.",
+      "example": "Một lớp kế thừa torch.nn.Module.",
+      "chapter": "chapter-03"
+    },
+    "multi-head-attention": {
+      "term": "Multi-head attention",
+      "vi": "attention nhiều đầu",
+      "explanation": "Chạy nhiều attention heads song song trong các không gian chiếu khác nhau rồi ghép kết quả.",
+      "example": "Một head theo quan hệ gần, head khác theo phụ thuộc xa.",
+      "chapter": "chapter-11"
+    },
+    "multilabel-classification": {
+      "term": "Multi-label classification",
+      "vi": "phân loại đa nhãn",
+      "explanation": "Mỗi example có thể đồng thời thuộc nhiều nhãn.",
+      "example": "Ảnh mang nhãn biển, thuyền và hoàng hôn.",
+      "chapter": "chapter-01"
+    },
+    "multiscale-object-detection": {
+      "term": "Multiscale object detection",
+      "vi": "phát hiện vật ở nhiều tỉ lệ",
+      "explanation": "Sinh anchor trên feature maps nhiều kích thước để bắt vật lớn nhỏ khác nhau.",
+      "example": "Feature map 4×4 bắt vật nhỏ, feature map 1×1 bắt vật lớn.",
+      "chapter": "chapter-14"
+    },
+    "natural-language-inference": {
+      "term": "Natural language inference",
+      "vi": "suy luận ngôn ngữ tự nhiên",
+      "explanation": "Xác định quan hệ logic giữa premise và hypothesis: entailment, contradiction hoặc neutral.",
+      "example": "\"Two women are hugging\" kéo theo \"showing affection\".",
+      "chapter": "chapter-16"
+    },
+    "negative-sampling": {
+      "term": "Negative sampling",
+      "vi": "lấy mẫu âm",
+      "explanation": "Thay full softmax bằng bài toán phân biệt cặp thật với một số noise pairs.",
+      "example": "Một context thật và năm từ nhiễu.",
+      "chapter": "chapter-15"
+    },
+    "neural-style-transfer": {
+      "term": "Neural style transfer",
+      "vi": "chuyển phong cách bằng mạng nơ-ron",
+      "explanation": "Tối ưu pixels để giữ content features nhưng khớp style statistics của ảnh khác.",
+      "example": "Phong cảnh thật mang nét cọ tranh sơn dầu.",
+      "chapter": "chapter-14"
+    },
+    "non-maximum-suppression": {
+      "term": "Non-maximum suppression",
+      "vi": "khử cực đại không tối đa",
+      "explanation": "Giữ prediction score cao và loại các boxes cùng class chồng quá nhiều.",
+      "example": "Nhiều anchors quanh một con mèo còn một box.",
+      "chapter": "chapter-14"
+    },
+    "norm": {
+      "term": "Norm",
+      "vi": "chuẩn / độ lớn",
+      "explanation": "Hàm đo độ lớn của vector hoặc matrix và thỏa các tính chất nhất định.",
+      "example": "L2 norm của [3,4] là 5.",
+      "chapter": "chapter-02"
+    },
+    "object-detection": {
+      "term": "Object detection",
+      "vi": "phát hiện vật thể",
+      "explanation": "Dự đoán class và vị trí của nhiều object trong ảnh.",
+      "example": "Tìm người, xe và box của từng vật.",
+      "chapter": "chapter-14"
+    },
+    "one-dimensional-convolution": {
+      "term": "One-dimensional convolution",
+      "vi": "tích chập một chiều",
+      "explanation": "Convolution trượt theo một trục duy nhất của văn bản; input rộng n với kernel rộng w cho output rộng n-w+1.",
+      "example": "Input rộng 7, kernel rộng 2 cho output rộng 6.",
+      "chapter": "chapter-16"
+    },
+    "optimization": {
+      "term": "Optimization",
+      "vi": "tối ưu hóa",
+      "explanation": "Quá trình tìm parameters làm objective tốt hơn.",
+      "example": "Giảm loss bằng gradient descent.",
+      "chapter": "chapter-01"
+    },
+    "overfitting": {
+      "term": "Overfitting",
+      "vi": "quá khớp",
+      "explanation": "Model khớp training data rất tốt nhưng yếu trên dữ liệu mới.",
+      "example": "Nhớ cả nhiễu của 20 mẫu huấn luyện.",
+      "chapter": "chapter-01"
+    },
+    "padding": {
+      "term": "Padding",
+      "vi": "đệm biên",
+      "explanation": "Thêm giá trị quanh biên input để kiểm soát kích thước output và giữ thông tin sát mép.",
+      "example": "Đệm một pixel mỗi phía giúp convolution 3×3 giữ nguyên chiều cao-rộng.",
+      "chapter": "chapter-07"
+    },
+    "parameter": {
+      "term": "Parameter",
+      "vi": "tham số học được",
+      "explanation": "Con số bên trong model được điều chỉnh trong training.",
+      "example": "Weight và bias.",
+      "chapter": "chapter-01"
+    },
+    "partial-derivative": {
+      "term": "Partial derivative",
+      "vi": "đạo hàm riêng",
+      "explanation": "Đạo hàm theo một biến khi giữ các biến còn lại cố định.",
+      "example": "∂f/∂x của f(x,y).",
+      "chapter": "chapter-02"
+    },
+    "perplexity": {
+      "term": "Perplexity",
+      "vi": "độ bối rối",
+      "explanation": "Exponent của cross-entropy trung bình; có thể hiểu là số lựa chọn hiệu dụng model còn phân vân.",
+      "example": "Perplexity 10 nghĩa là độ khó tương tự phải chọn đều giữa khoảng 10 token.",
+      "chapter": "chapter-09"
+    },
+    "policy": {
+      "term": "Policy",
+      "vi": "chính sách hành động",
+      "explanation": "Quy tắc agent dùng để chọn action từ quan sát hoặc trạng thái.",
+      "example": "Nếu vật cản gần thì robot rẽ trái.",
+      "chapter": "chapter-01"
+    },
+    "pooling": {
+      "term": "Pooling",
+      "vi": "phép gộp cục bộ",
+      "explanation": "Tóm tắt một cửa sổ không gian bằng max hoặc average để giảm kích thước và tăng tính ổn định vị trí.",
+      "example": "Max-pooling 2×2 giữ giá trị lớn nhất trong mỗi ô vuông.",
+      "chapter": "chapter-07"
+    },
+    "positional-encoding": {
+      "term": "Positional encoding",
+      "vi": "mã hóa vị trí",
+      "explanation": "Bổ sung thông tin thứ tự vào token representations vì self-attention tự thân không biết vị trí.",
+      "example": "Sóng sin-cos khác nhau được cộng vào các vị trí 0, 1, 2.",
+      "chapter": "chapter-11"
+    },
+    "probability": {
+      "term": "Probability",
+      "vi": "xác suất",
+      "explanation": "Ngôn ngữ định lượng mức không chắc chắn của các event.",
+      "example": "Xác suất đồng xu ngửa bằng 0,5.",
+      "chapter": "chapter-02"
+    },
+    "q-learning": {
+      "term": "Q-Learning",
+      "vi": "học Q",
+      "explanation": "Học action-value function từ dữ liệu robot tự thu thập, thay tổng qua mọi trạng thái kế tiếp bằng trạng thái đã quan sát.",
+      "example": "Không cần biết transition function P(s'|s, a).",
+      "chapter": "chapter-17"
+    },
+    "random-variable": {
+      "term": "Random variable",
+      "vi": "biến ngẫu nhiên",
+      "explanation": "Hàm gán một giá trị số cho mỗi kết quả trong sample space.",
+      "example": "Số chấm khi tung xúc xắc.",
+      "chapter": "chapter-02"
+    },
+    "rbf-kernel": {
+      "term": "RBF kernel",
+      "vi": "hạt nhân hàm cơ sở xuyên tâm",
+      "explanation": "Kernel phổ biến nhất, trơn vô hạn lần, với hai siêu tham số amplitude và length-scale.",
+      "example": "a²·exp(−‖x−x'‖²/2ℓ²).",
+      "chapter": "chapter-18"
+    },
+    "receptive-field": {
+      "term": "Receptive field",
+      "vi": "trường tiếp nhận",
+      "explanation": "Vùng input có thể ảnh hưởng tới một activation trên feature map.",
+      "example": "Cell tầng sâu nhìn vùng ảnh lớn hơn cell tầng nông.",
+      "chapter": "chapter-14"
+    },
+    "recommender-system": {
+      "term": "Recommender system",
+      "vi": "hệ thống gợi ý",
+      "explanation": "Hệ thống xếp hoặc dự đoán nội dung một người có thể quan tâm.",
+      "example": "Gợi ý phim dựa trên lịch sử xem.",
+      "chapter": "chapter-01"
+    },
+    "recurrent-neural-network": {
+      "term": "Recurrent neural network",
+      "vi": "mạng nơ-ron hồi tiếp",
+      "explanation": "Mạng cập nhật hidden state theo thứ tự để mang thông tin từ các bước trước sang bước hiện tại.",
+      "example": "RNN đọc từng ký tự và dự đoán ký tự tiếp theo.",
+      "chapter": "chapter-09"
+    },
+    "reduction": {
+      "term": "Reduction",
+      "vi": "phép thu gọn",
+      "explanation": "Gộp các phần tử dọc một hay nhiều axis bằng sum, mean, max…",
+      "example": "Mean từng cột của matrix.",
+      "chapter": "chapter-02"
+    },
+    "region-proposal": {
+      "term": "Region proposal",
+      "vi": "vùng đề xuất",
+      "explanation": "Vùng ứng viên có khả năng chứa vật, được đưa vào giai đoạn phân loại của detector hai giai đoạn.",
+      "example": "Selective search sinh khoảng 2000 vùng cho một ảnh.",
+      "chapter": "chapter-14"
+    },
+    "region-proposal-network": {
+      "term": "Region proposal network",
+      "vi": "mạng đề xuất vùng",
+      "explanation": "Mạng học cách sinh region proposals, được train chung với phần còn lại của detector.",
+      "example": "Faster R-CNN thay selective search bằng RPN.",
+      "chapter": "chapter-14"
+    },
+    "regression": {
+      "term": "Regression",
+      "vi": "hồi quy",
+      "explanation": "Bài toán dự đoán một đại lượng số liên tục.",
+      "example": "Dự đoán thời gian giao hàng.",
+      "chapter": "chapter-01"
+    },
+    "regularization": {
+      "term": "Regularization",
+      "vi": "điều chuẩn",
+      "explanation": "Biện pháp thêm thiên kiến để hạn chế model khớp nhiễu và cải thiện generalization.",
+      "example": "Phạt weights quá lớn.",
+      "chapter": "chapter-03"
+    },
+    "reinforcement-learning": {
+      "term": "Reinforcement learning",
+      "vi": "học tăng cường",
+      "explanation": "Agent học cách hành động qua tương tác và reward, không cần đáp án cho từng bước.",
+      "example": "Agent học chơi game.",
+      "chapter": "chapter-01"
+    },
+    "representation-learning": {
+      "term": "Representation learning",
+      "vi": "học biểu diễn",
+      "explanation": "Để model tự học cách mã hóa dữ liệu hữu ích cho nhiệm vụ.",
+      "example": "Các tầng ảnh học cạnh rồi hình rồi vật thể.",
+      "chapter": "chapter-01"
+    },
+    "reward": {
+      "term": "Reward",
+      "vi": "phần thưởng",
+      "explanation": "Tín hiệu số đánh giá hậu quả hành động của agent.",
+      "example": "+1 khi thắng ván chơi.",
+      "chapter": "chapter-01"
+    },
+    "roi-pooling": {
+      "term": "RoI pooling",
+      "vi": "pooling vùng quan tâm",
+      "explanation": "Biến features của các region khác kích thước thành output shape cố định.",
+      "example": "Mọi proposal thành feature 7×7.",
+      "chapter": "chapter-14"
+    },
+    "sample-space": {
+      "term": "Sample space",
+      "vi": "không gian mẫu",
+      "explanation": "Tập tất cả kết quả có thể của một thí nghiệm ngẫu nhiên.",
+      "example": "Tung xu có Ω = {ngửa, sấp}.",
+      "chapter": "chapter-02"
+    },
+    "scalar": {
+      "term": "Scalar",
+      "vi": "vô hướng",
+      "explanation": "Một giá trị số đơn, tương ứng tensor bậc 0.",
+      "example": "Nhiệt độ 28°C.",
+      "chapter": "chapter-02"
+    },
+    "selective-search": {
+      "term": "Selective search",
+      "vi": "tìm kiếm chọn lọc",
+      "explanation": "Thuật toán thủ công sinh region proposals dựa trên tương quan giữa các pixel, không học từ dữ liệu.",
+      "example": "Bước đầu tiên của R-CNN và fast R-CNN.",
+      "chapter": "chapter-14"
+    },
+    "self-attention": {
+      "term": "Self-attention",
+      "vi": "attention tự thân",
+      "explanation": "Queries, keys và values đều được tạo từ cùng một sequence để các vị trí trao đổi thông tin.",
+      "example": "Mỗi từ trong câu tổng hợp ngữ cảnh từ mọi từ còn lại.",
+      "chapter": "chapter-11"
+    },
+    "self-supervised-learning": {
+      "term": "Self-supervised learning",
+      "vi": "học tự giám sát",
+      "explanation": "Tự tạo target từ cấu trúc của dữ liệu chưa gắn nhãn.",
+      "example": "Che một từ rồi dự đoán từ đó.",
+      "chapter": "chapter-01"
+    },
+    "semantic-segmentation": {
+      "term": "Semantic segmentation",
+      "vi": "phân đoạn ngữ nghĩa",
+      "explanation": "Dự đoán semantic class cho từng pixel nhưng không tách instances cùng class.",
+      "example": "Mọi pixel chó cùng nhãn dog.",
+      "chapter": "chapter-14"
+    },
+    "sentiment-analysis": {
+      "term": "Sentiment analysis",
+      "vi": "phân tích cảm xúc",
+      "explanation": "Nghiên cứu cảm xúc trong văn bản; là một bài toán text classification biến chuỗi độ dài thay đổi thành một category.",
+      "example": "Đánh giá phim IMDb được gán nhãn positive hoặc negative.",
+      "chapter": "chapter-16"
+    },
+    "sequence-learning": {
+      "term": "Sequence learning",
+      "vi": "học trên chuỗi",
+      "explanation": "Bài toán trong đó thứ tự của input hoặc output mang ý nghĩa.",
+      "example": "Dịch một câu theo thứ tự từ.",
+      "chapter": "chapter-01"
+    },
+    "single-shot-multibox-detection": {
+      "term": "Single Shot Multibox Detection",
+      "vi": "phát hiện đa hộp một lượt",
+      "explanation": "One-stage detector dự đoán class và offsets của anchors trên nhiều feature scales trong một forward pass.",
+      "example": "SSD phát hiện vật nhỏ và lớn từ các map khác nhau.",
+      "chapter": "chapter-14"
+    },
+    "stationary-kernel": {
+      "term": "Stationary kernel",
+      "vi": "hạt nhân dừng",
+      "explanation": "Kernel bất biến tịnh tiến, viết được chỉ theo hiệu x − x'; tính chất hàm không đổi khi di chuyển trong không gian đầu vào.",
+      "example": "RBF là kernel dừng; neural network kernel thì không.",
+      "chapter": "chapter-18"
+    },
+    "statistics": {
+      "term": "Statistics",
+      "vi": "thống kê",
+      "explanation": "Dùng mẫu quan sát để suy luận về quá trình hoặc tổng thể sinh dữ liệu.",
+      "example": "Ước lượng xác suất ngửa từ 1.000 lần tung.",
+      "chapter": "chapter-02"
+    },
+    "stride": {
+      "term": "Stride",
+      "vi": "bước trượt",
+      "explanation": "Số ô cửa sổ convolution hoặc pooling dịch chuyển sau mỗi lần tính.",
+      "example": "Stride 2 thường làm chiều cao và rộng giảm gần một nửa.",
+      "chapter": "chapter-07"
+    },
+    "supervised-learning": {
+      "term": "Supervised learning",
+      "vi": "học có giám sát",
+      "explanation": "Học ánh xạ từ input tới output bằng examples có đáp án.",
+      "example": "Ảnh kèm nhãn mèo/chó.",
+      "chapter": "chapter-01"
+    },
+    "teacher-forcing": {
+      "term": "Teacher forcing",
+      "vi": "dùng token đúng làm đầu vào khi huấn luyện",
+      "explanation": "Ở mỗi bước decoder khi training, đưa token target thật của bước trước thay vì prediction của model.",
+      "example": "Decoder nhận từ đúng thứ ba để học dự đoán từ thứ tư.",
+      "chapter": "chapter-10"
+    },
+    "tensor": {
+      "term": "Tensor",
+      "vi": "ten-xơ / mảng nhiều chiều",
+      "explanation": "Cấu trúc số có một hoặc nhiều axis, nền tảng dữ liệu của PyTorch.",
+      "example": "Batch ảnh shape (32,3,224,224).",
+      "chapter": "chapter-02"
+    },
+    "textcnn": {
+      "term": "textCNN",
+      "vi": "CNN cho văn bản",
+      "explanation": "Model dùng nhiều kernel convolution một chiều với chiều rộng khác nhau, rồi max-over-time pooling và một fully connected layer.",
+      "example": "kernel_sizes = [3, 4, 5] với 100 channel mỗi loại.",
+      "chapter": "chapter-16"
+    },
+    "tokenization": {
+      "term": "Tokenization",
+      "vi": "tách và mã hóa token",
+      "explanation": "Chia văn bản thành đơn vị như từ, subword hoặc ký tự trước khi đổi sang IDs.",
+      "example": "deep learning có thể thành hai word tokens.",
+      "chapter": "chapter-09"
+    },
+    "top-n-recommendation": {
+      "term": "Top-n recommendation",
+      "vi": "gợi ý n mục đứng đầu",
+      "explanation": "Xếp hạng candidates riêng cho user rồi trả n item có score cao nhất.",
+      "example": "Top-10 phim cho tối nay.",
+      "chapter": "chapter-21"
+    },
+    "total-variation-loss": {
+      "term": "Total variation loss",
+      "vi": "mất mát biến thiên toàn phần",
+      "explanation": "Phạt chênh lệch giữa các pixel kề nhau để giảm nhiễu tần số cao trên ảnh tổng hợp.",
+      "example": "tv_weight = 10 trong neural style transfer.",
+      "chapter": "chapter-14"
+    },
+    "trainer": {
+      "term": "Trainer",
+      "vi": "bộ điều phối huấn luyện",
+      "explanation": "Thành phần chạy epoch, batch, optimizer và validation.",
+      "example": "Vòng lặp gọi training_step cho từng batch.",
+      "chapter": "chapter-03"
+    },
+    "training-error": {
+      "term": "Training error",
+      "vi": "sai số huấn luyện",
+      "explanation": "Sai số đo trên chính dữ liệu dùng để fit parameters.",
+      "example": "MSE trên training set.",
+      "chapter": "chapter-03"
+    },
+    "transfer-learning": {
+      "term": "Transfer learning",
+      "vi": "học chuyển giao",
+      "explanation": "Tái sử dụng kiến thức học từ source task/dataset cho target task/dataset.",
+      "example": "ImageNet features cho dataset hot dog nhỏ.",
+      "chapter": "chapter-14"
+    },
+    "translation-equivariance": {
+      "term": "Translation equivariance",
+      "vi": "tính đồng biến theo phép tịnh tiến",
+      "explanation": "Khi input dịch vị trí, feature map cũng dịch tương ứng thay vì đổi bản chất phép phát hiện.",
+      "example": "Dời con mèo sang phải làm activation phát hiện mèo dời sang phải.",
+      "chapter": "chapter-07"
+    },
+    "transpose": {
+      "term": "Transpose",
+      "vi": "chuyển vị",
+      "explanation": "Đổi hàng thành cột và cột thành hàng của matrix.",
+      "example": "Matrix (3,2) thành (2,3).",
+      "chapter": "chapter-02"
+    },
+    "transposed-convolution": {
+      "term": "Transposed convolution",
+      "vi": "tích chập chuyển vị",
+      "explanation": "Phép tuyến tính dùng transpose của convolution operator để tăng spatial size; không phải nghịch đảo giá trị.",
+      "example": "Upsample feature map trong FCN.",
+      "chapter": "chapter-14"
+    },
+    "underfitting": {
+      "term": "Underfitting",
+      "vi": "chưa khớp",
+      "explanation": "Model quá yếu hoặc chưa được tối ưu đủ để nắm tín hiệu ngay trên training data.",
+      "example": "Dùng đường thẳng cho quan hệ cong mạnh.",
+      "chapter": "chapter-03"
+    },
+    "unsupervised-learning": {
+      "term": "Unsupervised learning",
+      "vi": "học không giám sát",
+      "explanation": "Tìm cấu trúc trong dữ liệu khi không có target do con người cung cấp.",
+      "example": "Gom khách hàng thành các nhóm hành vi.",
+      "chapter": "chapter-01"
+    },
+    "upsampling": {
+      "term": "Upsampling",
+      "vi": "tăng độ phân giải",
+      "explanation": "Phóng to chiều cao và rộng của ảnh hoặc feature map, ngược với downsampling.",
+      "example": "FCN đưa feature map 10×15 về 320×480.",
+      "chapter": "chapter-14"
+    },
+    "validation-set": {
+      "term": "Validation set",
+      "vi": "tập kiểm định",
+      "explanation": "Dữ liệu giữ ngoài training để chọn model và hyperparameters.",
+      "example": "Chọn lambda có validation loss thấp nhất.",
+      "chapter": "chapter-03"
+    },
+    "value-function": {
+      "term": "Value function",
+      "vi": "hàm giá trị",
+      "explanation": "V(s) là discounted return kỳ vọng khi bắt đầu ở trạng thái s và luôn hành động theo policy.",
+      "example": "Ô gần đích có giá trị cao hơn ô xa đích.",
+      "chapter": "chapter-17"
+    },
+    "value-iteration": {
+      "term": "Value iteration",
+      "vi": "lặp giá trị",
+      "explanation": "Lặp cập nhật value function bằng nguyên lý quy hoạch động cho tới hội tụ; đòi hỏi biết đầy đủ MDP.",
+      "example": "10 vòng lặp là đủ cho lưới FrozenLake 4×4.",
+      "chapter": "chapter-17"
+    },
+    "variance": {
+      "term": "Variance",
+      "vi": "phương sai",
+      "explanation": "Kỳ vọng bình phương độ lệch khỏi mean, đo mức phân tán.",
+      "example": "Hai cảm biến cùng mean nhưng variance khác nhau.",
+      "chapter": "chapter-02"
+    },
+    "vector": {
+      "term": "Vector",
+      "vi": "véc-tơ",
+      "explanation": "Danh sách số có thứ tự, thường biểu diễn một điểm hoặc một nhóm features.",
+      "example": "[diện tích, số phòng, tuổi nhà].",
+      "chapter": "chapter-02"
+    },
+    "vision-transformer": {
+      "term": "Vision Transformer",
+      "vi": "Transformer cho thị giác",
+      "explanation": "Chia ảnh thành patches, biến mỗi patch thành token rồi xử lý bằng Transformer encoder.",
+      "example": "Ảnh 224×224 với patch 16×16 tạo 196 patch tokens.",
+      "chapter": "chapter-11"
+    },
+    "vocabulary": {
+      "term": "Vocabulary",
+      "vi": "bộ từ vựng",
+      "explanation": "Ánh xạ hữu hạn giữa token strings và integer IDs mà model xử lý.",
+      "example": "Token hiếm có thể được ánh xạ thành <unk>.",
+      "chapter": "chapter-09"
+    },
+    "weight": {
+      "term": "Weight",
+      "vi": "trọng số",
+      "explanation": "Parameter nhân với feature, biểu thị hướng và mức ảnh hưởng tuyến tính.",
+      "example": "w₁ cho feature diện tích.",
+      "chapter": "chapter-03"
+    },
+    "weight-decay": {
+      "term": "Weight decay",
+      "vi": "suy giảm trọng số",
+      "explanation": "Regularization làm weights co về 0, thường tương ứng L2 penalty.",
+      "example": "Thêm λ||w||²/2 vào objective.",
+      "chapter": "chapter-03"
+    },
+    "word-embedding": {
+      "term": "Word embedding",
+      "vi": "biểu diễn từ bằng vector",
+      "explanation": "Ánh xạ word/token ID tới vector liên tục học được để mang quan hệ thống kê/ngữ nghĩa.",
+      "example": "King và queen có vectors gần nhau.",
+      "chapter": "chapter-15"
+    },
+    "word2vec": {
+      "term": "word2vec",
+      "vi": "họ mô hình embedding theo context",
+      "explanation": "Gồm skip-gram và CBOW, học word vectors bằng cách dự đoán giữa center và context words.",
+      "example": "Skip-gram dùng loves để đoán man và son.",
+      "chapter": "chapter-15"
+    }
   }
 }
