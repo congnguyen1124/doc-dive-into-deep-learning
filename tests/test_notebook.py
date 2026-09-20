@@ -174,6 +174,27 @@ class NotebookContentTests(unittest.TestCase):
                 "16.6 Fine-Tuning BERT for Sequence-Level and Token-Level Applications",
                 "16.7 Natural Language Inference: Fine-Tuning BERT",
             ],
+            "chapter-04": [
+                "4.1 Softmax Regression", "4.2 The Image Classification Dataset",
+                "4.3 The Base Classification Model",
+                "4.4 Softmax Regression Implementation from Scratch",
+                "4.5 Concise Implementation of Softmax Regression",
+                "4.6 Generalization in Classification",
+                "4.7 Environment and Distribution Shift",
+            ],
+            "chapter-05": [
+                "5.1 Multilayer Perceptrons",
+                "5.2 Implementation of Multilayer Perceptrons",
+                "5.3 Forward Propagation, Backward Propagation, and Computational Graphs",
+                "5.4 Numerical Stability and Initialization",
+                "5.5 Generalization in Deep Learning", "5.6 Dropout",
+                "5.7 Predicting House Prices on Kaggle",
+            ],
+            "chapter-06": [
+                "6.1 Layers and Modules", "6.2 Parameter Management",
+                "6.3 Parameter Initialization", "6.4 Lazy Initialization",
+                "6.5 Custom Layers", "6.6 File I/O", "6.7 GPUs",
+            ],
             "chapter-17": [
                 "17.1 Markov Decision Process (MDP)",
                 "17.2 Value Iteration",

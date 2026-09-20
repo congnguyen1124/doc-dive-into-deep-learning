@@ -52,8 +52,8 @@ Reader mang phong cách bí kíp cổ trang Trung Hoa nhưng phần điều khi�
 
 | Trạng thái | Chương |
 |---|---|
-| **Đã biên soạn và kiểm tra** | 1–3, 7–11, 14–18 và 21 |
-| **Đang chờ biên soạn** | 4–6, 12–13 và 19–20 |
+| **Đã biên soạn và kiểm tra** | 1–11, 14–18 và 21 |
+| **Đang chờ biên soạn** | 12–13 và 19–20 |
 | **Phụ lục đang chờ** | A — Mathematics for Deep Learning; B — Tools for Deep Learning |
 
 Mục lục, filename, số chương và phạm vi trang luôn bám theo đúng edition của PDF trong workspace.
