@@ -8,6 +8,20 @@
       "example": "Action tốt nhất tại s là argmax_a Q(s, a).",
       "chapter": "chapter-17"
     },
+    "activation-function": {
+      "term": "Activation function",
+      "vi": "hàm kích hoạt",
+      "explanation": "Hàm phi tuyến áp từng phần tử; thiếu nó thì nhiều layer tuyến tính gộp lại thành một.",
+      "example": "ReLU, sigmoid, tanh.",
+      "chapter": "chapter-05"
+    },
+    "adaptive-overfitting": {
+      "term": "Adaptive overfitting",
+      "vi": "quá khớp do dùng lại test set",
+      "explanation": "Test set mất giá trị đánh giá khi được dùng lặp lại để chọn model, vì thông tin từ nó đã rò rỉ tới người làm model.",
+      "example": "Lý do Kaggle giới hạn số lần nộp mỗi ngày.",
+      "chapter": "chapter-04"
+    },
     "affine-transformation": {
       "term": "Affine transformation",
       "vi": "phép biến đổi affine",
@@ -49,6 +63,13 @@
       "explanation": "Một hướng của tensor; mỗi axis có một ý nghĩa và độ dài.",
       "example": "Tensor ảnh có thể có axis batch, channel, height, width.",
       "chapter": "chapter-02"
+    },
+    "backpropagation": {
+      "term": "Backpropagation",
+      "vi": "lan truyền ngược",
+      "explanation": "Tính gradient theo thứ tự ngược bằng quy tắc dây chuyền, tái sử dụng giá trị đã lưu từ forward pass.",
+      "example": "Phụ thuộc lẫn nhau với forward propagation.",
+      "chapter": "chapter-05"
     },
     "batch-normalization": {
       "term": "Batch normalization",
@@ -155,6 +176,13 @@
       "example": "x → x² → sum → loss.",
       "chapter": "chapter-02"
     },
+    "concept-shift": {
+      "term": "Concept shift",
+      "vi": "dịch chuyển khái niệm",
+      "explanation": "Chính định nghĩa của nhãn thay đổi theo thời gian hoặc địa lý.",
+      "example": "Cùng loại nước ngọt gọi là pop, soda hay coke tuỳ vùng.",
+      "chapter": "chapter-04"
+    },
     "context-sensitive-representation": {
       "term": "Context-sensitive representation",
       "vi": "biểu diễn phụ thuộc ngữ cảnh",
@@ -176,6 +204,13 @@
       "example": "k(x, x') = Cov(f(x), f(x')).",
       "chapter": "chapter-18"
     },
+    "covariate-shift": {
+      "term": "Covariate shift",
+      "vi": "dịch chuyển hiệp biến",
+      "explanation": "Phân phối input đổi nhưng quan hệ nhãn theo input giữ nguyên; hợp lý khi x gây ra y.",
+      "example": "Train trên ảnh chụp, test trên tranh hoạt hình.",
+      "chapter": "chapter-04"
+    },
     "credible-interval": {
       "term": "Credible interval",
       "vi": "khoảng tin cậy Bayes",
@@ -189,6 +224,13 @@
       "explanation": "Phép trượt kernel trên input và lấy tổng tích từng vùng; đây là phép mà các thư viện deep learning thường gọi là convolution.",
       "example": "Kernel 3×3 tạo một giá trị từ mỗi cửa sổ ảnh 3×3.",
       "chapter": "chapter-07"
+    },
+    "cross-entropy-loss": {
+      "term": "Cross-entropy loss",
+      "vi": "mất mát entropy chéo",
+      "explanation": "Hàm loss cho phân loại, dẫn từ maximum likelihood; gradient của nó là hiệu giữa dự đoán và nhãn.",
+      "example": "l = -log của xác suất gán cho lớp đúng.",
+      "chapter": "chapter-04"
     },
     "cross-validation": {
       "term": "Cross-validation",
@@ -260,6 +302,20 @@
       "example": "[1,2]·[3,4] = 11.",
       "chapter": "chapter-02"
     },
+    "dropout": {
+      "term": "Dropout",
+      "vi": "bỏ ngẫu nhiên nơ-ron",
+      "explanation": "Đặt ngẫu nhiên một phần activation về 0 rồi chia phần còn lại cho 1-p để giữ kỳ vọng không đổi.",
+      "example": "Chỉ bật lúc training, tắt khi suy luận.",
+      "chapter": "chapter-05"
+    },
+    "early-stopping": {
+      "term": "Early stopping",
+      "vi": "dừng sớm",
+      "explanation": "Dừng training khi validation loss bắt đầu xấu đi; giới hạn không gian nghiệm nên có tác dụng chính quy hoá.",
+      "example": "Hiệu quả nhất khi nhãn training có nhiễu.",
+      "chapter": "chapter-05"
+    },
     "elementwise-operation": {
       "term": "Elementwise operation",
       "vi": "phép toán theo phần tử",
@@ -274,12 +330,33 @@
       "example": "Weight shape (vocab_size, embed_dim).",
       "chapter": "chapter-15"
     },
+    "empirical-error": {
+      "term": "Empirical error",
+      "vi": "sai số thực nghiệm",
+      "explanation": "Tỉ lệ dự đoán sai trên một tập mẫu cụ thể; đo được trực tiếp.",
+      "example": "9 sai trên 100 mẫu test cho sai số 0.09.",
+      "chapter": "chapter-04"
+    },
+    "empirical-risk": {
+      "term": "Empirical risk",
+      "vi": "rủi ro thực nghiệm",
+      "explanation": "Loss trung bình trên dữ liệu training, dùng để xấp xỉ risk thật trên toàn tổng thể.",
+      "example": "Đại lượng ta thực sự cực tiểu khi train.",
+      "chapter": "chapter-04"
+    },
     "end-to-end-learning": {
       "term": "End-to-end learning",
       "vi": "học đầu-cuối",
       "explanation": "Tối ưu đồng thời cả chuỗi từ input thô tới output cuối bằng một mục tiêu.",
       "example": "Âm thanh đi thẳng tới văn bản qua một hệ được huấn luyện chung.",
       "chapter": "chapter-01"
+    },
+    "entropy": {
+      "term": "Entropy",
+      "vi": "entropy",
+      "explanation": "Số nat tối thiểu cần để mã hoá dữ liệu rút từ một phân phối; cũng là độ ngạc nhiên kỳ vọng.",
+      "example": "Phân phối đều trên 3 lớp có entropy log 3.",
+      "chapter": "chapter-04"
     },
     "environment": {
       "term": "Environment",
@@ -316,6 +393,13 @@
       "example": "Chấm phim 5 sao.",
       "chapter": "chapter-21"
     },
+    "exploding-gradient": {
+      "term": "Exploding gradient",
+      "vi": "gradient bùng nổ",
+      "explanation": "Tích các ma trận Jacobian tăng không giới hạn, làm bước cập nhật quá lớn và phá huỷ model.",
+      "example": "Chữa bằng gradient clipping hoặc khởi tạo tốt hơn.",
+      "chapter": "chapter-05"
+    },
     "fasttext": {
       "term": "fastText",
       "vi": "mô hình embedding theo subword",
@@ -343,6 +427,13 @@
       "explanation": "Tiếp tục huấn luyện model pretrained trên dữ liệu/nhiệm vụ đích, thường với learning rate nhỏ.",
       "example": "Tinh chỉnh ResNet ImageNet để nhận diện hot dog.",
       "chapter": "chapter-14"
+    },
+    "forward-propagation": {
+      "term": "Forward propagation",
+      "vi": "lan truyền xuôi",
+      "explanation": "Tính và LƯU TRỮ các biến trung gian từ input tới output; việc lưu trữ là lý do training tốn bộ nhớ.",
+      "example": "Bộ nhớ activation tỉ lệ với số layer nhân batch size.",
+      "chapter": "chapter-05"
     },
     "fully-connected-layer": {
       "term": "Fully connected layer",
@@ -477,6 +568,13 @@
       "example": "x += 1.",
       "chapter": "chapter-02"
     },
+    "inductive-bias": {
+      "term": "Inductive bias",
+      "vi": "thiên lệch quy nạp",
+      "explanation": "Sự ưu tiên ngầm của một model cho những nghiệm có tính chất nhất định.",
+      "example": "MLP sâu ưu tiên hàm ghép từ các hàm đơn giản.",
+      "chapter": "chapter-05"
+    },
     "inference": {
       "term": "Inference",
       "vi": "suy luận bằng mô hình",
@@ -512,6 +610,13 @@
       "example": "Giá bán thật của căn nhà.",
       "chapter": "chapter-01"
     },
+    "label-shift": {
+      "term": "Label shift",
+      "vi": "dịch chuyển nhãn",
+      "explanation": "Phân phối biên của nhãn đổi nhưng phân phối input theo từng lớp giữ nguyên; hợp lý khi y gây ra x.",
+      "example": "Tỉ lệ mắc bệnh đổi theo mùa, triệu chứng thì không.",
+      "chapter": "chapter-04"
+    },
     "language-model": {
       "term": "Language model",
       "vi": "mô hình ngôn ngữ",
@@ -533,6 +638,13 @@
       "example": "Mỗi token vector được chuẩn hóa riêng trước scale và shift.",
       "chapter": "chapter-11"
     },
+    "lazy-initialization": {
+      "term": "Lazy initialization",
+      "vi": "khởi tạo trì hoãn",
+      "explanation": "Hoãn việc khởi tạo tham số tới lần truyền dữ liệu đầu tiên, để framework tự suy ra shape của từng layer.",
+      "example": "nn.LazyLinear(256) không cần biết chiều input khi viết code.",
+      "chapter": "chapter-06"
+    },
     "learning-rate": {
       "term": "Learning rate",
       "vi": "tốc độ học",
@@ -546,6 +658,13 @@
       "explanation": "Model dự đoán số bằng tổ hợp tuyến tính của features và một bias.",
       "example": "ŷ = Xw + b.",
       "chapter": "chapter-03"
+    },
+    "logsumexp": {
+      "term": "LogSumExp",
+      "vi": "thủ thuật LogSumExp",
+      "explanation": "Gộp softmax với logarit và trừ đi phần tử lớn nhất, nhờ đó tránh tràn số và mất số.",
+      "example": "Lý do CrossEntropyLoss nhận logit thô.",
+      "chapter": "chapter-04"
     },
     "loss-function": {
       "term": "Loss function",
@@ -638,6 +757,13 @@
       "example": "Ảnh mang nhãn biển, thuyền và hoàng hôn.",
       "chapter": "chapter-01"
     },
+    "multilayer-perceptron": {
+      "term": "Multilayer perceptron",
+      "vi": "perceptron nhiều tầng",
+      "explanation": "Nhiều fully connected layer xếp chồng với hàm phi tuyến chèn giữa chúng.",
+      "example": "784 → 256 → 10 với ReLU ở giữa.",
+      "chapter": "chapter-05"
+    },
     "multiscale-object-detection": {
       "term": "Multiscale object detection",
       "vi": "phát hiện vật ở nhiều tỉ lệ",
@@ -694,6 +820,13 @@
       "example": "Input rộng 7, kernel rộng 2 cho output rộng 6.",
       "chapter": "chapter-16"
     },
+    "one-hot-encoding": {
+      "term": "One-hot encoding",
+      "vi": "mã hoá một-nóng",
+      "explanation": "Vector có số thành phần bằng số lớp, đúng một thành phần bằng 1 tại vị trí lớp đúng.",
+      "example": "\"mèo\" = (1, 0, 0).",
+      "chapter": "chapter-04"
+    },
     "optimization": {
       "term": "Optimization",
       "vi": "tối ưu hóa",
@@ -749,6 +882,13 @@
       "explanation": "Tóm tắt một cửa sổ không gian bằng max hoặc average để giảm kích thước và tăng tính ổn định vị trí.",
       "example": "Max-pooling 2×2 giữ giá trị lớn nhất trong mỗi ô vuông.",
       "chapter": "chapter-07"
+    },
+    "population-error": {
+      "term": "Population error",
+      "vi": "sai số tổng thể",
+      "explanation": "Tỉ lệ sai kỳ vọng trên toàn bộ phân phối dữ liệu; là thứ ta thật sự quan tâm nhưng không đo trực tiếp được.",
+      "example": "Ước lượng từ test set với sai số cỡ 1/căn n.",
+      "chapter": "chapter-04"
     },
     "positional-encoding": {
       "term": "Positional encoding",
@@ -848,6 +988,13 @@
       "example": "Agent học chơi game.",
       "chapter": "chapter-01"
     },
+    "relu": {
+      "term": "ReLU",
+      "vi": "đơn vị tuyến tính chỉnh lưu",
+      "explanation": "max(x, 0); đạo hàm bằng 0 hoặc 1 nên không làm co gradient qua nhiều layer.",
+      "example": "Lựa chọn mặc định cho hidden layer.",
+      "chapter": "chapter-05"
+    },
     "representation-learning": {
       "term": "Representation learning",
       "vi": "học biểu diễn",
@@ -925,12 +1072,26 @@
       "example": "Dịch một câu theo thứ tự từ.",
       "chapter": "chapter-01"
     },
+    "sigmoid": {
+      "term": "Sigmoid",
+      "vi": "hàm sigmoid",
+      "explanation": "Ép mọi số thực vào khoảng (0, 1); gradient biến mất ở cả hai đầu nên ít dùng ở hidden layer.",
+      "example": "Vẫn dùng cho output nhị phân và các cổng trong LSTM.",
+      "chapter": "chapter-05"
+    },
     "single-shot-multibox-detection": {
       "term": "Single Shot Multibox Detection",
       "vi": "phát hiện đa hộp một lượt",
       "explanation": "One-stage detector dự đoán class và offsets của anchors trên nhiều feature scales trong một forward pass.",
       "example": "SSD phát hiện vật nhỏ và lớn từ các map khác nhau.",
       "chapter": "chapter-14"
+    },
+    "softmax": {
+      "term": "Softmax",
+      "vi": "hàm softmax",
+      "explanation": "Biến các logit thành một phân phối xác suất hợp lệ mà vẫn giữ nguyên thứ tự giữa chúng.",
+      "example": "o = (1, 2, 3) cho xấp xỉ (0.09, 0.24, 0.67).",
+      "chapter": "chapter-04"
     },
     "stationary-kernel": {
       "term": "Stationary kernel",
@@ -959,6 +1120,13 @@
       "explanation": "Học ánh xạ từ input tới output bằng examples có đáp án.",
       "example": "Ảnh kèm nhãn mèo/chó.",
       "chapter": "chapter-01"
+    },
+    "surprisal": {
+      "term": "Surprisal",
+      "vi": "độ ngạc nhiên",
+      "explanation": "Mức ngạc nhiên khi quan sát một sự kiện mà ta đã gán cho nó xác suất P(j).",
+      "example": "-log P(j); sự kiện càng hiếm thì càng ngạc nhiên.",
+      "chapter": "chapter-04"
     },
     "teacher-forcing": {
       "term": "Teacher forcing",
@@ -1086,12 +1254,26 @@
       "example": "10 vòng lặp là đủ cho lưới FrozenLake 4×4.",
       "chapter": "chapter-17"
     },
+    "vanishing-gradient": {
+      "term": "Vanishing gradient",
+      "vi": "gradient biến mất",
+      "explanation": "Tích các ma trận Jacobian co về 0 qua nhiều layer, khiến layer đầu hầu như không học được.",
+      "example": "Sigmoid qua 30 layer cho hệ số cỡ 10 mũ -18.",
+      "chapter": "chapter-05"
+    },
     "variance": {
       "term": "Variance",
       "vi": "phương sai",
       "explanation": "Kỳ vọng bình phương độ lệch khỏi mean, đo mức phân tán.",
       "example": "Hai cảm biến cùng mean nhưng variance khác nhau.",
       "chapter": "chapter-02"
+    },
+    "vc-dimension": {
+      "term": "VC dimension",
+      "vi": "chiều VC",
+      "explanation": "Số điểm dữ liệu lớn nhất mà một lớp model có thể gán mọi cách gán nhãn nhị phân tuỳ ý.",
+      "example": "Model tuyến tính d chiều có VC dimension d + 1.",
+      "chapter": "chapter-04"
     },
     "vector": {
       "term": "Vector",
@@ -1141,6 +1323,13 @@
       "explanation": "Gồm skip-gram và CBOW, học word vectors bằng cách dự đoán giữa center và context words.",
       "example": "Skip-gram dùng loves để đoán man và son.",
       "chapter": "chapter-15"
+    },
+    "xavier-initialization": {
+      "term": "Xavier initialization",
+      "vi": "khởi tạo Xavier",
+      "explanation": "Đặt phương sai weight bằng 2/(n_in + n_out) — thoả hiệp giữa việc giữ phương sai theo chiều xuôi và chiều ngược.",
+      "example": "Hai yêu cầu trùng nhau khi layer vuông.",
+      "chapter": "chapter-05"
     }
   }
 }

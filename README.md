@@ -76,8 +76,8 @@ The chapter filename, numbering, section order, and page scope follow the local 
 
 | Status | Content |
 | --- | --- |
-| Reviewed | Chapters 1–3, 7–11, 14–18, and 21 |
-| Placeholder | Chapters 4–6, 12–13, and 19–20 |
+| Reviewed | Chapters  1–11, 14–18 and 21  |
+| Placeholder | Chapters  12–13 and 19–20|
 | Placeholder appendices | Appendix A, Mathematics for Deep Learning; Appendix B, Tools for Deep Learning |
 
 Current total: **14 reviewed chapters**, **7 placeholder chapters**, and **2 placeholder appendices**.
